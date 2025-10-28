@@ -1,0 +1,351 @@
+order_id,receipt_number,order_datetime,order_date,order_time,day_of_week,staff_member,payment_method,order_type,status,total_amount,total_cost,gross_profit
+1,R000001,2024-09-29 08:14:00,2024-09-29,08:14:00,Sunday,Tom,Cash,Takeaway,Completed,10.0,3.3,6.7
+2,R000002,2024-09-29 08:59:00,2024-09-29,08:59:00,Sunday,Lisa,Cash,Dine In,Completed,9.0,2.6,6.4
+3,R000003,2024-09-29 09:08:00,2024-09-29,09:08:00,Sunday,Emma,Card,Dine In,Completed,5.0,1.8,3.2
+4,R000004,2024-09-29 11:25:00,2024-09-29,11:25:00,Sunday,Lisa,Card,Takeaway,Completed,9.5,2.9000000000000004,6.6
+5,R000005,2024-09-29 12:08:00,2024-09-29,12:08:00,Sunday,Lisa,Card,Dine In,Completed,34.0,14.3,19.7
+6,R000006,2024-09-29 14:48:00,2024-09-29,14:48:00,Sunday,Mike,Card,Dine In,Completed,19.5,8.5,11.0
+7,R000007,2024-09-29 15:59:00,2024-09-29,15:59:00,Sunday,Emma,Card,Dine In,Completed,3.5,0.9,2.6
+8,R000008,2024-09-30 07:13:00,2024-09-30,07:13:00,Monday,Emma,Cash,Dine In,Completed,17.0,7.2,9.8
+9,R000009,2024-09-30 08:27:00,2024-09-30,08:27:00,Monday,Emma,Card,Dine In,Completed,16.5,6.6,9.9
+10,R000010,2024-09-30 09:27:00,2024-09-30,09:27:00,Monday,Lisa,Mobile,Dine In,Completed,9.5,2.7,6.8
+11,R000011,2024-09-30 10:21:00,2024-09-30,10:21:00,Monday,Tom,Card,Takeaway,Completed,18.0,7.6,10.4
+12,R000012,2024-09-30 11:26:00,2024-09-30,11:26:00,Monday,Emma,Cash,Dine In,Completed,23.5,10.7,12.8
+13,R000013,2024-09-30 11:47:00,2024-09-30,11:47:00,Monday,Lisa,Card,Dine In,Completed,23.5,8.4,15.1
+14,R000014,2024-09-30 12:11:00,2024-09-30,12:11:00,Monday,Mike,Card,Takeaway,Completed,14.5,4.5,10.0
+15,R000015,2024-09-30 13:25:00,2024-09-30,13:25:00,Monday,Tom,Card,Dine In,Completed,10.5,4.8,5.7
+16,R000016,2024-09-30 14:04:00,2024-09-30,14:04:00,Monday,Mike,Card,Dine In,Completed,18.0,7.8,10.2
+17,R000017,2024-09-30 14:09:00,2024-09-30,14:09:00,Monday,Tom,Card,Dine In,Completed,14.5,6.0,8.5
+18,R000018,2024-09-30 15:22:00,2024-09-30,15:22:00,Monday,Lisa,Mobile,Dine In,Completed,22.0,8.2,13.8
+19,R000019,2024-10-01 08:11:00,2024-10-01,08:11:00,Tuesday,Sarah,Cash,Dine In,Completed,10.5,4.8,5.7
+20,R000020,2024-10-01 09:42:00,2024-10-01,09:42:00,Tuesday,Tom,Card,Takeaway,Completed,45.5,20.6,24.9
+21,R000021,2024-10-01 10:21:00,2024-10-01,10:21:00,Tuesday,Mike,Card,Takeaway,Completed,13.0,5.3,7.7
+22,R000022,2024-10-01 10:55:00,2024-10-01,10:55:00,Tuesday,Lisa,Card,Dine In,Completed,29.0,12.6,16.4
+23,R000023,2024-10-01 11:08:00,2024-10-01,11:08:00,Tuesday,Tom,Cash,Dine In,Completed,13.5,4.2,9.3
+24,R000024,2024-10-01 11:10:00,2024-10-01,11:10:00,Tuesday,Sarah,Card,Dine In,Completed,9.0,2.8,6.2
+25,R000025,2024-10-01 11:43:00,2024-10-01,11:43:00,Tuesday,Sarah,Card,Takeaway,Completed,18.5,8.0,10.5
+26,R000026,2024-10-01 11:56:00,2024-10-01,11:56:00,Tuesday,Emma,Card,Dine In,Completed,18.5,6.75,11.75
+27,R000027,2024-10-01 12:52:00,2024-10-01,12:52:00,Tuesday,Emma,Card,Dine In,Completed,4.5,1.3,3.2
+28,R000028,2024-10-01 14:44:00,2024-10-01,14:44:00,Tuesday,Mike,Card,Dine In,Completed,14.0,6.5,7.5
+29,R000029,2024-10-01 15:07:00,2024-10-01,15:07:00,Tuesday,Tom,Card,Dine In,Completed,5.0,1.5,3.5
+30,R000030,2024-10-01 15:34:00,2024-10-01,15:34:00,Tuesday,Tom,Mobile,Takeaway,Completed,13.5,3.95,9.55
+31,R000031,2024-10-02 08:13:00,2024-10-02,08:13:00,Wednesday,Emma,Card,Dine In,Completed,17.5,7.3,10.2
+32,R000032,2024-10-02 08:27:00,2024-10-02,08:27:00,Wednesday,Tom,Card,Takeaway,Completed,27.0,11.4,15.6
+33,R000033,2024-10-02 09:22:00,2024-10-02,09:22:00,Wednesday,Tom,Card,Dine In,Completed,9.5,2.9000000000000004,6.6
+34,R000034,2024-10-02 09:35:00,2024-10-02,09:35:00,Wednesday,Sarah,Card,Takeaway,Completed,17.0,7.0,10.0
+35,R000035,2024-10-02 09:36:00,2024-10-02,09:36:00,Wednesday,Emma,Mobile,Dine In,Completed,27.0,11.5,15.5
+36,R000036,2024-10-02 10:41:00,2024-10-02,10:41:00,Wednesday,Lisa,Card,Dine In,Completed,10.5,3.8,6.7
+37,R000037,2024-10-02 12:09:00,2024-10-02,12:09:00,Wednesday,Emma,Card,Takeaway,Completed,16.0,6.4,9.6
+38,R000038,2024-10-02 13:10:00,2024-10-02,13:10:00,Wednesday,Lisa,Card,Takeaway,Completed,9.0,2.5,6.5
+39,R000039,2024-10-02 13:14:00,2024-10-02,13:14:00,Wednesday,Sarah,Card,Takeaway,Completed,14.0,5.45,8.55
+40,R000040,2024-10-02 13:18:00,2024-10-02,13:18:00,Wednesday,Mike,Cash,Dine In,Completed,19.5,7.1,12.4
+41,R000041,2024-10-02 13:25:00,2024-10-02,13:25:00,Wednesday,Tom,Card,Takeaway,Completed,5.0,1.5,3.5
+42,R000042,2024-10-02 14:13:00,2024-10-02,14:13:00,Wednesday,Sarah,Card,Dine In,Completed,17.5,7.4,10.1
+43,R000043,2024-10-02 14:16:00,2024-10-02,14:16:00,Wednesday,Tom,Card,Takeaway,Completed,10.0,3.2,6.8
+44,R000044,2024-10-02 14:19:00,2024-10-02,14:19:00,Wednesday,Mike,Card,Dine In,Completed,8.0,2.2,5.8
+45,R000045,2024-10-02 14:36:00,2024-10-02,14:36:00,Wednesday,Mike,Card,Takeaway,Completed,9.0,2.5,6.5
+46,R000046,2024-10-03 08:10:00,2024-10-03,08:10:00,Thursday,Sarah,Card,Takeaway,Completed,16.5,6.8,9.7
+47,R000047,2024-10-03 08:24:00,2024-10-03,08:24:00,Thursday,Mike,Card,Takeaway,Completed,20.5,8.0,12.5
+48,R000048,2024-10-03 09:35:00,2024-10-03,09:35:00,Thursday,Lisa,Card,Dine In,Completed,5.0,1.5,3.5
+49,R000049,2024-10-03 09:56:00,2024-10-03,09:56:00,Thursday,Mike,Mobile,Dine In,Completed,28.0,12.4,15.6
+50,R000050,2024-10-03 10:17:00,2024-10-03,10:17:00,Thursday,Tom,Card,Takeaway,Completed,19.0,7.0,12.0
+51,R000051,2024-10-03 10:53:00,2024-10-03,10:53:00,Thursday,Tom,Card,Dine In,Completed,5.0,1.8,3.2
+52,R000052,2024-10-03 14:52:00,2024-10-03,14:52:00,Thursday,Tom,Cash,Takeaway,Completed,21.5,8.299999999999999,13.2
+53,R000053,2024-10-04 08:47:00,2024-10-04,08:47:00,Friday,Tom,Cash,Takeaway,Completed,14.5,5.6,8.9
+54,R000054,2024-10-04 09:24:00,2024-10-04,09:24:00,Friday,Lisa,Card,Dine In,Completed,16.0,6.4,9.6
+55,R000055,2024-10-04 10:49:00,2024-10-04,10:49:00,Friday,Emma,Card,Takeaway,Completed,4.5,1.25,3.25
+56,R000056,2024-10-04 11:16:00,2024-10-04,11:16:00,Friday,Sarah,Card,Dine In,Completed,9.0,2.5,6.5
+57,R000057,2024-10-04 12:21:00,2024-10-04,12:21:00,Friday,Tom,Card,Takeaway,Completed,23.0,10.6,12.4
+58,R000058,2024-10-04 13:44:00,2024-10-04,13:44:00,Friday,Mike,Mobile,Takeaway,Completed,14.0,5.7,8.3
+59,R000059,2024-10-05 08:02:00,2024-10-05,08:02:00,Saturday,Tom,Cash,Dine In,Completed,28.5,11.4,17.1
+60,R000060,2024-10-05 08:28:00,2024-10-05,08:28:00,Saturday,Mike,Card,Dine In,Completed,32.0,13.399999999999999,18.6
+61,R000061,2024-10-05 08:44:00,2024-10-05,08:44:00,Saturday,Mike,Card,Takeaway,Completed,40.0,16.1,23.9
+62,R000062,2024-10-05 08:46:00,2024-10-05,08:46:00,Saturday,Tom,Mobile,Dine In,Completed,3.5,0.9,2.6
+63,R000063,2024-10-05 08:48:00,2024-10-05,08:48:00,Saturday,Lisa,Card,Dine In,Completed,5.0,1.5,3.5
+64,R000064,2024-10-05 09:03:00,2024-10-05,09:03:00,Saturday,Mike,Card,Dine In,Completed,9.5,2.9,6.6
+65,R000065,2024-10-05 09:45:00,2024-10-05,09:45:00,Saturday,Mike,Card,Dine In,Completed,8.0,2.2,5.8
+66,R000066,2024-10-05 09:47:00,2024-10-05,09:47:00,Saturday,Tom,Card,Dine In,Completed,21.0,8.1,12.9
+67,R000067,2024-10-05 10:16:00,2024-10-05,10:16:00,Saturday,Mike,Mobile,Dine In,Completed,9.5,2.7,6.8
+68,R000068,2024-10-05 10:50:00,2024-10-05,10:50:00,Saturday,Mike,Mobile,Dine In,Completed,14.5,5.9,8.6
+69,R000069,2024-10-05 11:25:00,2024-10-05,11:25:00,Saturday,Tom,Cash,Takeaway,Completed,12.5,4.9,7.6
+70,R000070,2024-10-05 12:24:00,2024-10-05,12:24:00,Saturday,Tom,Card,Dine In,Completed,23.0,10.6,12.4
+71,R000071,2024-10-05 12:25:00,2024-10-05,12:25:00,Saturday,Sarah,Cash,Dine In,Completed,20.0,6.75,13.25
+72,R000072,2024-10-05 12:42:00,2024-10-05,12:42:00,Saturday,Lisa,Card,Dine In,Completed,9.5,4.2,5.3
+73,R000073,2024-10-05 13:24:00,2024-10-05,13:24:00,Saturday,Lisa,Card,Dine In,Completed,9.5,4.2,5.3
+74,R000074,2024-10-06 07:45:00,2024-10-06,07:45:00,Sunday,Mike,Card,Dine In,Completed,9.5,3.3,6.2
+75,R000075,2024-10-06 08:01:00,2024-10-06,08:01:00,Sunday,Lisa,Cash,Takeaway,Completed,14.5,5.9,8.6
+76,R000076,2024-10-06 08:01:00,2024-10-06,08:01:00,Sunday,Mike,Cash,Takeaway,Completed,29.0,12.5,16.5
+77,R000077,2024-10-06 08:58:00,2024-10-06,08:58:00,Sunday,Sarah,Card,Dine In,Completed,4.5,1.5,3.0
+78,R000078,2024-10-06 09:10:00,2024-10-06,09:10:00,Sunday,Tom,Cash,Takeaway,Completed,14.5,5.9,8.6
+79,R000079,2024-10-06 09:19:00,2024-10-06,09:19:00,Sunday,Tom,Card,Takeaway,Completed,3.5,0.9,2.6
+80,R000080,2024-10-06 10:01:00,2024-10-06,10:01:00,Sunday,Tom,Card,Dine In,Completed,9.5,3.0,6.5
+81,R000081,2024-10-06 10:17:00,2024-10-06,10:17:00,Sunday,Lisa,Card,Takeaway,Completed,23.0,9.55,13.45
+82,R000082,2024-10-06 11:49:00,2024-10-06,11:49:00,Sunday,Sarah,Card,Takeaway,Completed,17.5,7.3,10.2
+83,R000083,2024-10-06 12:41:00,2024-10-06,12:41:00,Sunday,Lisa,Card,Dine In,Completed,4.5,1.2,3.3
+84,R000084,2024-10-06 13:05:00,2024-10-06,13:05:00,Sunday,Lisa,Card,Dine In,Completed,20.5,9.3,11.2
+85,R000085,2024-10-06 14:05:00,2024-10-06,14:05:00,Sunday,Sarah,Card,Takeaway,Completed,4.0,1.1,2.9
+86,R000086,2024-10-06 14:07:00,2024-10-06,14:07:00,Sunday,Sarah,Card,Takeaway,Completed,9.0,2.6,6.4
+87,R000087,2024-10-06 14:50:00,2024-10-06,14:50:00,Sunday,Sarah,Card,Dine In,Completed,15.0,6.0,9.0
+88,R000088,2024-10-06 14:51:00,2024-10-06,14:51:00,Sunday,Sarah,Card,Takeaway,Completed,14.0,5.4,8.6
+89,R000089,2024-10-06 15:39:00,2024-10-06,15:39:00,Sunday,Tom,Card,Takeaway,Completed,5.0,1.5,3.5
+90,R000090,2024-10-07 07:03:00,2024-10-07,07:03:00,Monday,Emma,Card,Takeaway,Completed,14.5,4.7,9.8
+91,R000091,2024-10-07 07:14:00,2024-10-07,07:14:00,Monday,Emma,Card,Takeaway,Completed,10.5,4.8,5.7
+92,R000092,2024-10-07 08:37:00,2024-10-07,08:37:00,Monday,Sarah,Card,Takeaway,Completed,10.5,4.8,5.7
+93,R000093,2024-10-07 08:48:00,2024-10-07,08:48:00,Monday,Emma,Card,Dine In,Completed,9.5,3.1,6.4
+94,R000094,2024-10-07 08:58:00,2024-10-07,08:58:00,Monday,Emma,Card,Dine In,Completed,18.0,8.0,10.0
+95,R000095,2024-10-07 09:08:00,2024-10-07,09:08:00,Monday,Sarah,Mobile,Takeaway,Completed,19.0,8.4,10.6
+96,R000096,2024-10-07 09:13:00,2024-10-07,09:13:00,Monday,Emma,Card,Takeaway,Completed,5.0,1.6,3.4
+97,R000097,2024-10-07 09:13:00,2024-10-07,09:13:00,Monday,Lisa,Card,Dine In,Completed,10.0,3.3,6.7
+98,R000098,2024-10-07 09:15:00,2024-10-07,09:15:00,Monday,Mike,Mobile,Dine In,Completed,5.0,1.7,3.3
+99,R000099,2024-10-07 09:42:00,2024-10-07,09:42:00,Monday,Mike,Card,Takeaway,Completed,14.0,5.8,8.2
+100,R000100,2024-10-07 09:46:00,2024-10-07,09:46:00,Monday,Sarah,Card,Dine In,Completed,9.5,4.2,5.3
+101,R000101,2024-10-07 10:38:00,2024-10-07,10:38:00,Monday,Tom,Card,Takeaway,Completed,5.5,1.6,3.9
+102,R000102,2024-10-07 10:45:00,2024-10-07,10:45:00,Monday,Sarah,Card,Takeaway,Completed,17.5,5.0,12.5
+103,R000103,2024-10-07 11:33:00,2024-10-07,11:33:00,Monday,Tom,Cash,Takeaway,Completed,16.5,6.6,9.9
+104,R000104,2024-10-07 12:53:00,2024-10-07,12:53:00,Monday,Mike,Card,Dine In,Completed,29.5,11.0,18.5
+105,R000105,2024-10-07 14:30:00,2024-10-07,14:30:00,Monday,Sarah,Card,Dine In,Completed,18.5,7.3,11.2
+106,R000106,2024-10-07 14:44:00,2024-10-07,14:44:00,Monday,Lisa,Card,Dine In,Completed,4.5,1.5,3.0
+107,R000107,2024-10-07 14:50:00,2024-10-07,14:50:00,Monday,Emma,Cash,Dine In,Completed,22.0,8.8,13.2
+108,R000108,2024-10-08 08:01:00,2024-10-08,08:01:00,Tuesday,Tom,Card,Dine In,Completed,16.5,6.8,9.7
+109,R000109,2024-10-08 09:21:00,2024-10-08,09:21:00,Tuesday,Emma,Card,Dine In,Completed,9.5,3.0,6.5
+110,R000110,2024-10-08 09:50:00,2024-10-08,09:50:00,Tuesday,Emma,Card,Dine In,Completed,12.0,5.5,6.5
+111,R000111,2024-10-08 10:28:00,2024-10-08,10:28:00,Tuesday,Sarah,Cash,Dine In,Completed,30.0,13.3,16.7
+112,R000112,2024-10-08 10:42:00,2024-10-08,10:42:00,Tuesday,Emma,Card,Dine In,Completed,9.5,4.2,5.3
+113,R000113,2024-10-08 11:12:00,2024-10-08,11:12:00,Tuesday,Lisa,Card,Dine In,Completed,14.5,4.3,10.2
+114,R000114,2024-10-08 11:51:00,2024-10-08,11:51:00,Tuesday,Emma,Card,Dine In,Completed,21.0,9.6,11.4
+115,R000115,2024-10-08 11:58:00,2024-10-08,11:58:00,Tuesday,Sarah,Card,Takeaway,Completed,18.5,8.0,10.5
+116,R000116,2024-10-08 12:17:00,2024-10-08,12:17:00,Tuesday,Lisa,Card,Takeaway,Completed,9.0,2.5,6.5
+117,R000117,2024-10-08 12:44:00,2024-10-08,12:44:00,Tuesday,Mike,Card,Dine In,Completed,5.0,1.6,3.4
+118,R000118,2024-10-09 07:54:00,2024-10-09,07:54:00,Wednesday,Emma,Card,Takeaway,Completed,4.5,1.2,3.3
+119,R000119,2024-10-09 08:03:00,2024-10-09,08:03:00,Wednesday,Sarah,Card,Dine In,Completed,26.0,11.0,15.0
+120,R000120,2024-10-09 08:13:00,2024-10-09,08:13:00,Wednesday,Mike,Mobile,Takeaway,Completed,9.5,2.85,6.65
+121,R000121,2024-10-09 08:24:00,2024-10-09,08:24:00,Wednesday,Mike,Cash,Dine In,Completed,9.5,4.2,5.3
+122,R000122,2024-10-09 09:04:00,2024-10-09,09:04:00,Wednesday,Tom,Card,Takeaway,Completed,4.5,1.25,3.25
+123,R000123,2024-10-09 10:07:00,2024-10-09,10:07:00,Wednesday,Lisa,Mobile,Takeaway,Completed,20.5,8.0,12.5
+124,R000124,2024-10-09 11:42:00,2024-10-09,11:42:00,Wednesday,Emma,Card,Takeaway,Completed,17.0,7.1,9.9
+125,R000125,2024-10-09 11:51:00,2024-10-09,11:51:00,Wednesday,Sarah,Card,Takeaway,Completed,9.5,3.0,6.5
+126,R000126,2024-10-09 13:26:00,2024-10-09,13:26:00,Wednesday,Tom,Card,Dine In,Completed,18.5,8.0,10.5
+127,R000127,2024-10-09 14:05:00,2024-10-09,14:05:00,Wednesday,Lisa,Card,Dine In,Completed,9.0,2.5,6.5
+128,R000128,2024-10-09 14:13:00,2024-10-09,14:13:00,Wednesday,Tom,Card,Takeaway,Completed,12.5,3.7,8.8
+129,R000129,2024-10-10 09:08:00,2024-10-10,09:08:00,Thursday,Lisa,Card,Dine In,Completed,32.5,13.7,18.8
+130,R000130,2024-10-10 09:17:00,2024-10-10,09:17:00,Thursday,Lisa,Card,Takeaway,Completed,27.5,11.9,15.6
+131,R000131,2024-10-10 09:24:00,2024-10-10,09:24:00,Thursday,Emma,Card,Dine In,Completed,26.5,12.3,14.2
+132,R000132,2024-10-10 10:29:00,2024-10-10,10:29:00,Thursday,Lisa,Mobile,Dine In,Completed,10.5,3.1,7.4
+133,R000133,2024-10-10 10:42:00,2024-10-10,10:42:00,Thursday,Tom,Cash,Dine In,Completed,3.5,0.9,2.6
+134,R000134,2024-10-10 11:09:00,2024-10-10,11:09:00,Thursday,Lisa,Card,Dine In,Completed,4.0,1.1,2.9
+135,R000135,2024-10-10 12:20:00,2024-10-10,12:20:00,Thursday,Emma,Mobile,Takeaway,Completed,33.0,15.1,17.9
+136,R000136,2024-10-10 13:21:00,2024-10-10,13:21:00,Thursday,Emma,Mobile,Dine In,Completed,18.0,6.9,11.1
+137,R000137,2024-10-10 14:50:00,2024-10-10,14:50:00,Thursday,Tom,Mobile,Dine In,Completed,15.5,6.3,9.2
+138,R000138,2024-10-10 14:53:00,2024-10-10,14:53:00,Thursday,Mike,Card,Dine In,Completed,10.0,3.0,7.0
+139,R000139,2024-10-10 14:56:00,2024-10-10,14:56:00,Thursday,Mike,Cash,Dine In,Completed,19.5,7.1000000000000005,12.4
+140,R000140,2024-10-11 08:18:00,2024-10-11,08:18:00,Friday,Lisa,Card,Takeaway,Completed,12.5,5.8,6.7
+141,R000141,2024-10-11 09:40:00,2024-10-11,09:40:00,Friday,Sarah,Cash,Dine In,Completed,19.5,6.1,13.4
+142,R000142,2024-10-11 09:45:00,2024-10-11,09:45:00,Friday,Lisa,Mobile,Dine In,Completed,9.0,2.55,6.45
+143,R000143,2024-10-11 09:53:00,2024-10-11,09:53:00,Friday,Tom,Card,Dine In,Completed,15.5,6.300000000000001,9.2
+144,R000144,2024-10-11 11:29:00,2024-10-11,11:29:00,Friday,Tom,Cash,Takeaway,Completed,5.0,1.5,3.5
+145,R000145,2024-10-11 12:19:00,2024-10-11,12:19:00,Friday,Tom,Cash,Dine In,Completed,15.5,6.4,9.1
+146,R000146,2024-10-11 12:53:00,2024-10-11,12:53:00,Friday,Tom,Cash,Takeaway,Completed,15.0,4.8,10.2
+147,R000147,2024-10-12 07:59:00,2024-10-12,07:59:00,Saturday,Tom,Card,Takeaway,Completed,10.0,3.3,6.7
+148,R000148,2024-10-12 08:00:00,2024-10-12,08:00:00,Saturday,Emma,Card,Dine In,Completed,11.5,5.2,6.3
+149,R000149,2024-10-12 08:19:00,2024-10-12,08:19:00,Saturday,Mike,Card,Dine In,Completed,12.5,3.3499999999999996,9.15
+150,R000150,2024-10-12 08:33:00,2024-10-12,08:33:00,Saturday,Tom,Cash,Dine In,Completed,25.5,9.8,15.7
+151,R000151,2024-10-12 09:05:00,2024-10-12,09:05:00,Saturday,Sarah,Card,Dine In,Completed,30.0,13.5,16.5
+152,R000152,2024-10-12 09:39:00,2024-10-12,09:39:00,Saturday,Sarah,Card,Takeaway,Completed,9.5,2.65,6.85
+153,R000153,2024-10-12 09:44:00,2024-10-12,09:44:00,Saturday,Sarah,Card,Takeaway,Completed,15.0,5.1,9.9
+154,R000154,2024-10-12 10:13:00,2024-10-12,10:13:00,Saturday,Sarah,Card,Dine In,Completed,16.5,6.6,9.9
+155,R000155,2024-10-12 10:24:00,2024-10-12,10:24:00,Saturday,Emma,Cash,Dine In,Completed,13.5,5.199999999999999,8.3
+156,R000156,2024-10-12 10:38:00,2024-10-12,10:38:00,Saturday,Sarah,Cash,Dine In,Completed,5.5,2.0,3.5
+157,R000157,2024-10-12 10:47:00,2024-10-12,10:47:00,Saturday,Tom,Card,Takeaway,Completed,34.0,15.5,18.5
+158,R000158,2024-10-12 10:48:00,2024-10-12,10:48:00,Saturday,Lisa,Mobile,Dine In,Completed,5.0,1.8,3.2
+159,R000159,2024-10-12 11:07:00,2024-10-12,11:07:00,Saturday,Sarah,Card,Dine In,Completed,4.5,1.2,3.3
+160,R000160,2024-10-12 11:24:00,2024-10-12,11:24:00,Saturday,Emma,Card,Takeaway,Completed,5.0,1.4,3.6
+161,R000161,2024-10-12 11:24:00,2024-10-12,11:24:00,Saturday,Emma,Cash,Takeaway,Completed,13.5,5.3,8.2
+162,R000162,2024-10-12 11:32:00,2024-10-12,11:32:00,Saturday,Sarah,Card,Dine In,Completed,10.0,4.5,5.5
+163,R000163,2024-10-12 12:38:00,2024-10-12,12:38:00,Saturday,Lisa,Card,Takeaway,Completed,17.5,7.3,10.2
+164,R000164,2024-10-12 13:02:00,2024-10-12,13:02:00,Saturday,Sarah,Cash,Takeaway,Completed,8.0,2.2,5.8
+165,R000165,2024-10-12 13:06:00,2024-10-12,13:06:00,Saturday,Emma,Card,Dine In,Completed,11.0,3.2,7.8
+166,R000166,2024-10-12 13:37:00,2024-10-12,13:37:00,Saturday,Mike,Card,Dine In,Completed,4.5,1.25,3.25
+167,R000167,2024-10-12 14:25:00,2024-10-12,14:25:00,Saturday,Tom,Card,Dine In,Completed,25.0,10.8,14.2
+168,R000168,2024-10-12 14:36:00,2024-10-12,14:36:00,Saturday,Emma,Card,Dine In,Completed,15.5,5.2,10.3
+169,R000169,2024-10-12 15:40:00,2024-10-12,15:40:00,Saturday,Sarah,Card,Takeaway,Completed,8.5,2.4000000000000004,6.1
+170,R000170,2024-10-12 15:59:00,2024-10-12,15:59:00,Saturday,Tom,Card,Takeaway,Completed,10.0,3.4000000000000004,6.6
+171,R000171,2024-10-13 08:29:00,2024-10-13,08:29:00,Sunday,Sarah,Cash,Dine In,Completed,17.5,7.5,10.0
+172,R000172,2024-10-13 08:44:00,2024-10-13,08:44:00,Sunday,Sarah,Cash,Dine In,Completed,14.5,5.9,8.6
+173,R000173,2024-10-13 09:29:00,2024-10-13,09:29:00,Sunday,Mike,Cash,Dine In,Completed,4.0,1.1,2.9
+174,R000174,2024-10-13 09:37:00,2024-10-13,09:37:00,Sunday,Tom,Cash,Dine In,Completed,9.5,2.8,6.7
+175,R000175,2024-10-13 09:44:00,2024-10-13,09:44:00,Sunday,Tom,Card,Takeaway,Completed,16.0,5.6,10.4
+176,R000176,2024-10-13 09:48:00,2024-10-13,09:48:00,Sunday,Mike,Card,Dine In,Completed,9.5,3.0,6.5
+177,R000177,2024-10-13 09:52:00,2024-10-13,09:52:00,Sunday,Emma,Card,Dine In,Completed,12.5,5.8,6.7
+178,R000178,2024-10-13 09:59:00,2024-10-13,09:59:00,Sunday,Sarah,Card,Dine In,Completed,35.5,16.4,19.1
+179,R000179,2024-10-13 09:59:00,2024-10-13,09:59:00,Sunday,Lisa,Card,Takeaway,Completed,22.0,8.65,13.35
+180,R000180,2024-10-13 10:43:00,2024-10-13,10:43:00,Sunday,Sarah,Card,Dine In,Completed,13.0,5.05,7.95
+181,R000181,2024-10-13 11:36:00,2024-10-13,11:36:00,Sunday,Sarah,Card,Takeaway,Completed,15.5,5.1,10.4
+182,R000182,2024-10-13 11:46:00,2024-10-13,11:46:00,Sunday,Emma,Cash,Dine In,Completed,14.5,4.1,10.4
+183,R000183,2024-10-13 11:51:00,2024-10-13,11:51:00,Sunday,Sarah,Mobile,Takeaway,Completed,12.0,5.5,6.5
+184,R000184,2024-10-13 13:45:00,2024-10-13,13:45:00,Sunday,Mike,Card,Takeaway,Completed,9.5,2.8,6.7
+185,R000185,2024-10-13 14:39:00,2024-10-13,14:39:00,Sunday,Mike,Card,Dine In,Completed,27.0,10.0,17.0
+186,R000186,2024-10-14 07:34:00,2024-10-14,07:34:00,Monday,Tom,Card,Dine In,Completed,17.0,7.1,9.9
+187,R000187,2024-10-14 08:40:00,2024-10-14,08:40:00,Monday,Lisa,Mobile,Takeaway,Completed,16.0,6.5,9.5
+188,R000188,2024-10-14 09:08:00,2024-10-14,09:08:00,Monday,Sarah,Mobile,Takeaway,Completed,5.0,1.5,3.5
+189,R000189,2024-10-14 09:09:00,2024-10-14,09:09:00,Monday,Sarah,Card,Dine In,Completed,24.5,10.0,14.5
+190,R000190,2024-10-14 09:14:00,2024-10-14,09:14:00,Monday,Emma,Card,Dine In,Completed,11.0,4.0,7.0
+191,R000191,2024-10-14 09:37:00,2024-10-14,09:37:00,Monday,Mike,Card,Takeaway,Completed,10.5,3.6,6.9
+192,R000192,2024-10-14 09:58:00,2024-10-14,09:58:00,Monday,Lisa,Card,Dine In,Completed,9.0,2.5,6.5
+193,R000193,2024-10-14 10:28:00,2024-10-14,10:28:00,Monday,Tom,Card,Dine In,Completed,10.0,3.2,6.8
+194,R000194,2024-10-14 11:36:00,2024-10-14,11:36:00,Monday,Mike,Card,Takeaway,Completed,4.5,1.5,3.0
+195,R000195,2024-10-14 13:12:00,2024-10-14,13:12:00,Monday,Tom,Mobile,Dine In,Completed,24.5,11.3,13.2
+196,R000196,2024-10-14 14:10:00,2024-10-14,14:10:00,Monday,Emma,Card,Dine In,Completed,27.5,11.8,15.7
+197,R000197,2024-10-15 08:11:00,2024-10-15,08:11:00,Tuesday,Emma,Card,Dine In,Completed,19.5,7.5,12.0
+198,R000198,2024-10-15 09:35:00,2024-10-15,09:35:00,Tuesday,Sarah,Cash,Dine In,Completed,12.0,5.5,6.5
+199,R000199,2024-10-15 09:42:00,2024-10-15,09:42:00,Tuesday,Lisa,Mobile,Dine In,Completed,24.0,9.4,14.6
+200,R000200,2024-10-15 09:53:00,2024-10-15,09:53:00,Tuesday,Tom,Mobile,Takeaway,Completed,16.5,6.8,9.7
+201,R000201,2024-10-15 09:59:00,2024-10-15,09:59:00,Tuesday,Mike,Card,Dine In,Completed,17.5,7.3,10.2
+202,R000202,2024-10-15 10:15:00,2024-10-15,10:15:00,Tuesday,Emma,Card,Dine In,Completed,17.5,6.3,11.2
+203,R000203,2024-10-15 10:15:00,2024-10-15,10:15:00,Tuesday,Sarah,Card,Dine In,Completed,14.0,6.5,7.5
+204,R000204,2024-10-15 10:28:00,2024-10-15,10:28:00,Tuesday,Sarah,Card,Dine In,Completed,5.5,1.6,3.9
+205,R000205,2024-10-15 10:35:00,2024-10-15,10:35:00,Tuesday,Tom,Card,Takeaway,Completed,18.5,7.7,10.8
+206,R000206,2024-10-15 10:48:00,2024-10-15,10:48:00,Tuesday,Emma,Card,Dine In,Completed,4.5,1.2,3.3
+207,R000207,2024-10-15 10:58:00,2024-10-15,10:58:00,Tuesday,Lisa,Card,Dine In,Completed,22.0,8.8,13.2
+208,R000208,2024-10-15 12:32:00,2024-10-15,12:32:00,Tuesday,Emma,Card,Takeaway,Completed,10.5,3.2,7.3
+209,R000209,2024-10-15 14:38:00,2024-10-15,14:38:00,Tuesday,Tom,Card,Dine In,Completed,20.5,8.3,12.2
+210,R000210,2024-10-16 07:25:00,2024-10-16,07:25:00,Wednesday,Tom,Card,Dine In,Completed,9.5,2.9,6.6
+211,R000211,2024-10-16 08:00:00,2024-10-16,08:00:00,Wednesday,Emma,Card,Dine In,Completed,4.0,1.1,2.9
+212,R000212,2024-10-16 08:27:00,2024-10-16,08:27:00,Wednesday,Tom,Card,Dine In,Completed,19.5,7.3,12.2
+213,R000213,2024-10-16 08:41:00,2024-10-16,08:41:00,Wednesday,Emma,Card,Dine In,Completed,20.5,7.9,12.6
+214,R000214,2024-10-16 09:01:00,2024-10-16,09:01:00,Wednesday,Mike,Card,Dine In,Completed,14.5,4.4,10.1
+215,R000215,2024-10-16 09:08:00,2024-10-16,09:08:00,Wednesday,Emma,Card,Takeaway,Completed,16.0,4.6,11.4
+216,R000216,2024-10-16 09:37:00,2024-10-16,09:37:00,Wednesday,Emma,Card,Dine In,Completed,9.5,4.2,5.3
+217,R000217,2024-10-16 10:03:00,2024-10-16,10:03:00,Wednesday,Tom,Card,Dine In,Completed,10.0,3.2,6.8
+218,R000218,2024-10-16 10:10:00,2024-10-16,10:10:00,Wednesday,Tom,Card,Takeaway,Completed,15.0,6.1,8.9
+219,R000219,2024-10-16 10:27:00,2024-10-16,10:27:00,Wednesday,Sarah,Card,Dine In,Completed,4.5,1.25,3.25
+220,R000220,2024-10-16 12:10:00,2024-10-16,12:10:00,Wednesday,Sarah,Mobile,Takeaway,Completed,10.0,4.5,5.5
+221,R000221,2024-10-16 12:38:00,2024-10-16,12:38:00,Wednesday,Mike,Card,Dine In,Completed,10.0,3.1,6.9
+222,R000222,2024-10-16 12:44:00,2024-10-16,12:44:00,Wednesday,Sarah,Card,Dine In,Completed,13.5,5.300000000000001,8.2
+223,R000223,2024-10-16 12:49:00,2024-10-16,12:49:00,Wednesday,Emma,Mobile,Takeaway,Completed,14.5,6.0,8.5
+224,R000224,2024-10-16 13:19:00,2024-10-16,13:19:00,Wednesday,Tom,Card,Dine In,Completed,12.0,5.5,6.5
+225,R000225,2024-10-16 13:29:00,2024-10-16,13:29:00,Wednesday,Sarah,Cash,Dine In,Completed,4.5,1.25,3.25
+226,R000226,2024-10-16 13:57:00,2024-10-16,13:57:00,Wednesday,Sarah,Card,Dine In,Completed,17.5,7.5,10.0
+227,R000227,2024-10-16 15:44:00,2024-10-16,15:44:00,Wednesday,Mike,Card,Dine In,Completed,14.0,5.7,8.3
+228,R000228,2024-10-17 09:00:00,2024-10-17,09:00:00,Thursday,Mike,Card,Takeaway,Completed,13.0,5.0,8.0
+229,R000229,2024-10-17 09:38:00,2024-10-17,09:38:00,Thursday,Emma,Cash,Dine In,Completed,20.0,9.0,11.0
+230,R000230,2024-10-17 10:50:00,2024-10-17,10:50:00,Thursday,Tom,Card,Dine In,Completed,16.5,6.9,9.6
+231,R000231,2024-10-17 10:58:00,2024-10-17,10:58:00,Thursday,Mike,Mobile,Dine In,Completed,46.5,21.3,25.2
+232,R000232,2024-10-17 11:01:00,2024-10-17,11:01:00,Thursday,Sarah,Card,Takeaway,Completed,18.5,6.699999999999999,11.8
+233,R000233,2024-10-17 11:20:00,2024-10-17,11:20:00,Thursday,Tom,Cash,Dine In,Completed,14.5,5.7,8.8
+234,R000234,2024-10-17 11:24:00,2024-10-17,11:24:00,Thursday,Tom,Card,Takeaway,Completed,13.0,5.05,7.95
+235,R000235,2024-10-17 11:37:00,2024-10-17,11:37:00,Thursday,Sarah,Cash,Dine In,Completed,4.5,1.5,3.0
+236,R000236,2024-10-17 12:03:00,2024-10-17,12:03:00,Thursday,Mike,Card,Takeaway,Completed,10.5,3.3,7.2
+237,R000237,2024-10-17 14:20:00,2024-10-17,14:20:00,Thursday,Sarah,Card,Takeaway,Completed,15.0,6.05,8.95
+238,R000238,2024-10-17 15:48:00,2024-10-17,15:48:00,Thursday,Tom,Card,Takeaway,Completed,18.0,7.8,10.2
+239,R000239,2024-10-18 08:08:00,2024-10-18,08:08:00,Friday,Lisa,Card,Takeaway,Completed,10.0,4.5,5.5
+240,R000240,2024-10-18 09:02:00,2024-10-18,09:02:00,Friday,Lisa,Card,Dine In,Completed,15.5,6.3,9.2
+241,R000241,2024-10-18 09:48:00,2024-10-18,09:48:00,Friday,Emma,Card,Dine In,Completed,5.5,2.0,3.5
+242,R000242,2024-10-18 11:25:00,2024-10-18,11:25:00,Friday,Sarah,Card,Dine In,Completed,10.0,4.5,5.5
+243,R000243,2024-10-18 13:14:00,2024-10-18,13:14:00,Friday,Sarah,Card,Dine In,Completed,21.0,7.9,13.1
+244,R000244,2024-10-18 15:45:00,2024-10-18,15:45:00,Friday,Emma,Cash,Dine In,Completed,15.0,6.1,8.9
+245,R000245,2024-10-19 07:01:00,2024-10-19,07:01:00,Saturday,Emma,Mobile,Dine In,Completed,10.5,3.8,6.7
+246,R000246,2024-10-19 08:04:00,2024-10-19,08:04:00,Saturday,Emma,Card,Dine In,Completed,4.5,1.2,3.3
+247,R000247,2024-10-19 08:43:00,2024-10-19,08:43:00,Saturday,Tom,Cash,Dine In,Completed,5.0,1.6,3.4
+248,R000248,2024-10-19 08:47:00,2024-10-19,08:47:00,Saturday,Sarah,Cash,Takeaway,Completed,15.5,6.1,9.4
+249,R000249,2024-10-19 09:18:00,2024-10-19,09:18:00,Saturday,Tom,Card,Dine In,Completed,4.0,1.1,2.9
+250,R000250,2024-10-19 09:20:00,2024-10-19,09:20:00,Saturday,Emma,Card,Takeaway,Completed,9.5,2.65,6.85
+251,R000251,2024-10-19 09:42:00,2024-10-19,09:42:00,Saturday,Sarah,Card,Takeaway,Completed,8.5,2.35,6.15
+252,R000252,2024-10-19 09:49:00,2024-10-19,09:49:00,Saturday,Tom,Card,Takeaway,Completed,5.0,1.5,3.5
+253,R000253,2024-10-19 09:51:00,2024-10-19,09:51:00,Saturday,Tom,Card,Takeaway,Completed,29.5,11.7,17.8
+254,R000254,2024-10-19 09:54:00,2024-10-19,09:54:00,Saturday,Emma,Card,Takeaway,Completed,9.5,2.8,6.7
+255,R000255,2024-10-19 10:16:00,2024-10-19,10:16:00,Saturday,Sarah,Cash,Takeaway,Completed,9.5,2.75,6.75
+256,R000256,2024-10-19 10:42:00,2024-10-19,10:42:00,Saturday,Emma,Cash,Takeaway,Completed,15.0,5.05,9.95
+257,R000257,2024-10-19 11:05:00,2024-10-19,11:05:00,Saturday,Sarah,Card,Dine In,Completed,9.0,2.5,6.5
+258,R000258,2024-10-19 12:14:00,2024-10-19,12:14:00,Saturday,Lisa,Card,Dine In,Completed,8.5,2.6,5.9
+259,R000259,2024-10-19 12:57:00,2024-10-19,12:57:00,Saturday,Mike,Card,Dine In,Completed,9.0,2.9,6.1
+260,R000260,2024-10-19 14:31:00,2024-10-19,14:31:00,Saturday,Mike,Card,Dine In,Completed,4.0,1.1,2.9
+261,R000261,2024-10-19 14:32:00,2024-10-19,14:32:00,Saturday,Mike,Card,Takeaway,Completed,23.0,9.1,13.9
+262,R000262,2024-10-19 15:06:00,2024-10-19,15:06:00,Saturday,Emma,Cash,Takeaway,Completed,13.0,5.0,8.0
+263,R000263,2024-10-19 15:10:00,2024-10-19,15:10:00,Saturday,Lisa,Card,Takeaway,Completed,19.0,8.3,10.7
+264,R000264,2024-10-19 15:53:00,2024-10-19,15:53:00,Saturday,Sarah,Cash,Dine In,Completed,12.5,5.8,6.7
+265,R000265,2024-10-20 08:09:00,2024-10-20,08:09:00,Sunday,Tom,Mobile,Takeaway,Completed,19.5,6.1,13.4
+266,R000266,2024-10-20 08:56:00,2024-10-20,08:56:00,Sunday,Sarah,Card,Takeaway,Completed,29.5,13.399999999999999,16.1
+267,R000267,2024-10-20 09:32:00,2024-10-20,09:32:00,Sunday,Tom,Cash,Takeaway,Completed,17.0,7.05,9.95
+268,R000268,2024-10-20 09:49:00,2024-10-20,09:49:00,Sunday,Sarah,Card,Takeaway,Completed,23.5,10.7,12.8
+269,R000269,2024-10-20 09:51:00,2024-10-20,09:51:00,Sunday,Lisa,Card,Takeaway,Completed,10.0,3.2,6.8
+270,R000270,2024-10-20 10:35:00,2024-10-20,10:35:00,Sunday,Tom,Card,Dine In,Completed,3.5,0.9,2.6
+271,R000271,2024-10-20 11:07:00,2024-10-20,11:07:00,Sunday,Emma,Cash,Takeaway,Completed,32.0,13.4,18.6
+272,R000272,2024-10-20 11:28:00,2024-10-20,11:28:00,Sunday,Sarah,Card,Dine In,Completed,27.0,11.5,15.5
+273,R000273,2024-10-20 11:30:00,2024-10-20,11:30:00,Sunday,Sarah,Cash,Dine In,Completed,13.0,5.1,7.9
+274,R000274,2024-10-20 11:33:00,2024-10-20,11:33:00,Sunday,Tom,Mobile,Takeaway,Completed,24.0,9.9,14.1
+275,R000275,2024-10-20 12:09:00,2024-10-20,12:09:00,Sunday,Emma,Card,Dine In,Completed,5.5,1.6,3.9
+276,R000276,2024-10-20 12:11:00,2024-10-20,12:11:00,Sunday,Emma,Mobile,Takeaway,Completed,17.0,7.1,9.9
+277,R000277,2024-10-20 12:15:00,2024-10-20,12:15:00,Sunday,Lisa,Card,Dine In,Completed,13.5,5.4,8.1
+278,R000278,2024-10-20 13:36:00,2024-10-20,13:36:00,Sunday,Emma,Card,Takeaway,Completed,24.5,9.0,15.5
+279,R000279,2024-10-20 13:36:00,2024-10-20,13:36:00,Sunday,Emma,Card,Dine In,Completed,5.0,1.7,3.3
+280,R000280,2024-10-21 08:13:00,2024-10-21,08:13:00,Monday,Emma,Card,Takeaway,Completed,4.5,1.25,3.25
+281,R000281,2024-10-21 08:42:00,2024-10-21,08:42:00,Monday,Mike,Cash,Takeaway,Completed,11.0,4.0,7.0
+282,R000282,2024-10-21 09:43:00,2024-10-21,09:43:00,Monday,Lisa,Card,Dine In,Completed,8.5,2.4,6.1
+283,R000283,2024-10-21 10:14:00,2024-10-21,10:14:00,Monday,Sarah,Card,Dine In,Completed,10.5,3.7,6.8
+284,R000284,2024-10-21 10:19:00,2024-10-21,10:19:00,Monday,Tom,Mobile,Takeaway,Completed,22.0,8.9,13.1
+285,R000285,2024-10-21 10:50:00,2024-10-21,10:50:00,Monday,Sarah,Card,Dine In,Completed,19.0,7.1,11.9
+286,R000286,2024-10-21 13:54:00,2024-10-21,13:54:00,Monday,Lisa,Card,Dine In,Completed,14.0,3.9,10.1
+287,R000287,2024-10-21 14:41:00,2024-10-21,14:41:00,Monday,Tom,Card,Dine In,Completed,10.0,3.0,7.0
+288,R000288,2024-10-22 08:47:00,2024-10-22,08:47:00,Tuesday,Lisa,Cash,Dine In,Completed,30.0,12.2,17.8
+289,R000289,2024-10-22 08:56:00,2024-10-22,08:56:00,Tuesday,Emma,Card,Takeaway,Completed,15.0,4.2,10.8
+290,R000290,2024-10-22 08:59:00,2024-10-22,08:59:00,Tuesday,Tom,Cash,Takeaway,Completed,9.5,2.65,6.85
+291,R000291,2024-10-22 09:03:00,2024-10-22,09:03:00,Tuesday,Emma,Cash,Dine In,Completed,5.5,1.6,3.9
+292,R000292,2024-10-22 10:07:00,2024-10-22,10:07:00,Tuesday,Sarah,Card,Dine In,Completed,20.0,7.6000000000000005,12.4
+293,R000293,2024-10-22 10:45:00,2024-10-22,10:45:00,Tuesday,Sarah,Card,Takeaway,Completed,17.5,7.3,10.2
+294,R000294,2024-10-22 11:22:00,2024-10-22,11:22:00,Tuesday,Tom,Card,Dine In,Completed,29.5,12.7,16.8
+295,R000295,2024-10-22 12:12:00,2024-10-22,12:12:00,Tuesday,Tom,Card,Dine In,Completed,15.5,6.3,9.2
+296,R000296,2024-10-22 14:16:00,2024-10-22,14:16:00,Tuesday,Lisa,Card,Takeaway,Completed,19.5,8.5,11.0
+297,R000297,2024-10-22 14:28:00,2024-10-22,14:28:00,Tuesday,Lisa,Card,Takeaway,Completed,8.5,2.6,5.9
+298,R000298,2024-10-22 14:36:00,2024-10-22,14:36:00,Tuesday,Emma,Card,Takeaway,Completed,9.5,2.5999999999999996,6.9
+299,R000299,2024-10-22 15:35:00,2024-10-22,15:35:00,Tuesday,Tom,Card,Takeaway,Completed,14.5,5.75,8.75
+300,R000300,2024-10-23 08:42:00,2024-10-23,08:42:00,Wednesday,Sarah,Card,Dine In,Completed,10.0,3.2,6.8
+301,R000301,2024-10-23 08:52:00,2024-10-23,08:52:00,Wednesday,Lisa,Card,Takeaway,Completed,5.0,1.6,3.4
+302,R000302,2024-10-23 09:38:00,2024-10-23,09:38:00,Wednesday,Lisa,Card,Dine In,Completed,10.5,4.8,5.7
+303,R000303,2024-10-23 09:41:00,2024-10-23,09:41:00,Wednesday,Sarah,Card,Dine In,Completed,5.0,1.8,3.2
+304,R000304,2024-10-23 10:18:00,2024-10-23,10:18:00,Wednesday,Lisa,Card,Dine In,Completed,10.0,2.9000000000000004,7.1
+305,R000305,2024-10-23 10:28:00,2024-10-23,10:28:00,Wednesday,Emma,Card,Dine In,Completed,11.0,3.6,7.4
+306,R000306,2024-10-23 11:44:00,2024-10-23,11:44:00,Wednesday,Tom,Card,Takeaway,Completed,10.0,2.8,7.2
+307,R000307,2024-10-23 13:10:00,2024-10-23,13:10:00,Wednesday,Sarah,Cash,Dine In,Completed,5.0,1.5,3.5
+308,R000308,2024-10-23 14:00:00,2024-10-23,14:00:00,Wednesday,Tom,Card,Dine In,Completed,9.5,4.2,5.3
+309,R000309,2024-10-23 14:56:00,2024-10-23,14:56:00,Wednesday,Lisa,Mobile,Dine In,Completed,15.0,5.9,9.1
+310,R000310,2024-10-24 08:26:00,2024-10-24,08:26:00,Thursday,Lisa,Card,Dine In,Completed,19.5,8.5,11.0
+311,R000311,2024-10-24 09:03:00,2024-10-24,09:03:00,Thursday,Sarah,Card,Takeaway,Completed,19.5,7.5,12.0
+312,R000312,2024-10-24 09:10:00,2024-10-24,09:10:00,Thursday,Emma,Cash,Dine In,Completed,9.5,2.95,6.55
+313,R000313,2024-10-24 09:47:00,2024-10-24,09:47:00,Thursday,Mike,Card,Takeaway,Completed,4.5,1.3,3.2
+314,R000314,2024-10-24 10:46:00,2024-10-24,10:46:00,Thursday,Sarah,Card,Dine In,Completed,15.5,6.5,9.0
+315,R000315,2024-10-24 11:19:00,2024-10-24,11:19:00,Thursday,Mike,Card,Dine In,Completed,8.5,3.8,4.7
+316,R000316,2024-10-24 11:42:00,2024-10-24,11:42:00,Thursday,Mike,Card,Takeaway,Completed,26.5,12.3,14.2
+317,R000317,2024-10-24 11:47:00,2024-10-24,11:47:00,Thursday,Emma,Card,Dine In,Completed,24.5,11.3,13.2
+318,R000318,2024-10-24 12:24:00,2024-10-24,12:24:00,Thursday,Mike,Card,Takeaway,Completed,10.5,3.5,7.0
+319,R000319,2024-10-24 12:42:00,2024-10-24,12:42:00,Thursday,Mike,Cash,Dine In,Completed,10.0,4.5,5.5
+320,R000320,2024-10-24 14:14:00,2024-10-24,14:14:00,Thursday,Emma,Card,Dine In,Completed,50.0,20.6,29.4
+321,R000321,2024-10-24 14:15:00,2024-10-24,14:15:00,Thursday,Mike,Card,Takeaway,Completed,7.0,1.8,5.2
+322,R000322,2024-10-24 14:27:00,2024-10-24,14:27:00,Thursday,Mike,Card,Dine In,Completed,10.0,3.25,6.75
+323,R000323,2024-10-24 15:50:00,2024-10-24,15:50:00,Thursday,Mike,Card,Dine In,Completed,30.5,13.6,16.9
+324,R000324,2024-10-25 09:23:00,2024-10-25,09:23:00,Friday,Sarah,Card,Takeaway,Completed,16.5,6.7,9.8
+325,R000325,2024-10-25 10:09:00,2024-10-25,10:09:00,Friday,Sarah,Card,Dine In,Completed,12.0,5.5,6.5
+326,R000326,2024-10-25 11:06:00,2024-10-25,11:06:00,Friday,Sarah,Card,Takeaway,Completed,9.0,2.6,6.4
+327,R000327,2024-10-25 11:18:00,2024-10-25,11:18:00,Friday,Emma,Card,Dine In,Completed,9.5,4.2,5.3
+328,R000328,2024-10-25 11:38:00,2024-10-25,11:38:00,Friday,Lisa,Card,Takeaway,Completed,14.0,4.4,9.6
+329,R000329,2024-10-25 11:56:00,2024-10-25,11:56:00,Friday,Mike,Card,Takeaway,Completed,26.5,9.7,16.8
+330,R000330,2024-10-25 11:59:00,2024-10-25,11:59:00,Friday,Mike,Cash,Takeaway,Completed,21.0,8.5,12.5
+331,R000331,2024-10-25 14:17:00,2024-10-25,14:17:00,Friday,Emma,Card,Takeaway,Completed,5.5,2.0,3.5
+332,R000332,2024-10-25 15:15:00,2024-10-25,15:15:00,Friday,Mike,Card,Dine In,Completed,13.0,5.3,7.7
+333,R000333,2024-10-26 07:22:00,2024-10-26,07:22:00,Saturday,Sarah,Mobile,Takeaway,Completed,15.0,4.25,10.75
+334,R000334,2024-10-26 07:30:00,2024-10-26,07:30:00,Saturday,Lisa,Card,Dine In,Completed,4.5,1.3,3.2
+335,R000335,2024-10-26 07:51:00,2024-10-26,07:51:00,Saturday,Tom,Mobile,Dine In,Completed,10.0,4.5,5.5
+336,R000336,2024-10-26 08:40:00,2024-10-26,08:40:00,Saturday,Mike,Card,Dine In,Completed,9.0,3.0,6.0
+337,R000337,2024-10-26 08:57:00,2024-10-26,08:57:00,Saturday,Sarah,Cash,Dine In,Completed,3.5,0.9,2.6
+338,R000338,2024-10-26 09:06:00,2024-10-26,09:06:00,Saturday,Tom,Card,Dine In,Completed,9.5,3.1,6.4
+339,R000339,2024-10-26 09:07:00,2024-10-26,09:07:00,Saturday,Lisa,Cash,Takeaway,Completed,17.5,7.6,9.9
+340,R000340,2024-10-26 09:12:00,2024-10-26,09:12:00,Saturday,Tom,Card,Takeaway,Completed,25.5,10.9,14.6
+341,R000341,2024-10-26 10:03:00,2024-10-26,10:03:00,Saturday,Sarah,Card,Takeaway,Completed,5.0,1.4,3.6
+342,R000342,2024-10-26 10:03:00,2024-10-26,10:03:00,Saturday,Tom,Card,Dine In,Completed,14.5,5.7,8.8
+343,R000343,2024-10-26 10:03:00,2024-10-26,10:03:00,Saturday,Emma,Card,Takeaway,Completed,23.0,9.0,14.0
+344,R000344,2024-10-26 10:39:00,2024-10-26,10:39:00,Saturday,Tom,Cash,Dine In,Completed,10.0,3.5,6.5
+345,R000345,2024-10-26 10:43:00,2024-10-26,10:43:00,Saturday,Mike,Cash,Dine In,Completed,14.5,5.7,8.8
+346,R000346,2024-10-26 11:03:00,2024-10-26,11:03:00,Saturday,Mike,Card,Dine In,Completed,4.5,1.3,3.2
+347,R000347,2024-10-26 12:29:00,2024-10-26,12:29:00,Saturday,Emma,Cash,Dine In,Completed,17.5,7.4,10.1
+348,R000348,2024-10-26 12:43:00,2024-10-26,12:43:00,Saturday,Sarah,Card,Takeaway,Completed,4.5,1.2,3.3
+349,R000349,2024-10-26 14:43:00,2024-10-26,14:43:00,Saturday,Mike,Card,Dine In,Completed,9.5,2.8,6.7
+350,R000350,2024-10-26 14:53:00,2024-10-26,14:53:00,Saturday,Lisa,Card,Dine In,Completed,34.0,15.5,18.5

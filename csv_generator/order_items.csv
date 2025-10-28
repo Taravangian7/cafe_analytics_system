@@ -1,0 +1,691 @@
+item_id,order_id,product_id,sku,product_name,category,quantity,unit_price,line_total,cost_per_unit,line_cost
+1,1,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+2,1,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+3,2,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+4,2,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+5,3,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+6,4,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+7,4,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+8,5,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+9,5,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+10,5,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+11,5,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+12,6,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+13,6,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+14,7,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+15,8,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+16,8,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+17,9,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+18,9,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+19,10,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+20,10,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+21,11,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+22,11,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+23,12,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+24,12,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+25,13,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+26,13,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+27,13,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+28,13,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+29,14,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+30,14,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+31,14,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+32,15,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+33,16,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+34,16,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+35,17,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+36,17,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+37,18,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+38,18,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+39,18,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+40,19,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+41,20,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+42,20,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+43,20,21,PROD021,Caesar Salad,Food,2,14.0,28.0,6.5,13.0
+44,21,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+45,21,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+46,22,17,PROD017,Avocado Toast,Food,2,12.0,24.0,5.5,11.0
+47,22,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+48,23,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+49,23,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+50,23,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+51,24,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+52,24,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+53,25,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+54,25,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+55,26,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+56,26,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+57,26,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+58,27,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+59,28,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+60,29,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+61,30,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+62,30,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+63,30,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+64,31,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+65,31,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+66,32,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+67,32,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+68,32,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+69,33,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+70,33,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+71,34,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+72,34,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+73,35,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+74,35,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+75,35,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+76,36,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+77,36,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+78,37,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+79,37,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+80,38,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+81,38,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+82,39,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+83,39,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+84,40,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+85,40,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+86,40,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+87,41,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+88,42,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+89,42,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+90,43,15,PROD015,Muffin Choc Chip,Pastries,2,5.0,10.0,1.6,3.2
+91,44,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+92,44,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+93,45,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+94,45,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+95,46,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+96,46,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+97,47,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+98,47,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+99,47,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+100,48,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+101,49,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+102,49,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+103,49,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+104,50,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+105,50,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+106,50,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+107,51,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+108,52,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+109,52,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+110,52,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+111,53,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+112,53,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+113,54,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+114,54,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+115,55,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+116,56,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+117,56,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+118,57,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+119,57,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+120,58,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+121,58,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+122,59,20,PROD020,Vegetarian Wrap,Food,2,9.5,19.0,4.2,8.4
+123,59,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+124,59,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+125,60,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+126,60,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+127,60,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+128,60,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+129,61,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+130,61,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+131,61,22,PROD022,Greek Salad,Food,2,12.5,25.0,5.8,11.6
+132,61,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+133,62,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+134,63,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+135,64,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+136,64,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+137,65,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+138,65,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+139,66,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+140,66,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+141,66,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+142,67,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+143,67,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+144,68,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+145,68,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+146,69,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+147,69,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+148,70,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+149,70,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+150,71,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+151,71,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+152,71,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+153,71,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+154,72,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+155,73,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+156,74,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+157,74,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+158,75,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+159,75,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+160,76,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+161,76,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+162,76,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+163,77,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+164,78,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+165,78,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+166,79,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+167,80,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+168,80,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+169,81,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+170,81,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+171,81,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+172,82,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+173,82,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+174,83,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+175,84,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+176,84,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+177,85,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+178,86,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+179,86,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+180,87,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+181,87,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+182,88,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+183,88,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+184,89,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+185,90,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+186,90,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+187,90,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+188,91,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+189,92,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+190,93,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+191,93,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+192,94,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+193,94,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+194,95,20,PROD020,Vegetarian Wrap,Food,2,9.5,19.0,4.2,8.4
+195,96,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+196,97,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+197,97,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+198,98,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+199,99,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+200,99,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+201,100,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+202,101,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+203,102,10,PROD010,Chai Latte,Hot Drinks,2,4.5,9.0,1.2,2.4
+204,102,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+205,102,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+206,103,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+207,103,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+208,104,3,PROD003,Latte,Coffee,2,4.5,9.0,1.3,2.6
+209,104,13,PROD013,Pain au Chocolat,Pastries,2,5.0,10.0,1.8,3.6
+210,104,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+211,105,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+212,105,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+213,105,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+214,106,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+215,107,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+216,107,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+217,107,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+218,108,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+219,108,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+220,109,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+221,109,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+222,110,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+223,111,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+224,111,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+225,111,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+226,112,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+227,113,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+228,113,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+229,113,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+230,114,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+231,114,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+232,115,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+233,115,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+234,116,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+235,116,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+236,117,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+237,118,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+238,119,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+239,119,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+240,119,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+241,120,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+242,120,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+243,121,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+244,122,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+245,123,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+246,123,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+247,123,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+248,124,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+249,124,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+250,125,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+251,125,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+252,126,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+253,126,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+254,127,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+255,127,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+256,128,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+257,128,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+258,128,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+259,129,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+260,129,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+261,129,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+262,129,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+263,130,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+264,130,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+265,130,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+266,131,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+267,131,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+268,132,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+269,132,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+270,133,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+271,134,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+272,135,24,PROD024,BLT Sandwich,Food,2,10.5,21.0,4.8,9.6
+273,135,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+274,136,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+275,136,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+276,136,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+277,137,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+278,137,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+279,138,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+280,138,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+281,139,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+282,139,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+283,139,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+284,140,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+285,141,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+286,141,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+287,141,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+288,141,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+289,142,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+290,142,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+291,143,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+292,143,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+293,144,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+294,145,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+295,145,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+296,146,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+297,146,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+298,146,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+299,147,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+300,147,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+301,148,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+302,149,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+303,149,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+304,149,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+305,150,16,PROD016,Banana Bread,Food,2,5.5,11.0,2.0,4.0
+306,150,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+307,150,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+308,151,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+309,151,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+310,151,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+311,152,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+312,152,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+313,153,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+314,153,16,PROD016,Banana Bread,Food,2,5.5,11.0,2.0,4.0
+315,154,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+316,154,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+317,155,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+318,155,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+319,156,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+320,157,17,PROD017,Avocado Toast,Food,2,12.0,24.0,5.5,11.0
+321,157,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+322,158,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+323,159,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+324,160,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+325,161,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+326,161,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+327,162,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+328,163,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+329,163,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+330,164,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+331,164,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+332,165,7,PROD007,Iced Latte,Coffee,2,5.5,11.0,1.6,3.2
+333,166,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+334,167,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+335,167,18,PROD018,Bacon & Egg Roll,Food,2,10.0,20.0,4.5,9.0
+336,168,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+337,168,12,PROD012,Almond Croissant,Pastries,2,5.5,11.0,2.0,4.0
+338,169,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+339,169,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+340,170,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+341,170,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+342,171,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+343,171,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+344,172,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+345,172,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+346,173,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+347,174,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+348,174,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+349,175,12,PROD012,Almond Croissant,Pastries,2,5.5,11.0,2.0,4.0
+350,175,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+351,176,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+352,176,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+353,177,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+354,178,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+355,178,22,PROD022,Greek Salad,Food,2,12.5,25.0,5.8,11.6
+356,179,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+357,179,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+358,179,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+359,180,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+360,180,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+361,181,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+362,181,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+363,181,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+364,182,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+365,182,8,PROD008,Iced Coffee,Coffee,2,5.0,10.0,1.4,2.8
+366,183,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+367,184,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+368,184,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+369,185,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+370,185,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+371,185,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+372,185,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+373,186,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+374,186,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+375,187,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+376,187,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+377,188,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+378,189,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+379,189,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+380,189,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+381,190,16,PROD016,Banana Bread,Food,2,5.5,11.0,2.0,4.0
+382,191,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+383,191,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+384,192,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+385,192,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+386,193,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+387,193,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+388,194,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+389,195,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+390,195,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+391,196,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+392,196,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+393,196,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+394,197,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+395,197,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+396,197,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+397,198,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+398,199,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+399,199,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+400,199,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+401,200,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+402,200,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+403,201,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+404,201,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+405,202,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+406,202,2,PROD002,Cappuccino,Coffee,2,4.5,9.0,1.25,2.5
+407,203,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+408,204,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+409,205,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+410,205,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+411,206,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+412,207,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+413,207,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+414,207,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+415,208,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+416,208,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+417,209,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+418,209,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+419,209,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+420,210,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+421,210,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+422,211,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+423,212,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+424,212,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+425,212,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+426,213,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+427,213,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+428,213,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+429,214,10,PROD010,Chai Latte,Hot Drinks,2,4.5,9.0,1.2,2.4
+430,214,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+431,215,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+432,215,7,PROD007,Iced Latte,Coffee,2,5.5,11.0,1.6,3.2
+433,216,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+434,217,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+435,217,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+436,218,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+437,218,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+438,219,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+439,220,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+440,221,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+441,221,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+442,222,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+443,222,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+444,223,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+445,223,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+446,224,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+447,225,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+448,226,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+449,226,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+450,227,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+451,227,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+452,228,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+453,228,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+454,229,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+455,229,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+456,230,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+457,230,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+458,231,24,PROD024,BLT Sandwich,Food,2,10.5,21.0,4.8,9.6
+459,231,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+460,231,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+461,232,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+462,232,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+463,232,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+464,233,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+465,233,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+466,234,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+467,234,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+468,235,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+469,236,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+470,236,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+471,237,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+472,237,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+473,238,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+474,238,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+475,239,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+476,240,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+477,240,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+478,241,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+479,242,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+480,243,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+481,243,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+482,243,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+483,244,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+484,244,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+485,245,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+486,245,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+487,246,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+488,247,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+489,248,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+490,248,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+491,249,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+492,250,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+493,250,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+494,251,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+495,251,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+496,252,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+497,253,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+498,253,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+499,253,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+500,253,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+501,254,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+502,254,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+503,255,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+504,255,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+505,256,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+506,256,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+507,256,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+508,257,2,PROD002,Cappuccino,Coffee,2,4.5,9.0,1.25,2.5
+509,258,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+510,258,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+511,259,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+512,259,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+513,260,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+514,261,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+515,261,9,PROD009,Hot Chocolate,Hot Drinks,2,4.5,9.0,1.3,2.6
+516,262,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+517,262,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+518,263,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+519,263,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+520,264,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+521,265,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+522,265,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+523,265,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+524,265,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+525,266,24,PROD024,BLT Sandwich,Food,2,10.5,21.0,4.8,9.6
+526,266,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+527,267,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+528,267,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+529,268,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+530,268,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+531,269,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+532,269,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+533,270,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+534,271,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+535,271,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+536,271,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+537,271,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+538,272,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+539,272,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+540,272,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+541,273,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+542,273,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+543,274,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+544,274,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+545,274,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+546,275,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+547,276,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+548,276,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+549,277,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+550,277,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+551,278,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+552,278,1,PROD001,Flat White,Coffee,2,4.5,9.0,1.2,2.4
+553,278,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+554,279,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+555,280,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+556,281,16,PROD016,Banana Bread,Food,2,5.5,11.0,2.0,4.0
+557,282,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+558,282,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+559,283,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+560,283,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+561,284,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+562,284,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+563,284,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+564,285,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+565,285,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+566,285,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+567,286,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+568,286,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+569,286,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+570,287,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+571,287,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+572,288,24,PROD024,BLT Sandwich,Food,2,10.5,21.0,4.8,9.6
+573,288,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+574,288,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+575,289,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+576,289,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+577,289,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+578,290,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+579,290,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+580,291,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+581,292,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+582,292,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+583,292,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+584,293,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+585,293,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+586,294,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+587,294,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+588,294,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+589,295,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+590,295,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+591,296,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+592,296,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+593,297,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+594,297,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+595,298,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+596,298,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+597,299,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+598,299,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+599,300,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+600,300,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+601,301,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+602,302,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+603,303,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+604,304,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+605,304,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+606,305,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+607,305,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+608,306,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+609,306,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+610,307,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+611,308,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+612,309,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+613,309,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+614,310,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+615,310,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+616,311,15,PROD015,Muffin Choc Chip,Pastries,1,5.0,5.0,1.6,1.6
+617,311,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+618,311,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+619,312,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+620,312,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+621,313,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+622,314,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+623,314,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+624,315,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+625,316,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+626,316,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+627,317,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+628,317,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+629,318,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+630,318,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+631,319,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+632,320,17,PROD017,Avocado Toast,Food,2,12.0,24.0,5.5,11.0
+633,320,2,PROD002,Cappuccino,Coffee,2,4.5,9.0,1.25,2.5
+634,320,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+635,320,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+636,321,5,PROD005,Espresso,Coffee,2,3.5,7.0,0.9,1.8
+637,322,12,PROD012,Almond Croissant,Pastries,1,5.5,5.5,2.0,2.0
+638,322,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+639,323,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+640,323,22,PROD022,Greek Salad,Food,2,12.5,25.0,5.8,11.6
+641,324,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+642,324,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+643,325,17,PROD017,Avocado Toast,Food,1,12.0,12.0,5.5,5.5
+644,326,6,PROD006,Mocha,Coffee,1,5.0,5.0,1.5,1.5
+645,326,4,PROD004,Long Black,Coffee,1,4.0,4.0,1.1,1.1
+646,327,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+647,328,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+648,328,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+649,328,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+650,329,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+651,329,10,PROD010,Chai Latte,Hot Drinks,1,4.5,4.5,1.2,1.2
+652,329,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+653,329,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+654,330,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+655,330,16,PROD016,Banana Bread,Food,2,5.5,11.0,2.0,4.0
+656,331,16,PROD016,Banana Bread,Food,1,5.5,5.5,2.0,2.0
+657,332,11,PROD011,Croissant,Pastries,1,4.5,4.5,1.5,1.5
+658,332,19,PROD019,Ham & Cheese Toastie,Food,1,8.5,8.5,3.8,3.8
+659,333,2,PROD002,Cappuccino,Coffee,1,4.5,4.5,1.25,1.25
+660,333,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+661,333,7,PROD007,Iced Latte,Coffee,1,5.5,5.5,1.6,1.6
+662,334,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+663,335,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+664,336,11,PROD011,Croissant,Pastries,2,4.5,9.0,1.5,3.0
+665,337,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+666,338,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+667,338,3,PROD003,Latte,Coffee,1,4.5,4.5,1.3,1.3
+668,339,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+669,339,22,PROD022,Greek Salad,Food,1,12.5,12.5,5.8,5.8
+670,340,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+671,340,23,PROD023,Chicken Sandwich,Food,1,11.5,11.5,5.2,5.2
+672,340,24,PROD024,BLT Sandwich,Food,1,10.5,10.5,4.8,4.8
+673,341,8,PROD008,Iced Coffee,Coffee,1,5.0,5.0,1.4,1.4
+674,342,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+675,342,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+676,343,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+677,343,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+678,343,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+679,344,13,PROD013,Pain au Chocolat,Pastries,1,5.0,5.0,1.8,1.8
+680,344,14,PROD014,Muffin Blueberry,Pastries,1,5.0,5.0,1.7,1.7
+681,345,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+682,345,20,PROD020,Vegetarian Wrap,Food,1,9.5,9.5,4.2,4.2
+683,346,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+684,347,21,PROD021,Caesar Salad,Food,1,14.0,14.0,6.5,6.5
+685,347,5,PROD005,Espresso,Coffee,1,3.5,3.5,0.9,0.9
+686,348,1,PROD001,Flat White,Coffee,1,4.5,4.5,1.2,1.2
+687,349,25,PROD025,Orange Juice,Beverages,1,5.0,5.0,1.5,1.5
+688,349,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.3,1.3
+689,350,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,4.5,4.5
+690,350,17,PROD017,Avocado Toast,Food,2,12.0,24.0,5.5,11.0
