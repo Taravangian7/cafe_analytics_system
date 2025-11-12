@@ -1,0 +1,96 @@
+import pyodbc
+import pandas as pd
+from pathlib import Path
+
+
+# Config
+SERVER = 'LAPTOP-MTPJVFI5\SQLEXPRESS'
+DATABASE = 'Cafe_Bar'
+
+# Rutas
+BASE_DIR = Path(__file__).parent
+SCHEMA_SQL = BASE_DIR / 'schema.sql'
+PRODUCTS_CSV = BASE_DIR / 'csv_generator' / 'products.csv'
+
+#Columnas en csv:
+nombre= 'product_name'
+categoria= 'category'
+
+# Conectar a la database
+conn = pyodbc.connect(
+        f'DRIVER={{SQL Server}};SERVER={SERVER};DATABASE={DATABASE};Trusted_Connection=yes;',
+        autocommit=True
+    )
+cursor = conn.cursor() #Es para ejecutar las consultas SQL
+
+cursor.execute("""
+	INSERT INTO dbo.Ingredientes (Nombre, Costo, Cantidad, Unidad, Gluten_free, Dairy_free) VALUES
+	('Café en grano', 12.50, 1, 'kg', 1, 1),
+	('Leche entera', 1.2, 1, 'litro', 1, 0),
+	('Leche descremada', 1.2, 1, 'litro', 1, 0),
+	('Leche de almendras', 2.20, 1, 'litro', 1, 1),
+	('Leche de soja', 2.2, 1, 'litro', 1, 1),
+	('Azúcar blanca', 1, 1, 'kg', 1, 1),
+	('Chocolate en polvo', 8.50, 1, 'kg', 1, 1),
+	('Especias Chai', 22.00, 1, 'kg', 1, 1),
+	('Hielo', 0.50, 1, 'kg', 1, 1),
+	('Vainilla', 45.00, 1, 'litro', 1, 1),
+	('Canela en polvo', 13.00, 1, 'kg', 1, 1);
+    """)
+
+
+
+
+##Ingredientes para pasteles
+cursor.execute("""
+	INSERT INTO dbo.Ingredientes (Nombre, Costo, Cantidad, Unidad, Gluten_free, Dairy_free) VALUES
+	('Harina de trigo', 0.8, 1, 'kg', 0, 1),
+	('Harina sin gluten', 3, 1, 'kg', 1, 1),
+	('Mantequilla', 6, 1, 'kg', 1, 0),
+	('Margarina vegetal', 4, 1, 'kg', 1, 1),
+	('Huevos', 4, 12, 'unidad', 1, 1),
+	('Chocolate amargo', 11, 1, 'kg', 1, 1),
+	('Almendras', 10.00, 1, 'kg', 1, 1),
+	('Arándanos', 9, 1, 'kg', 1, 1),
+	('Plátanos', 1.2, 1, 'kg', 1, 1),
+	('Levadura', 0.4, 1, 'kg', 1, 1),
+	('Sal', 1.20, 5, 'kg', 1, 1),
+	('Aceite vegetal', 3, 1, 'litro', 1, 1);
+    """)
+
+##Ingredientes para comida
+cursor.execute("""
+	INSERT INTO dbo.Ingredientes (Nombre, Costo, Cantidad, Unidad, Gluten_free, Dairy_free) VALUES
+	('Pan de molde', 1.2, 1, 'unidad', 0, 1),
+	('Pan sin gluten', 3.50, 1, 'unidad', 1, 1),
+	('Aguacate', 8.00, 1, 'kg', 1, 1),
+	('Huevos frescos', 4, 12, 'unidad', 1, 1),
+	('Tocino', 12.00, 1, 'kg', 1, 1),
+	('Jamón cocido', 10, 1, 'kg', 1, 1),
+	('Queso cheddar', 9, 1, 'kg', 1, 0),
+	('Queso feta', 12, 1, 'kg', 1, 0),
+	('Lechuga', 2, 1, 'kg', 1, 1),
+	('Tomate', 2, 1, 'kg', 1, 1),
+	('Cebolla', 1, 1, 'kg', 1, 1),
+	('Pechuga de pollo', 7, 1, 'kg', 1, 1),
+	('Aderezo César', 6, 1, 'litro', 1, 0),
+	('Aceitunas', 5, 1, 'kg', 1, 1),
+	('Aceite de oliva', 7.5, 1, 'litro', 1, 1),
+	('Vinagre balsámico', 15.00, 2, 'litro', 1, 1),
+	('Tortilla de harina', 0.5, 1, 'unidad', 0, 1),
+	('Tortilla sin gluten', 1, 1, 'unidad', 1, 1),
+	('Vegetales mixtos', 3, 1, 'kg', 1, 1);
+    """)
+
+##Ingredientes para bebidas
+cursor.execute("""
+	INSERT INTO dbo.Ingredientes (Nombre, Costo, Cantidad, Unidad, Gluten_free, Dairy_free) VALUES
+	('Jugo de naranja', 1.2, 1, 'litro', 1, 1);
+    """)
+
+#commit de la transacción
+conn.commit() 
+
+#cerrar la conexión
+cursor.close()
+conn.close()
