@@ -1,5 +1,2 @@
-lista=[[2,3],[4,'elton']]
-nombres=[nombre[0] for nombre in lista]
-print(nombres)
-if 3 in lista:
-    print('anda')
+precio = input('Ingrese precio del plato(o ENTER para default): ')
+print(type(precio))

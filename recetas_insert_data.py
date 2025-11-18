@@ -2,364 +2,246 @@ import pyodbc
 import pandas as pd
 from pathlib import Path
 
-
-# Config
-SERVER = 'LAPTOP-MTPJVFI5\SQLEXPRESS'
+# -------------------------------
+# CONFIG
+# -------------------------------
+SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
 DATABASE = 'Cafe_Bar'
 
-# Rutas
 BASE_DIR = Path(__file__).parent
-SCHEMA_SQL = BASE_DIR / 'schema.sql'
 PRODUCTS_CSV = BASE_DIR / 'csv_generator' / 'products.csv'
 
-#Columnas en csv:
-nombre= 'product_name'
-categoria= 'category'
-
-# Conectar a la database
+# -------------------------------
+# CONEXIÓN
+# -------------------------------
 conn = pyodbc.connect(
-        f'DRIVER={{SQL Server}};SERVER={SERVER};DATABASE={DATABASE};Trusted_Connection=yes;',
-        autocommit=True
-    )
-cursor = conn.cursor() #Es para ejecutar las consultas SQL
-##Ingredientes para comida
-cursor.execute("""
-IF EXISTS (SELECT 1 FROM dbo.Platos) AND EXISTS (SELECT 1 FROM dbo.Ingredientes) AND NOT EXISTS (SELECT 1 FROM dbo.Receta)
-BEGIN
-	PRINT 'Insertando recetas...';
+    f'DRIVER={{SQL Server}};SERVER={SERVER};DATABASE={DATABASE};Trusted_Connection=yes;',
+    autocommit=False
+)
+cursor = conn.cursor()
 
-	-- Recetas para cafés
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Platos.Nombre = 'Espresso' THEN 0.020  -- 20g de café
-	        WHEN Platos.Nombre = 'Long Black' THEN 0.020
-	        WHEN Platos.Nombre = 'Flat White' THEN 0.020
-	        WHEN Platos.Nombre = 'Cappuccino' THEN 0.020
-	        WHEN Platos.Nombre = 'Latte' THEN 0.020
-	        WHEN Platos.Nombre = 'Iced Latte' THEN 0.020
-	        WHEN Platos.Nombre = 'Iced Coffee' THEN 0.030
-	        WHEN Platos.Nombre = 'Mocha' THEN 0.020
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre IN ('Flat White', 'Cappuccino', 'Latte', 'Espresso', 'Long Black', 'Mocha', 'Iced Latte', 'Iced Coffee')
-	AND Ingredientes.Nombre = 'Café en grano';
+# -------------------------------
+# LEER DATOS BASE
+# -------------------------------
+# Leemos los productos y los ingredientes ya existentes en SQL
+platos = pd.read_sql("SELECT Nombre, Categoria FROM dbo.Platos", conn)
+ingredientes = pd.read_sql("SELECT Nombre, Unidad FROM dbo.Ingredientes", conn)
 
-	-- Leche para cafés con leche
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad,Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Platos.Nombre = 'Flat White' THEN 0.160  -- 160ml de leche
-	        WHEN Platos.Nombre = 'Cappuccino' THEN 0.120  -- 120ml de leche
-	        WHEN Platos.Nombre = 'Latte' THEN 0.180       -- 180ml de leche
-	        WHEN Platos.Nombre = 'Iced Latte' THEN 0.200  -- 200ml (con hielo)
-	        WHEN Platos.Nombre = 'Mocha' THEN 0.150       -- 150ml + chocolate
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre IN ('Flat White', 'Cappuccino', 'Latte', 'Iced Latte', 'Mocha')
-	AND Ingredientes.Nombre = 'Leche entera';
+# -------------------------------
+# DEFINIR RECETAS EN PYTHON
+# -------------------------------
+recetas_data = []
 
-	-- Hielo para bebidas frías
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 0.150 ,Ingredientes.Unidad -- 150g de hielo
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre IN ('Iced Latte', 'Iced Coffee')
-	AND Ingredientes.Nombre = 'Hielo';
+def add_receta(plato, ingrediente, cantidad):
+    """Agrega una fila de receta si la cantidad no es None"""
+    if cantidad is not None:
+        unidad = ingredientes.loc[ingredientes["Nombre"] == ingrediente, "Unidad"].values
+        if len(unidad) > 0:
+            recetas_data.append({
+                "Plato": plato,
+                "Ingrediente": ingrediente,
+                "Cantidad": cantidad,
+                "Unidad": unidad[0]
+            })
 
-	-- Chocolate para Mocha
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 0.015,Ingredientes.Unidad  -- 15g de chocolate en polvo
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Mocha'
-	AND Ingredientes.Nombre = 'Chocolate en polvo';
+# Ejemplo: cafés
+for plato in ['Espresso', 'Long Black', 'Flat White', 'Cappuccino', 'Latte', 'Iced Latte', 'Iced Coffee', 'Mocha']:
+    add_receta(plato, 'Café en grano', 0.030 if plato == 'Iced Coffee' else 0.020)
 
-	-- Hot Chocolate
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Leche entera' THEN 0.250
-	        WHEN Ingredientes.Nombre = 'Chocolate en polvo' THEN 0.025
-	        WHEN Ingredientes.Nombre = 'Azúcar blanca' THEN 0.010
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Hot Chocolate'
-	AND Ingredientes.Nombre IN ('Leche entera', 'Chocolate en polvo', 'Azúcar blanca');
+# Leche
+leches = {
+    'Flat White': 0.160,
+    'Cappuccino': 0.120,
+    'Latte': 0.180,
+    'Iced Latte': 0.200,
+    'Mocha': 0.150
+}
+for plato, cant in leches.items():
+    add_receta(plato, 'Leche entera', cant)
 
-	-- Chai Latte
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Leche entera' THEN 0.200
-	        WHEN Ingredientes.Nombre = 'Especias Chai' THEN 0.005
-	        WHEN Ingredientes.Nombre = 'Azúcar blanca' THEN 0.010
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Chai Latte'
-	AND Ingredientes.Nombre IN ('Leche entera', 'Especias Chai', 'Azúcar blanca');
+# Hielo
+for plato in ['Iced Latte', 'Iced Coffee']:
+    add_receta(plato, 'Hielo', 0.150)
 
-	-- Croissant
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Harina de trigo' THEN 0.100
-	        WHEN Ingredientes.Nombre = 'Mantequilla' THEN 0.060
-	        WHEN Ingredientes.Nombre = 'Huevos' THEN 0.5  -- medio huevo
-	        WHEN Ingredientes.Nombre = 'Azúcar blanca' THEN 0.010
-	        WHEN Ingredientes.Nombre = 'Sal' THEN 0.003
-	        WHEN Ingredientes.Nombre = 'Levadura' THEN 0.008
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Croissant'
-	AND Ingredientes.Nombre IN ('Harina de trigo', 'Mantequilla', 'Huevos', 'Azúcar blanca', 'Sal', 'Levadura');
+# Chocolate para Mocha
+add_receta('Mocha', 'Chocolate en polvo', 0.015)
 
-	-- Almond Croissant
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Harina de trigo' THEN 0.100
-	        WHEN Ingredientes.Nombre = 'Mantequilla' THEN 0.060
-	        WHEN Ingredientes.Nombre = 'Huevos' THEN 0.5
-	        WHEN Ingredientes.Nombre = 'Azúcar blanca' THEN 0.010
-	        WHEN Ingredientes.Nombre = 'Sal' THEN 0.003
-	        WHEN Ingredientes.Nombre = 'Levadura' THEN 0.008
-	        WHEN Ingredientes.Nombre = 'Almendras' THEN 0.030
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Almond Croissant'
-	AND Ingredientes.Nombre IN ('Harina de trigo', 'Mantequilla', 'Huevos', 'Azúcar blanca', 'Sal', 'Levadura', 'Almendras');
+# Hot Chocolate
+for ingr, cant in {'Leche entera': 0.250, 'Chocolate en polvo': 0.025, 'Azúcar blanca': 0.010}.items():
+    add_receta('Hot Chocolate', ingr, cant)
 
-	-- Pain au Chocolat
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Harina de trigo' THEN 0.100
-	        WHEN Ingredientes.Nombre = 'Mantequilla' THEN 0.060
-	        WHEN Ingredientes.Nombre = 'Huevos' THEN 0.5
-	        WHEN Ingredientes.Nombre = 'Azúcar blanca' THEN 0.010
-	        WHEN Ingredientes.Nombre = 'Sal' THEN 0.003
-	        WHEN Ingredientes.Nombre = 'Levadura' THEN 0.008
-	        WHEN Ingredientes.Nombre = 'Chocolate amargo' THEN 0.040
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Pain au Chocolat'
-	AND Ingredientes.Nombre IN ('Harina de trigo', 'Mantequilla', 'Huevos', 'Azúcar blanca', 'Sal', 'Levadura', 'Chocolate amargo');
+# Chai Latte
+for ingr, cant in {'Leche entera': 0.200, 'Especias Chai': 0.005, 'Azúcar blanca': 0.010}.items():
+    add_receta('Chai Latte', ingr, cant)
 
-	-- Muffin Blueberry
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Harina de trigo' THEN 0.120
-	        WHEN Ingredientes.Nombre = 'Azúcar blanca' THEN 0.060
-	        WHEN Ingredientes.Nombre = 'Aceite vegetal' THEN 0.040
-	        WHEN Ingredientes.Nombre = 'Huevos' THEN 1.0
-	        WHEN Ingredientes.Nombre = 'Arándanos' THEN 0.080
-	        WHEN Ingredientes.Nombre = 'Sal' THEN 0.003
-	        WHEN Ingredientes.Nombre = 'Levadura' THEN 0.008
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Muffin Blueberry'
-	AND Ingredientes.Nombre IN ('Harina de trigo', 'Azúcar blanca', 'Aceite vegetal', 'Huevos', 'Arándanos', 'Sal', 'Levadura');
+# Croissant
+for ingr, cant in {
+    'Harina de trigo': 0.100, 'Mantequilla': 0.060, 'Huevos': 0.5,
+    'Azúcar blanca': 0.010, 'Sal': 0.003, 'Levadura': 0.008
+}.items():
+    add_receta('Croissant', ingr, cant)
 
-	-- Muffin Choc Chip
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Harina de trigo' THEN 0.120
-	        WHEN Ingredientes.Nombre = 'Azúcar blanca' THEN 0.060
-	        WHEN Ingredientes.Nombre = 'Aceite vegetal' THEN 0.040
-	        WHEN Ingredientes.Nombre = 'Huevos' THEN 1.0
-	        WHEN Ingredientes.Nombre = 'Chocolate amargo' THEN 0.050
-	        WHEN Ingredientes.Nombre = 'Sal' THEN 0.003
-	        WHEN Ingredientes.Nombre = 'Levadura' THEN 0.008
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Muffin Choc Chip'
-	AND Ingredientes.Nombre IN ('Harina de trigo', 'Azúcar blanca', 'Aceite vegetal', 'Huevos', 'Chocolate amargo', 'Sal', 'Levadura');
+# Almond Croissant
+for ingr, cant in {
+    'Harina de trigo': 0.100,
+    'Mantequilla': 0.060,
+    'Huevos': 0.5,
+    'Azúcar blanca': 0.010,
+    'Sal': 0.003,
+    'Levadura': 0.008,
+    'Almendras': 0.030
+}.items():
+    add_receta('Almond Croissant', ingr, cant)
 
-	-- Banana Bread
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Harina de trigo' THEN 0.150
-	        WHEN Ingredientes.Nombre = 'Plátanos' THEN 0.200
-	        WHEN Ingredientes.Nombre = 'Azúcar blanca' THEN 0.080
-	        WHEN Ingredientes.Nombre = 'Aceite vegetal' THEN 0.060
-	        WHEN Ingredientes.Nombre = 'Huevos' THEN 2.0
-	        WHEN Ingredientes.Nombre = 'Sal' THEN 0.005
-	        WHEN Ingredientes.Nombre = 'Levadura' THEN 0.010
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Banana Bread'
-	AND Ingredientes.Nombre IN ('Harina de trigo', 'Plátanos', 'Azúcar blanca', 'Aceite vegetal', 'Huevos', 'Sal', 'Levadura');
+# Pain au Chocolat
+for ingr, cant in {
+    'Harina de trigo': 0.100,
+    'Mantequilla': 0.060,
+    'Huevos': 0.5,
+    'Azúcar blanca': 0.010,
+    'Sal': 0.003,
+    'Levadura': 0.008,
+    'Chocolate amargo': 0.040
+}.items():
+    add_receta('Pain au Chocolat', ingr, cant)
 
-	-- Avocado Toast
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Pan de molde' THEN 2.0
-	        WHEN Ingredientes.Nombre = 'Aguacate' THEN 0.150
-	        WHEN Ingredientes.Nombre = 'Aceite de oliva' THEN 0.010
-	        WHEN Ingredientes.Nombre = 'Sal' THEN 0.002
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Avocado Toast'
-	AND Ingredientes.Nombre IN ('Pan de molde', 'Aguacate', 'Aceite de oliva', 'Sal');
+# Muffin Blueberry
+for ingr, cant in {
+    'Harina de trigo': 0.120,
+    'Azúcar blanca': 0.060,
+    'Aceite vegetal': 0.040,
+    'Huevos': 1.0,
+    'Arándanos': 0.080,
+    'Sal': 0.003,
+    'Levadura': 0.008
+}.items():
+    add_receta('Muffin Blueberry', ingr, cant)
 
-	-- Bacon & Egg Roll
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Pan de molde' THEN 1.0
-	        WHEN Ingredientes.Nombre = 'Huevos frescos' THEN 2.0
-	        WHEN Ingredientes.Nombre = 'Tocino' THEN 0.080
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Bacon & Egg Roll'
-	AND Ingredientes.Nombre IN ('Pan de molde', 'Huevos frescos', 'Tocino');
+# Muffin Choc Chip
+for ingr, cant in {
+    'Harina de trigo': 0.120,
+    'Azúcar blanca': 0.060,
+    'Aceite vegetal': 0.040,
+    'Huevos': 1.0,
+    'Chocolate amargo': 0.050,
+    'Sal': 0.003,
+    'Levadura': 0.008
+}.items():
+    add_receta('Muffin Choc Chip', ingr, cant)
 
-	-- Ham & Cheese Toastie
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Pan de molde' THEN 2.0
-	        WHEN Ingredientes.Nombre = 'Jamón cocido' THEN 0.100
-	        WHEN Ingredientes.Nombre = 'Queso cheddar' THEN 0.080
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Ham & Cheese Toastie'
-	AND Ingredientes.Nombre IN ('Pan de molde', 'Jamón cocido', 'Queso cheddar');
+# Banana Bread
+for ingr, cant in {
+    'Harina de trigo': 0.150,
+    'Plátanos': 0.200,
+    'Azúcar blanca': 0.080,
+    'Aceite vegetal': 0.060,
+    'Huevos': 2.0,
+    'Sal': 0.005,
+    'Levadura': 0.010
+}.items():
+    add_receta('Banana Bread', ingr, cant)
 
-	-- Vegetarian Wrap
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Tortilla de harina' THEN 1.0
-	        WHEN Ingredientes.Nombre = 'Vegetales mixtos' THEN 0.150
-	        WHEN Ingredientes.Nombre = 'Lechuga' THEN 0.050
-	        WHEN Ingredientes.Nombre = 'Tomate' THEN 0.060
-	        WHEN Ingredientes.Nombre = 'Aceite de oliva' THEN 0.010
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Vegetarian Wrap'
-	AND Ingredientes.Nombre IN ('Tortilla de harina', 'Vegetales mixtos', 'Lechuga', 'Tomate', 'Aceite de oliva');
+# Avocado Toast
+for ingr, cant in {
+    'Pan de molde': 2.0,
+    'Aguacate': 0.150,
+    'Aceite de oliva': 0.010,
+    'Sal': 0.002
+}.items():
+    add_receta('Avocado Toast', ingr, cant)
 
-	-- Caesar Salad
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Lechuga' THEN 0.150
-	        WHEN Ingredientes.Nombre = 'Aderezo César' THEN 0.030
-	        WHEN Ingredientes.Nombre = 'Queso cheddar' THEN 0.040
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Caesar Salad'
-	AND Ingredientes.Nombre IN ('Lechuga', 'Aderezo César', 'Queso cheddar');
+# Bacon & Egg Roll
+for ingr, cant in {
+    'Pan de molde': 1.0,
+    'Huevos frescos': 2.0,
+    'Tocino': 0.080
+}.items():
+    add_receta('Bacon & Egg Roll', ingr, cant)
 
-	-- Greek Salad
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Lechuga' THEN 0.100
-	        WHEN Ingredientes.Nombre = 'Tomate' THEN 0.150
-	        WHEN Ingredientes.Nombre = 'Cebolla' THEN 0.050
-	        WHEN Ingredientes.Nombre = 'Aceitunas' THEN 0.040
-	        WHEN Ingredientes.Nombre = 'Queso feta' THEN 0.080
-	        WHEN Ingredientes.Nombre = 'Aceite de oliva' THEN 0.020
-	        WHEN Ingredientes.Nombre = 'Vinagre balsámico' THEN 0.010
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Greek Salad'
-	AND Ingredientes.Nombre IN ('Lechuga', 'Tomate', 'Cebolla', 'Aceitunas', 'Queso feta', 'Aceite de oliva', 'Vinagre balsámico');
+# Ham & Cheese Toastie
+for ingr, cant in {
+    'Pan de molde': 2.0,
+    'Jamón cocido': 0.100,
+    'Queso cheddar': 0.080
+}.items():
+    add_receta('Ham & Cheese Toastie', ingr, cant)
 
-	-- Chicken Sandwich
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Pan de molde' THEN 2.0
-	        WHEN Ingredientes.Nombre = 'Pechuga de pollo' THEN 0.150
-	        WHEN Ingredientes.Nombre = 'Lechuga' THEN 0.040
-	        WHEN Ingredientes.Nombre = 'Tomate' THEN 0.050
-	        WHEN Ingredientes.Nombre = 'Aceite de oliva' THEN 0.010
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Chicken Sandwich'
-	AND Ingredientes.Nombre IN ('Pan de molde', 'Pechuga de pollo', 'Lechuga', 'Tomate', 'Aceite de oliva');
+# Vegetarian Wrap
+for ingr, cant in {
+    'Tortilla de harina': 1.0,
+    'Vegetales mixtos': 0.150,
+    'Lechuga': 0.050,
+    'Tomate': 0.060,
+    'Aceite de oliva': 0.010
+}.items():
+    add_receta('Vegetarian Wrap', ingr, cant)
 
-	-- BLT Sandwich
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 
-	    CASE 
-	        WHEN Ingredientes.Nombre = 'Pan de molde' THEN 2.0
-	        WHEN Ingredientes.Nombre = 'Tocino' THEN 0.100
-	        WHEN Ingredientes.Nombre = 'Lechuga' THEN 0.050
-	        WHEN Ingredientes.Nombre = 'Tomate' THEN 0.080
-	    END
-        ,Ingredientes.Unidad
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'BLT Sandwich'
-	AND Ingredientes.Nombre IN ('Pan de molde', 'Tocino', 'Lechuga', 'Tomate');
+# Caesar Salad
+for ingr, cant in {
+    'Lechuga': 0.150,
+    'Aderezo César': 0.030,
+    'Queso cheddar': 0.040
+}.items():
+    add_receta('Caesar Salad', ingr, cant)
 
-	-- Orange Juice
-	INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad,Unidad)
-	SELECT Platos.Nombre, Ingredientes.Nombre, 0.250,Ingredientes.Unidad  -- 250ml de jugo
-	FROM dbo.Platos
-	CROSS JOIN dbo.Ingredientes
-	WHERE Platos.Nombre = 'Orange Juice'
-	AND Ingredientes.Nombre = 'Jugo de naranja';
+# Greek Salad
+for ingr, cant in {
+    'Lechuga': 0.100,
+    'Tomate': 0.150,
+    'Cebolla': 0.050,
+    'Aceitunas': 0.040,
+    'Queso feta': 0.080,
+    'Aceite de oliva': 0.020,
+    'Vinagre balsámico': 0.010
+}.items():
+    add_receta('Greek Salad', ingr, cant)
 
-	PRINT 'Recetas insertadas correctamente.';
-END
-ELSE
-BEGIN
-	IF NOT EXISTS (SELECT 1 FROM dbo.Platos)
-		PRINT 'Recetas no insertadas: faltan Platos (cargar desde products.csv primero).';
-	ELSE IF NOT EXISTS (SELECT 1 FROM dbo.Ingredientes)
-		PRINT 'Recetas no insertadas: faltan Ingredientes.';
-	ELSE
-		PRINT 'Recetas ya existen. Omitiendo inserción.';
-END
-""")
+# Chicken Sandwich
+for ingr, cant in {
+    'Pan de molde': 2.0,
+    'Pechuga de pollo': 0.150,
+    'Lechuga': 0.040,
+    'Tomate': 0.050,
+    'Aceite de oliva': 0.010
+}.items():
+    add_receta('Chicken Sandwich', ingr, cant)
 
-#commit de la transacción
-conn.commit() 
+# BLT Sandwich
+for ingr, cant in {
+    'Pan de molde': 2.0,
+    'Tocino': 0.100,
+    'Lechuga': 0.050,
+    'Tomate': 0.080
+}.items():
+    add_receta('BLT Sandwich', ingr, cant)
 
-#cerrar la conexión
+# Orange Juice
+add_receta('Orange Juice', 'Jugo de naranja', 0.250)
+
+# -------------------------------
+# CREAR DATAFRAME FINAL
+# -------------------------------
+df_recetas = pd.DataFrame(recetas_data)
+print(df_recetas.head())
+print(f"→ Total recetas: {len(df_recetas)} filas")
+
+# -------------------------------
+# CARGAR TODO EL DATAFRAME A SQL
+# -------------------------------
+values = ", ".join(
+    f"('{row['Plato']}', '{row['Ingrediente']}', {row['Cantidad']}, '{row['Unidad']}')"
+    for _, row in df_recetas.iterrows()
+)
+
+sql = f"""
+INSERT INTO dbo.Receta (Plato, Ingrediente, Cantidad, Unidad)
+VALUES {values};
+"""
+
+cursor.execute(sql)
+conn.commit()
+
+print("✓ Recetas insertadas correctamente en bloque.")
+
 cursor.close()
 conn.close()

@@ -26,8 +26,8 @@ create table Receta (
 	Ingrediente nvarchar (50) not null,
 	Cantidad decimal (12,4) not null constraint CK_Receta_Cantidad check (Cantidad>=0),
 	Unidad nvarchar (50) not null,
-	CONSTRAINT FK_Receta_Plato FOREIGN KEY (Plato) REFERENCES dbo.Platos(Nombre) ON DELETE CASCADE,
-	CONSTRAINT FK_Receta_Ingrediente FOREIGN KEY (Ingrediente) REFERENCES dbo.Ingredientes(Nombre));
+	CONSTRAINT FK_Receta_Plato FOREIGN KEY (Plato) REFERENCES dbo.Platos(Nombre) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT FK_Receta_Ingrediente FOREIGN KEY (Ingrediente) REFERENCES dbo.Ingredientes(Nombre) ON DELETE CASCADE ON UPDATE CASCADE);
 
 -- Aseguramos que no haya duplicados Plato-Ingrediente sin imponer PK expl�cita
 CREATE UNIQUE INDEX UX_Recetas_Plato_Ingrediente ON dbo.Receta(Plato, Ingrediente);
@@ -91,7 +91,7 @@ GO
 Alter table Platos
 add
 	Costo as (dbo.fn_precio_plato([Nombre])),
-	Precio as (dbo.fn_precio_plato([Nombre])*3),
+	Precio decimal(12,4),
 	Dairy_free as (dbo.fn_PlatoDairyFree([Nombre])),
 	Gluten_free as (dbo.fn_PlatoGlutenFree([Nombre]));
 GO 
@@ -113,8 +113,8 @@ Product_name nvarchar(50),
 Quantity decimal(12,4),
 Unit_price decimal(12,4),
 Total_price as Quantity*Unit_price,
-CONSTRAINT FK_Order_items_Orderid FOREIGN KEY (Order_id) REFERENCES dbo.Orders(Order_id),
-CONSTRAINT FK_Order_items_Product_name FOREIGN KEY (Product_name) REFERENCES dbo.Platos(Nombre)
+CONSTRAINT FK_Order_items_Orderid FOREIGN KEY (Order_id) REFERENCES dbo.Orders(Order_id) ON DELETE CASCADE ON UPDATE CASCADE,
+CONSTRAINT FK_Order_items_Product_name FOREIGN KEY (Product_name) REFERENCES dbo.Platos(Nombre) ON DELETE CASCADE ON UPDATE CASCADE
 );	
 GO
 Create trigger trg_UpdateUnitPrice
@@ -158,3 +158,16 @@ BEGIN
     );
 END;
 
+GO
+CREATE TRIGGER trg_insert_price
+ON Receta
+AFTER INSERT, UPDATE
+AS
+BEGIN
+	SET NOCOUNT ON;
+    UPDATE Platos
+    SET Precio = 3*dbo.fn_precio_plato(Nombre)
+    FROM Platos
+    WHERE Precio is null
+      AND Nombre IN (SELECT Plato FROM inserted);
+END;
