@@ -42,38 +42,41 @@ def agregar_nuevo_ingrediente(conn, nombre, costo, cantidad, unidad, gluten_free
     Inserta un ingrediente en SQL.
     Recibe datos validados desde Streamlit, pero aplica validaciones mínimas de seguridad.
     """
+    try:
+        # Validaciones de tipo
+        nombre = validar_valor(nombre, str, "nombre")
+        unidad = validar_valor(unidad, str, "unidad")
+        costo = validar_valor(costo, float, "costo")
+        cantidad = validar_valor(cantidad, float, "cantidad")
 
-    # Validaciones de tipo
-    nombre = validar_valor(nombre, str, "nombre")
-    unidad = validar_valor(unidad, str, "unidad")
-    costo = validar_valor(costo, float, "costo")
-    cantidad = validar_valor(cantidad, float, "cantidad")
+        # Validaciones adicionales
+        if costo < 0:
+            raise ValueError("El costo no puede ser negativo")
 
-    # Validaciones adicionales
-    if costo < 0:
-        raise ValueError("El costo no puede ser negativo")
+        if cantidad < 0:
+            raise ValueError("La cantidad no puede ser negativa")
 
-    if cantidad < 0:
-        raise ValueError("La cantidad no puede ser negativa")
+        if gluten_free not in [0, 1, True, False]:
+            raise ValueError("gluten_free debe ser True/False")
 
-    if gluten_free not in [0, 1, True, False]:
-        raise ValueError("gluten_free debe ser True/False")
+        if dairy_free not in [0, 1, True, False]:
+            raise ValueError("dairy_free debe ser True/False")
 
-    if dairy_free not in [0, 1, True, False]:
-        raise ValueError("dairy_free debe ser True/False")
+        gluten_free = int(bool(gluten_free))
+        dairy_free = int(bool(dairy_free))
+        cursor=conn.cursor()
 
-    gluten_free = int(bool(gluten_free))
-    dairy_free = int(bool(dairy_free))
-    cursor=conn.cursor()
+        cursor.execute("""
+            INSERT INTO dbo.Ingredientes (Nombre, Costo, Cantidad, Unidad, Gluten_free, Dairy_free)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (nombre, costo, cantidad, unidad, gluten_free, dairy_free))
+        conn.commit()
+        message='Ingrediente agregado correctamente'
 
-    cursor.execute("""
-        INSERT INTO dbo.Ingredientes (Nombre, Costo, Cantidad, Unidad, Gluten_free, Dairy_free)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (nombre, costo, cantidad, unidad, gluten_free, dairy_free))
-    conn.commit()
-    message='Ingrediente agregado correctamente'
-
-    return True, message, nombre, unidad
+        return True, message, nombre, unidad
+    except:
+        message='Error al intentar crear ingrediente'
+        return False,message,'error','error'
 
 
 def agregar_nuevo_plato(conn, nombre, categoria, precio, lista_ingredientes):
@@ -85,83 +88,78 @@ def agregar_nuevo_plato(conn, nombre, categoria, precio, lista_ingredientes):
     ]
     Las unidades se obtienen automáticamente desde la tabla Ingredientes.
     """
+    try:
+        cursor = conn.cursor()
 
-    cursor = conn.cursor()
+        # Validar duplicado
+        cursor.execute("SELECT LOWER(Nombre) FROM Platos")
+        existentes = [row[0] for row in cursor]
+        if nombre.lower() in existentes:
+            return False, "El plato ya existe"
 
-    # Validar duplicado
-    cursor.execute("SELECT LOWER(Nombre) FROM Platos")
-    existentes = [row[0] for row in cursor]
-    if nombre.lower() in existentes:
-        return False, "El plato ya existe"
+        # Insertar plato
+        if precio == "standard":
+            cursor.execute("""
+                INSERT INTO Platos (Nombre, Categoria)
+                VALUES (?, ?)
+            """, (nombre, categoria))
+        else:
+            cursor.execute("""
+                INSERT INTO Platos (Nombre, Categoria, Precio)
+                VALUES (?, ?, ?)
+            """, (nombre, categoria, float(precio)))
 
-    # Insertar plato
-    if precio == "standard":
-        cursor.execute("""
-            INSERT INTO Platos (Nombre, Categoria)
-            VALUES (?, ?)
-        """, (nombre, categoria))
-    else:
-        cursor.execute("""
-            INSERT INTO Platos (Nombre, Categoria, Precio)
-            VALUES (?, ?, ?)
-        """, (nombre, categoria, float(precio)))
+        conn.commit()
 
-    conn.commit()
+        # ----- Insertar Receta -----
 
-    # ----- Insertar ingredientes -----
+        # Cargar ingredientes existentes con unidades
+        cursor.execute("SELECT Nombre, Unidad FROM Ingredientes")
+        unidad_por_ing = {row[0].lower(): row[1] for row in cursor}
 
-    # Cargar ingredientes existentes con unidades
-    cursor.execute("SELECT Nombre, Unidad FROM Ingredientes")
-    unidad_por_ing = {row[0].lower(): row[1] for row in cursor}
+        receta_rows = []
 
-    receta_rows = []
+        for ing in lista_ingredientes:
+            nombre_ing = ing["nombre"]
+            cantidad = float(ing["cantidad"])
 
-    for ing in lista_ingredientes:
-        nombre_ing = ing["nombre"]
-        cantidad = float(ing["cantidad"])
+            # Obtener unidad según la BD
+            unidad = unidad_por_ing[nombre_ing.lower()]
 
-        # Obtener unidad según la BD
-        unidad = unidad_por_ing[nombre_ing.lower()]
+            receta_rows.append((nombre, nombre_ing, cantidad, unidad))
 
-        receta_rows.append((nombre, nombre_ing, cantidad, unidad))
+        cursor.executemany("""
+            INSERT INTO Receta (Plato, Ingrediente, Cantidad, Unidad)
+            VALUES (?, ?, ?, ?)
+        """, receta_rows)
 
-    cursor.executemany("""
-        INSERT INTO Receta (Plato, Ingrediente, Cantidad, Unidad)
-        VALUES (?, ?, ?, ?)
-    """, receta_rows)
+        conn.commit()
 
-    conn.commit()
+        return True, f"Plato '{nombre}' creado correctamente."
+    except:
+        return False, 'Error al intentar crear plato'
 
-    return True, f"Plato '{nombre}' creado correctamente."
-
-def borrar_plato(Nombre,cursor):
+def borrar_plato(conn,Nombre):
+    cursor=conn.cursor()
     cursor.execute(f"DELETE FROM Platos WHERE Nombre='{Nombre}'")
     conn.commit()
     return Nombre
 
-def modificar_plato(Nombre,cursor):
-    cambiar_nombre= input('Desea cambiar el nombre (SI/NO)?: ')
-    if cambiar_nombre=='SI':
-        nuevo_nombre=input('Ingrese nuevo nombre: ')
-        cursor.execute(f"UPDATE Platos Set Nombre='{nuevo_nombre}' where Nombre='{Nombre}'")
+def modificar_plato(conn,Nombre,nuevo_nombre,precio,categoria):
+    try:
+        cursor=conn.cursor()
+        cambiar_nombre= validar_valor(nuevo_nombre,str,'nombre')
+        cambiar_precio= validar_valor(precio,float,'precio')
+        cambiar_categoria= validar_valor(categoria,str,'categoría')
+        cursor.execute("""
+            UPDATE Platos
+            SET Nombre = ?, Precio = ?, Categoria = ?
+            WHERE Nombre = ?
+        """, (cambiar_nombre, cambiar_precio, cambiar_categoria, Nombre))
         conn.commit()
-        Nombre=nuevo_nombre
-    cambiar_precio=input('Desea cambiar el precio (SI/NO)?: ')
-    if cambiar_precio=='SI':
-        while True:
-            precio=input('ingrese nuevo precio: ')
-            try:
-                precio=float(precio)
-                break
-            except:
-                print('ingrese valor válido')
-        cursor.execute(f"UPDATE Platos Set Precio='{precio}' where Nombre='{Nombre}'")
-        conn.commit()
-    cambiar_categoria=input('Desea cambiar la categoría (SI/NO)?: ')
-    if cambiar_categoria=='SI':
-        categoria=input('Ingrese nueva categoría: ')
-        cursor.execute(f"UPDATE Platos Set Categoria='{categoria}' where Nombre='{Nombre}'")
-        conn.commit()
+        return True,'Cambio realizado correctamente'
+    except:
+        return False, 'Error al modificar'
 
 def modifcar_cantidad(ing,plato,unidad,cursor):
     while True:
