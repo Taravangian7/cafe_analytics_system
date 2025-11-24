@@ -114,24 +114,25 @@ def agregar_nuevo_plato(conn, nombre, categoria, precio, lista_ingredientes):
         # ----- Insertar Receta -----
 
         # Cargar ingredientes existentes con unidades
-        cursor.execute("SELECT Nombre, Unidad FROM Ingredientes")
-        unidad_por_ing = {row[0].lower(): row[1] for row in cursor}
+        if lista_ingredientes:
+            cursor.execute("SELECT Nombre, Unidad FROM Ingredientes")
+            unidad_por_ing = {row[0].lower(): row[1] for row in cursor}
 
-        receta_rows = []
+            receta_rows = []
 
-        for ing in lista_ingredientes:
-            nombre_ing = ing["nombre"]
-            cantidad = float(ing["cantidad"])
+            for ing in lista_ingredientes:
+                nombre_ing = ing["nombre"]
+                cantidad = float(ing["cantidad"])
 
-            # Obtener unidad según la BD
-            unidad = unidad_por_ing[nombre_ing.lower()]
+                # Obtener unidad según la BD
+                unidad = unidad_por_ing[nombre_ing.lower()]
 
-            receta_rows.append((nombre, nombre_ing, cantidad, unidad))
+                receta_rows.append((nombre, nombre_ing, cantidad, unidad))
 
-        cursor.executemany("""
-            INSERT INTO Receta (Plato, Ingrediente, Cantidad, Unidad)
-            VALUES (?, ?, ?, ?)
-        """, receta_rows)
+            cursor.executemany("""
+                INSERT INTO Receta (Plato, Ingrediente, Cantidad, Unidad)
+                VALUES (?, ?, ?, ?)
+            """, receta_rows)
 
         conn.commit()
 
@@ -140,12 +141,15 @@ def agregar_nuevo_plato(conn, nombre, categoria, precio, lista_ingredientes):
         return False, 'Error al intentar crear plato'
 
 def borrar_plato(conn,Nombre):
-    cursor=conn.cursor()
-    cursor.execute(f"DELETE FROM Platos WHERE Nombre='{Nombre}'")
-    conn.commit()
-    return Nombre
+    try:
+        cursor=conn.cursor()
+        cursor.execute(f"DELETE FROM Platos WHERE Nombre='{Nombre}'")
+        conn.commit()
+        return True, 'Plato eliminado'
+    except:
+        return False,'Error al eliminar'
 
-def modificar_plato(conn,Nombre,nuevo_nombre,precio,categoria):
+def modificar_plato(conn,Nombre,nuevo_nombre,precio,categoria,cambios_receta):
     try:
         cursor=conn.cursor()
         cambiar_nombre= validar_valor(nuevo_nombre,str,'nombre')
@@ -156,7 +160,16 @@ def modificar_plato(conn,Nombre,nuevo_nombre,precio,categoria):
             SET Nombre = ?, Precio = ?, Categoria = ?
             WHERE Nombre = ?
         """, (cambiar_nombre, cambiar_precio, cambiar_categoria, Nombre))
-        conn.commit()
+        cursor.close()
+        
+        if cambios_receta:
+            for ing in cambios_receta:
+                cursor=conn.cursor()
+                if cambios_receta[ing]==0:
+                    cursor.execute(f"DELETE FROM Receta WHERE Ingrediente='{ing}' and Plato='{nuevo_nombre}'")
+                else:
+                    cursor.execute(f"UPDATE Receta Set Cantidad='{cambios_receta[ing]}' WHERE Ingrediente='{ing}' and Plato='{nuevo_nombre}'")
+                conn.commit()
         return True,'Cambio realizado correctamente'
     except:
         return False, 'Error al modificar'

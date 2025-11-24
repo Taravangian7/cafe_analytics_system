@@ -53,9 +53,7 @@ create function dbo.fn_PlatoGlutenFree (@plato_nombre nvarchar(50))
 returns bit
 as
 begin
-	-- FALSE si al menos 1 ingrediente NO es gluten-free; TRUE solo si todos lo son; NULL si no hay ingredientes
-	declare @hasRows BIT = 0;
-	IF EXISTS (SELECT 1 FROM Receta WHERE Plato = @plato_nombre) SET @hasRows = 1;
+	-- FALSE si al menos 1 ingrediente NO es gluten-free;
 	IF EXISTS (
 		SELECT 1
 		FROM Receta
@@ -63,8 +61,7 @@ begin
 		WHERE Receta.Plato = @plato_nombre AND Ingredientes.Gluten_free = 0
 	)
 		RETURN CAST(0 AS BIT);
-	IF @hasRows = 1 RETURN CAST(1 AS BIT);
-	RETURN NULL; -- no ingredientes definidos
+	RETURN CAST(1 AS BIT);
 END;
 
 GO
@@ -72,9 +69,7 @@ create function dbo.fn_PlatoDairyFree (@plato_nombre nvarchar(50))
 returns bit
 as
 begin
-	-- FALSE si al menos 1 ingrediente NO es dairy-free; TRUE solo si todos lo son; NULL si no hay ingredientes
-	declare @hasRows BIT = 0;
-	IF EXISTS (SELECT 1 FROM Receta WHERE Plato = @plato_nombre) SET @hasRows = 1;
+	-- FALSE si al menos 1 ingrediente NO es dairy-free
 	IF EXISTS (
 		SELECT 1
 		FROM Receta
@@ -82,8 +77,7 @@ begin
 		WHERE Receta.Plato = @plato_nombre AND Ingredientes.Dairy_free = 0
 	)
 		RETURN CAST(0 AS BIT);
-	IF @hasRows = 1 RETURN CAST(1 AS BIT);
-	RETURN NULL; -- no ingredientes definidos
+	RETURN CAST(1 AS BIT);
 END;
 
 GO
