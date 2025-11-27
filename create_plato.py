@@ -150,6 +150,11 @@ def borrar_plato(conn,Nombre):
         return False,'Error al eliminar'
 
 def modificar_plato(conn,Nombre,nuevo_nombre,precio,categoria,cambios_receta):
+    '''
+    cambios_receta={"ingrediente_a":{"cantidad":0,"nuevo":True,"unidad":ingredientes_total[nuevo_ingrediente]},
+                    "ingrediente_b":{"cantidad":0,"nuevo":True,"unidad":ingredientes_total[nuevo_ingrediente]}
+                    }
+    '''
     try:
         cursor=conn.cursor()
         cambiar_nombre= validar_valor(nuevo_nombre,str,'nombre')
@@ -160,57 +165,33 @@ def modificar_plato(conn,Nombre,nuevo_nombre,precio,categoria,cambios_receta):
             SET Nombre = ?, Precio = ?, Categoria = ?
             WHERE Nombre = ?
         """, (cambiar_nombre, cambiar_precio, cambiar_categoria, Nombre))
-        cursor.close()
-        
+
         if cambios_receta:
+            
             for ing in cambios_receta:
-                cursor=conn.cursor()
-                if cambios_receta[ing]==0:
-                    cursor.execute(f"DELETE FROM Receta WHERE Ingrediente='{ing}' and Plato='{nuevo_nombre}'")
+
+                if cambios_receta[ing]["cantidad"]==0:
+                    cursor.execute(f"DELETE FROM Receta WHERE Ingrediente='{ing}' and Plato='{cambiar_nombre}'")
                 else:
-                    cursor.execute(f"UPDATE Receta Set Cantidad='{cambios_receta[ing]}' WHERE Ingrediente='{ing}' and Plato='{nuevo_nombre}'")
-                conn.commit()
+                    if cambios_receta[ing]["nuevo"]:
+                        cursor.execute("""
+                                INSERT INTO Receta (Plato, Ingrediente, Cantidad, Unidad)
+                                VALUES (?, ?, ?, ?)
+                            """, (cambiar_nombre,ing,cambios_receta[ing]["cantidad"],cambios_receta[ing]["unidad"]))
+                    else:
+                        # Modificar cantidad existente
+                        cursor.execute("""
+                        UPDATE Receta 
+                        SET Cantidad = ? 
+                        WHERE Ingrediente = ? AND Plato = ?
+                        """, (cambios_receta[ing]["cantidad"], ing, cambiar_nombre))
+        cursor.commit()
+        cursor.close()
+                
         return True,'Cambio realizado correctamente'
-    except:
-        return False, 'Error al modificar'
+    except Exception as e:
+        return False, f'Error al modificar: {str(e)}'
 
-def modifcar_cantidad(ing,plato,unidad,cursor):
-    while True:
-        cantidad=input(f'Ingrese nueva cantidad ({unidad}): ')
-        try:
-            cantidad=float(cantidad)
-            break
-        except:
-            print('Ingrese número válido')
-    cursor.execute(f"UPDATE Receta Set Cantidad='{cantidad}' WHERE Ingrediente='{ing}' and Plato='{plato}'")
-    conn.commit()
-
-def eliminar_ing_receta(ing,plato,cursor):
-    cursor.execute(f"DELETE from Receta WHERE Plato='{plato}' and Ingrediente='{ing}'")
-    conn.commit()
-
-def modificar_receta(Nombre,cursor):
-    cursor.execute(f"select Plato,Ingrediente,Cantidad,Unidad from Receta where Plato='{Nombre}'")
-    receta = [(plato, ing, float(cant), unidad) for plato, ing, cant, unidad in cursor]
-    print('La receta actual es:')
-    for ing in receta:
-        print(f'{ing[1]}: {ing[2]} {ing[3]}')
-    ingredientes=[ing[1].lower() for ing in receta]
-    while True:
-        ingrediente=input('Ingrese ingrediente a modificar: ').lower()
-        if ingrediente in ingredientes:
-            index=ingredientes.index(ingrediente)
-            break
-        print('Ingrese ingrediente válido')
-    while True:
-        action= input('Desea MODIFICAR o ELIMINAR: ')
-        action=action.lower()
-        if action in ['modificar','eliminar']:
-            break
-    if action=='modificar':
-        modifcar_cantidad(ingrediente,Nombre,receta[index][3],cursor)
-    elif action=='eliminar':
-        eliminar_ing_receta(ingrediente,Nombre,cursor)
 
 def modificar_ingrediente(cursor):
     cursor.execute("SELECT Nombre from Ingredientes")
