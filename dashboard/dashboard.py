@@ -39,8 +39,6 @@ with tab3:
     st.header("Gestión de Ingredientes")
     df_ingredientes = pd.read_sql("SELECT * FROM Ingredientes", conn)
     st.dataframe(df_ingredientes)
-
-with tab4:
     st.header("Agregar nuevo ingrediente")
     nombre = st.text_input("Nombre del ingrediente")
     costo = st.number_input("Costo", min_value=0.0, step=0.01)
@@ -57,7 +55,7 @@ with tab4:
             st.success(message)
         else:
             st.error(message)
-    
+with tab4:    
     # --- DATOS DEL PLATO ---
     st.header("Agregar nuevo plato")
     cursor=conn.cursor()
@@ -70,32 +68,58 @@ with tab4:
     if categoria_plato == "Agregar categoria":
         categoria_plato= st.text_input("Nueva categoría")
 
-    st.subheader("Precio del plato")
-    opcion_precio = st.selectbox(
-        "¿Cómo querés definir el precio?",
-        ["Standard (precio automático)", "Ingresar precio manualmente"]
-    )
-    precio_plato = None  # default
-    if opcion_precio == "Ingresar precio manualmente":
-        precio_plato = st.number_input(
-            "Precio",
-            min_value=0.0,
-            step=0.1,
-            format="%.2f"
-        )
-    else:
-        precio_plato = "standard"
-    
-    # Obtener ingredientes existentes de SQL
-    cursor = conn.cursor()
-    cursor.execute("SELECT Nombre, Unidad FROM Ingredientes")
-    ingredientes_bd = {row[0]: row[1] for row in cursor.fetchall()}
-    cursor.close()   # dict Nombre -> Unidad
-
     # --- INGREDIENTES TEMPORALES ---
     if "ingredientes_temp" not in st.session_state: #session_state es un diccionario. lo que hace es guardar valores entre recargas (cada vez que hago click la pagina se recarga)
-        st.session_state.ingredientes_temp = [] #La primera vez que se carga la página se crea esta lista, y luego permite guardar los valores hasta el commit
+        st.session_state.ingredientes_temp = [] #La primera vez que se carga la página se crea esta lista, y luego permite guardar los valores hasta el commit        
+    
+    # Obtener ingredientes y elaborados existentes de SQL
+    cursor = conn.cursor()
+    cursor.execute("SELECT Nombre, Unidad FROM Ingredientes WHERE Elaborado=0")
+    ingredientes_bd = {row[0]: row[1] for row in cursor.fetchall()}
+    cursor.close()   # dict Nombre -> Unidad
+    cursor = conn.cursor()
+    cursor.execute("SELECT Nombre FROM Ingredientes WHERE Elaborado=1")
+    elaborados_bd = [row[0] for row in cursor.fetchall()]
+    cursor.close()   
 
+    #Opción de producto elaborado
+    producto_elaborado= st.checkbox("Producto elaborado(proveedor)")
+    if producto_elaborado:
+        st.subheader("Producto elaborado")
+        ingredientes_existentes= [ing['nombre'].lower() for ing in st.session_state.ingredientes_temp]
+        nombre_elaborado=st.selectbox("Nombre", elaborados_bd+["Agregar Producto"])
+        if nombre_elaborado=="Agregar Producto":
+            nombre_elaborado=st.text_input("Nombre")
+            precio_elaborado=st.number_input("Precio unitario",min_value=0.0,step=0.1,format="%.2f")
+            cantidad_elaborado= st.number_input("Unidades que utiliza el plato", min_value=0.0,step=0.1)
+            gluten_free_elaborado = st.checkbox("Gluten Free",key="gluten_tab4")
+            dairy_free_elaborado = st.checkbox("Dairy Free",key="dairy_tab4")
+
+        if st.button("Agregar producto elaborado"): #Agregar al diccionario temporal el producto (se refresca y se mantiene)
+            if nombre_elaborado.lower() not in ingredientes_existentes:
+                if not nombre_elaborado or nombre_elaborado.strip() == "":
+                    st.error("Ingrese un Nombre")
+                else:
+                    st.session_state.ingredientes_temp.append({
+                        "nombre": nombre_elaborado,
+                        "cantidad": cantidad_elaborado,
+                        "unidad": "unidad"
+                    })
+                    if nombre_elaborado not in elaborados_bd:
+                        success, message, nombre, unidad = agregar_nuevo_ingrediente(
+                            conn, nombre_elaborado, precio_elaborado, 1, "unidad", gluten_free_elaborado, dairy_free_elaborado,1
+                        )
+                        if success:
+                            st.success(message)
+          
+                        else:
+                            st.error(message)
+                    
+                    st.success(f"{nombre_elaborado} agregado a receta")
+                    st.rerun()
+            else:
+                st.error("El producto ya está ingresado")
+     
     st.subheader("Agregar ingredientes al plato")
     # Selectbox con ingredientes existentes
     ing_nombre = st.selectbox("Ingrediente", list(ingredientes_bd.keys()))
@@ -136,21 +160,43 @@ with tab4:
                 st.session_state.ingredientes_temp.pop(index)
                 st.rerun()
 
+    st.subheader("Precio del plato")
+    opcion_precio = st.selectbox(
+        "¿Cómo querés definir el precio?",
+        ["Standard (precio automático)", "Ingresar precio manualmente"]
+    )
+    precio_plato = None  # default
+    if opcion_precio == "Ingresar precio manualmente":
+        precio_plato = st.number_input(
+            "Precio",
+            min_value=0.0,
+            step=0.1,
+            format="%.2f"
+        )
+    else:
+        precio_plato = "standard"
     # --- CREAR PLATO ---
     if st.button("Crear plato"):
-        ok, msg = agregar_nuevo_plato(
-            conn,
-            nombre_plato,
-            categoria_plato,
-            precio_plato,
-            st.session_state.ingredientes_temp
-        )
-
-        if ok:
-            st.success(msg)
-            st.session_state.ingredientes_temp = []  # reset
+        if not nombre_plato or nombre_plato.strip() == "":
+            st.error("El campo 'Nombre del plato' está vacío")
         else:
-            st.error(msg)
+            if st.session_state.ingredientes_temp:
+                
+                ok, msg = agregar_nuevo_plato(
+                    conn,
+                    nombre_plato,
+                    categoria_plato,
+                    precio_plato,
+                    st.session_state.ingredientes_temp
+                )
+
+                if ok:
+                    st.success(msg)
+                    st.session_state.ingredientes_temp = [] #reset
+                else:
+                    st.error(msg)
+            else:
+                st.error("Ingrese al menos 1 ingrediente/elaborado")
 with tab5:
     st.header("Modificar Plato")
     # --- 1. Traer platos existentes ---

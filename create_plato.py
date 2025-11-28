@@ -37,7 +37,7 @@ def validar_valor(valor, tipo=float, nombre="valor"):
     return valor
 # --- FUNCIONES AUXILIARES ---
 
-def agregar_nuevo_ingrediente(conn, nombre, costo, cantidad, unidad, gluten_free, dairy_free):
+def agregar_nuevo_ingrediente(conn, nombre, costo, cantidad, unidad, gluten_free, dairy_free,elaborado=0):
     """
     Inserta un ingrediente en SQL.
     Recibe datos validados desde Streamlit, pero aplica validaciones mínimas de seguridad.
@@ -64,19 +64,19 @@ def agregar_nuevo_ingrediente(conn, nombre, costo, cantidad, unidad, gluten_free
 
         gluten_free = int(bool(gluten_free))
         dairy_free = int(bool(dairy_free))
+        elaborado= int(bool(elaborado))
         cursor=conn.cursor()
 
         cursor.execute("""
-            INSERT INTO dbo.Ingredientes (Nombre, Costo, Cantidad, Unidad, Gluten_free, Dairy_free)
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (nombre, costo, cantidad, unidad, gluten_free, dairy_free))
+            INSERT INTO dbo.Ingredientes (Nombre, Costo, Cantidad, Unidad, Gluten_free, Dairy_free,Elaborado)
+            VALUES (?, ?, ?, ?, ?, ?,?)
+        """, (nombre, costo, cantidad, unidad, gluten_free, dairy_free,elaborado))
         conn.commit()
         message='Ingrediente agregado correctamente'
 
         return True, message, nombre, unidad
-    except:
-        message='Error al intentar crear ingrediente'
-        return False,message,'error','error'
+    except Exception as e:
+        return False, f"Error SQL: {e}", 'error', 'error'
 
 
 def agregar_nuevo_plato(conn, nombre, categoria, precio, lista_ingredientes):

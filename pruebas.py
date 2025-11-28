@@ -1,1 +1,5 @@
-print([1,2,3]+[4])
+elemento_existente=[6]
+if elemento_existente:
+    print('existe')
+else:
+    print('elton')

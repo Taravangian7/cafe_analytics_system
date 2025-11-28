@@ -13,6 +13,7 @@ create table Ingredientes (
 	Unidad nvarchar(50) not null,
 	Gluten_free bit not null,
 	Dairy_free bit not null,
+	Elaborado bit not null default 0,
 	Constraint UQ_Ingredientes_Nombre unique(Nombre));
 
 create table Platos (
