@@ -224,7 +224,7 @@ with tab5:
             value= float(info_actual["precio"]) if info_actual["precio"] is not None else 0.0
         )
 
-        index_actual = categorias_existentes.index(info_actual["categoria"]) if info_actual["categoria"] in categorias_existentes else 0
+        index_actual = categorias_existentes.index(info_actual["categoria"]) if info_actual["categoria"] in categorias_existentes else 0#Busco el índice de la categoria del plato, asi la muestro preseleccionada
         nueva_categoria= st.selectbox(
             "Elegir categoría",
             categorias_existentes + ["Agregar categoria"],
@@ -234,6 +234,10 @@ with tab5:
 
         if nueva_categoria == "Agregar categoria":
             nueva_categoria= st.text_input("Nueva categoría",key="selectbox_categoria_2")
+            if nueva_categoria in categorias_existentes:
+                nueva_categoria = "Agregar categoria"
+                st.error("Categoría ya existente")
+
         # --- MODIFICAR RECETA ---
         st.subheader("Receta actual")
 
@@ -255,16 +259,17 @@ with tab5:
             ]
             cursor.close()
             ingredientes_db_actuales=[a['ingrediente'] for a in st.session_state.receta_visual]
-            st.session_state.ingredientes_db_actuales=ingredientes_db_actuales
+            st.session_state.ingredientes_db_actuales=ingredientes_db_actuales #Guardo los ingredientes del plato que estan en la BASE DE DATOS (esto no cambia hasta que guarde los cambios)
+            st.session_state.nuevo_ingrediente='Elton'
 
-        ingredientes_actuales=[a['ingrediente'] for a in st.session_state.receta_visual]
+        ingredientes_actuales=[a['ingrediente'] for a in st.session_state.receta_visual]#Son los ingredientes del plato que se muestran en pantalla (no son necesariamente los mismos que BD)
         cursor = conn.cursor()
         cursor.execute("""
             SELECT Nombre,Unidad 
             FROM Ingredientes 
             """,)
-        ingredientes_total={a[0]:a[1] for a in cursor.fetchall()}
-        ingredientes_total_nombres=list(ingredientes_total.keys())
+        ingredientes_total={a[0]:a[1] for a in cursor.fetchall()}#Todos los ingredientes con sus unidades
+        ingredientes_total_nombres=list(ingredientes_total.keys())#Lista de todos los ingredientes
         cursor.close()
 
         for index, ing in enumerate(st.session_state.receta_visual):
@@ -277,21 +282,23 @@ with tab5:
                      # Selectbox SIN valor inicial
                     nuevo_ingrediente = st.selectbox(
                         "Elegir ingrediente",
-                        ["-- Seleccione --"] +[x for x in ingredientes_total_nombres if x not in ingredientes_actuales],
+                        [x for x in ingredientes_total_nombres if x not in ingredientes_actuales],
+                        index=None,
                         key=f"selectbox_ingredientes_mod_{index}"
                     )
-
+                    st.session_state.nuevo_ingrediente=nuevo_ingrediente#Si no elijo nada, este parámetro de hace None y luego no me permite agregar otro ing
                     # Solo actualizar si el usuario eligió algo real
-                    if nuevo_ingrediente != "-- Seleccione --":
+                    if nuevo_ingrediente:
                         st.session_state.receta_visual[index]['ingrediente'] = nuevo_ingrediente
                         st.session_state.receta_visual[index]['unidad'] = ingredientes_total[nuevo_ingrediente]
                         if nuevo_ingrediente not in st.session_state.ingredientes_db_actuales:
                             st.session_state.cambios_receta[nuevo_ingrediente]={"cantidad":0.01,"nuevo":True,"unidad":ingredientes_total[nuevo_ingrediente]}
                         else:
                             st.session_state.cambios_receta[nuevo_ingrediente]={"cantidad":0.01,"nuevo":False,"unidad":ingredientes_total[nuevo_ingrediente]}
+                        
                         st.rerun()
             with col2:
-                # Campo editable para cantidad
+                # Campo editable para cantidad, muestra por defecto la cantidad actual
                 nueva_cantidad = st.number_input(
                     "cant",
                     value=float(ing["cantidad"]),
@@ -304,7 +311,7 @@ with tab5:
                 if nueva_cantidad != float(ing["cantidad"]):
                     if ing["ingrediente"] not in st.session_state.cambios_receta:#Si era un ingrediente ya existente, no iba estar nunca en cambios_receta.
                         st.session_state.cambios_receta[ing["ingrediente"]] = {
-                            "cantidad": float(ing["cantidad"]),
+                            "cantidad": float(nueva_cantidad),
                             "nuevo": False,
                             "unidad": ing["unidad"]
                         }
@@ -316,16 +323,19 @@ with tab5:
             with col4:
                 if st.button("❌", key=f"delete_{plato_seleccionado}_{ing['ingrediente']}"):
                     st.session_state.receta_visual.pop(index)
-                    st.session_state.cambios_receta[ing["ingrediente"]]={"cantidad":0}
+                    st.session_state.cambios_receta[ing["ingrediente"]]={"cantidad":0} #Puede dar la orden de borrar un ing que ni esté en la base, pero por como es la función a lo sumo no borra nada, no da eror.
                     st.success(f"{ing['ingrediente']} eliminado")
                     st.rerun()
         if st.button("Agregar ingrediente"):
-            st.session_state.receta_visual.append({
-                "ingrediente": None,
-                "cantidad": 0.01,
-                "unidad": None
-            })
-            st.rerun()
+            if st.session_state.nuevo_ingrediente==None:
+                st.error("Finalice selección anterior")
+            else:
+                st.session_state.receta_visual.append({
+                    "ingrediente": None,
+                    "cantidad": 0.01,
+                    "unidad": None
+                })
+                st.rerun()
         # --- 4. Botón para confirmar cambios ---
         cambios_receta=st.session_state.cambios_receta
         if st.button("Modificar plato"):
