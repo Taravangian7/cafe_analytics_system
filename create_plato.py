@@ -1,3 +1,4 @@
+#from numba import List
 import pyodbc
 from pathlib import Path
 '''
@@ -44,8 +45,8 @@ def agregar_nuevo_ingrediente(conn, nombre, costo, cantidad, unidad, gluten_free
     """
     try:
         # Validaciones de tipo
-        nombre = validar_valor(nombre, str, "nombre")
-        unidad = validar_valor(unidad, str, "unidad")
+        nombre = validar_valor(nombre, str, "nombre").capitalize()
+        unidad = validar_valor(unidad, str, "unidad").capitalize()
         costo = validar_valor(costo, float, "costo")
         cantidad = validar_valor(cantidad, float, "cantidad")
 
@@ -102,12 +103,12 @@ def agregar_nuevo_plato(conn, nombre, categoria, precio, lista_ingredientes):
             cursor.execute("""
                 INSERT INTO Platos (Nombre, Categoria)
                 VALUES (?, ?)
-            """, (nombre, categoria))
+            """, (nombre.capitalize(), categoria.capitalize()))
         else:
             cursor.execute("""
                 INSERT INTO Platos (Nombre, Categoria, Precio)
                 VALUES (?, ?, ?)
-            """, (nombre, categoria, float(precio)))
+            """, (nombre.capitalize(), categoria.capitalize(), float(precio)))
 
         conn.commit()
 
@@ -121,13 +122,13 @@ def agregar_nuevo_plato(conn, nombre, categoria, precio, lista_ingredientes):
             receta_rows = []
 
             for ing in lista_ingredientes:
-                nombre_ing = ing["nombre"]
+                nombre_ing = ing["nombre"].capitalize()
                 cantidad = float(ing["cantidad"])
 
                 # Obtener unidad según la BD
                 unidad = unidad_por_ing[nombre_ing.lower()]
 
-                receta_rows.append((nombre, nombre_ing, cantidad, unidad))
+                receta_rows.append((nombre.capitalize(), nombre_ing, cantidad, unidad))
 
             cursor.executemany("""
                 INSERT INTO Receta (Plato, Ingrediente, Cantidad, Unidad)
@@ -237,6 +238,45 @@ def modificar_ingrediente(cursor):
     cursor.execute(f"""UPDATE Ingredientes set Nombre=?,Costo=?,Unidad=?,Cantidad=?,Dairy_free=?,Gluten_free=? WHERE Nombre=?
         """,(nombre,costo,unidad,cantidad,dairy_free,gluten_free,ingrediente))
     conn.commit()
+
+def obtener_campos(conn,campos:list,tabla,where=None,where_valor=0,formato="lista"):
+    try:
+        cursor=conn.cursor()
+        campo=", ".join(campos)
+        total_campos=len(campos)
+        try:
+            where_valor=float(where_valor)
+        except:
+            pass
+        if where:
+            if isinstance(where_valor, float):
+                cursor.execute(f"SELECT DISTINCT {campo} FROM {tabla} WHERE {where}={where_valor}")
+            else:
+                cursor.execute(f"SELECT DISTINCT {campo} FROM {tabla} WHERE {where}='{where_valor}'")
+        else:
+            cursor.execute(f"SELECT DISTINCT {campo} FROM {tabla}")
+        rows=cursor.fetchall()
+        cursor.close()
+        if formato=="lista":
+            if total_campos==1:
+                objeto=[i[0] for i in rows]
+            elif total_campos==2:
+                objeto=[{i[0]:i[1]} for i in rows]
+            elif total_campos>2:
+                objeto=[{i[0]:{campos[j]:i[j] for j in range(1,total_campos)}} for i in rows]
+        if formato=="dict":
+            if total_campos==1:
+                objeto={i[0] for i in rows}
+            elif total_campos==2:
+                objeto={i[0]:i[1] for i in rows}
+            elif total_campos>2:
+                objeto={i[0]:{campos[j]:i[j] for j in range(1,total_campos)} for i in rows}
+
+        
+        return objeto
+    except Exception as e:
+        print(e)
+        return []
 
 #validar_valor('elton',float,'keta')
 #modificar_ingrediente(cursor)

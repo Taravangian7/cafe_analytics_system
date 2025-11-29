@@ -6,7 +6,7 @@ from pathlib import Path
 
 # Agregar carpeta padre al path (para encontrar create_plato)
 sys.path.append(str(Path(__file__).parent.parent))
-from create_plato import agregar_nuevo_ingrediente, agregar_nuevo_plato, borrar_plato, modificar_plato
+from create_plato import agregar_nuevo_ingrediente, agregar_nuevo_plato, borrar_plato, modificar_plato,obtener_campos
 
 # Configuración
 SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
@@ -58,12 +58,8 @@ with tab3:
 with tab4:    
     # --- DATOS DEL PLATO ---
     st.header("Agregar nuevo plato")
-    cursor=conn.cursor()
     nombre_plato = st.text_input("Nombre del plato")
-
-    cursor.execute("SELECT DISTINCT categoria FROM Platos")
-    categorias_existentes= [i[0] for i in cursor.fetchall()]
-    cursor.close()
+    categorias_existentes= obtener_campos(conn,campos=['categoria'],tabla='Platos')#Lista con todas las categorías
     categoria_plato = st.selectbox("Elegir categoría",categorias_existentes+["Agregar categoria"])
     if categoria_plato == "Agregar categoria":
         categoria_plato= st.text_input("Nueva categoría")
@@ -73,14 +69,9 @@ with tab4:
         st.session_state.ingredientes_temp = [] #La primera vez que se carga la página se crea esta lista, y luego permite guardar los valores hasta el commit        
     
     # Obtener ingredientes y elaborados existentes de SQL
-    cursor = conn.cursor()
-    cursor.execute("SELECT Nombre, Unidad FROM Ingredientes WHERE Elaborado=0")
-    ingredientes_bd = {row[0]: row[1] for row in cursor.fetchall()}
-    cursor.close()   # dict Nombre -> Unidad
-    cursor = conn.cursor()
-    cursor.execute("SELECT Nombre FROM Ingredientes WHERE Elaborado=1")
-    elaborados_bd = [row[0] for row in cursor.fetchall()]
-    cursor.close()   
+
+    ingredientes_bd= obtener_campos(conn,campos=["Nombre","Unidad"],tabla="Ingredientes",where="Elaborado",where_valor=0,formato="dict")
+    elaborados_bd= obtener_campos(conn,campos=["Nombre"],tabla="Ingredientes",where="Elaborado",where_valor=1)
 
     #Opción de producto elaborado
     producto_elaborado= st.checkbox("Producto elaborado(proveedor)")
@@ -91,9 +82,9 @@ with tab4:
         if nombre_elaborado=="Agregar Producto":
             nombre_elaborado=st.text_input("Nombre")
             precio_elaborado=st.number_input("Precio unitario",min_value=0.0,step=0.1,format="%.2f")
-            cantidad_elaborado= st.number_input("Unidades que utiliza el plato", min_value=0.0,step=0.1)
             gluten_free_elaborado = st.checkbox("Gluten Free",key="gluten_tab4")
             dairy_free_elaborado = st.checkbox("Dairy Free",key="dairy_tab4")
+        cantidad_elaborado= st.number_input("Unidades que utiliza el plato", min_value=0.0,step=0.1)
 
         if st.button("Agregar producto elaborado"): #Agregar al diccionario temporal el producto (se refresca y se mantiene)
             if nombre_elaborado.lower() not in ingredientes_existentes:
@@ -200,14 +191,9 @@ with tab4:
 with tab5:
     st.header("Modificar Plato")
     # --- 1. Traer platos existentes ---
-    cursor = conn.cursor()
-    cursor.execute("SELECT Nombre, Categoria, Precio FROM Platos")
-    platos_bd = cursor.fetchall()  # Lista de tuplas: (Nombre, Categoria, Precio)
-    cursor.close()
+    platos_nombres = obtener_campos(conn,campos=["nombre"],tabla="Platos")
+    platos_info= obtener_campos(conn,campos=["nombre","categoria","precio"],tabla="Platos",formato="dict")
 
-    # Crear diccionarios para precargar
-    platos_nombres = [p[0] for p in platos_bd]
-    platos_info = {p[0]: {"categoria": p[1], "precio": p[2]} for p in platos_bd}
 
     # --- 2. Selección del plato ---
     plato_seleccionado = st.selectbox("Seleccione el plato a modificar", platos_nombres)
@@ -233,7 +219,7 @@ with tab5:
         )
 
         if nueva_categoria == "Agregar categoria":
-            nueva_categoria= st.text_input("Nueva categoría",key="selectbox_categoria_2")
+            nueva_categoria= st.text_input("Nueva categoría",key="selectbox_categoria_2").capitalize()
             if nueva_categoria in categorias_existentes:
                 nueva_categoria = "Agregar categoria"
                 st.error("Categoría ya existente")
@@ -244,40 +230,30 @@ with tab5:
         # Traer receta desde SQL
 
         if "plato_actual" not in st.session_state or st.session_state.plato_actual != plato_seleccionado: #Si se está inicializando o si cambias de plato
-            st.session_state.receta_visual = []
+
             st.session_state.cambios_receta = {}
             st.session_state.plato_actual = plato_seleccionado
-            cursor = conn.cursor()
-            cursor.execute("""
-                SELECT Ingrediente, Cantidad, Unidad 
-                FROM Receta 
-                WHERE Plato = ?
-            """, plato_seleccionado)  # plato_seleccionado = el que elegiste en el selectbox
-            st.session_state.receta_visual = [
-                {"ingrediente": r[0], "cantidad": float(r[1]), "unidad": r[2]}
-                for r in cursor.fetchall()
-            ]
-            cursor.close()
-            ingredientes_db_actuales=[a['ingrediente'] for a in st.session_state.receta_visual]
+            
+            #
+            st.session_state.receta_visual = obtener_campos(conn,campos=["ingrediente","cantidad","unidad"],tabla="Receta",where="Plato",where_valor=plato_seleccionado,formato="lista")
+            
+            ingredientes_db_actuales=[list(a.keys())[0] for a in st.session_state.receta_visual]
             st.session_state.ingredientes_db_actuales=ingredientes_db_actuales #Guardo los ingredientes del plato que estan en la BASE DE DATOS (esto no cambia hasta que guarde los cambios)
             st.session_state.nuevo_ingrediente='Elton'
 
-        ingredientes_actuales=[a['ingrediente'] for a in st.session_state.receta_visual]#Son los ingredientes del plato que se muestran en pantalla (no son necesariamente los mismos que BD)
-        cursor = conn.cursor()
-        cursor.execute("""
-            SELECT Nombre,Unidad 
-            FROM Ingredientes 
-            """,)
-        ingredientes_total={a[0]:a[1] for a in cursor.fetchall()}#Todos los ingredientes con sus unidades
-        ingredientes_total_nombres=list(ingredientes_total.keys())#Lista de todos los ingredientes
-        cursor.close()
+        ingredientes_actuales=[list(a.keys())[0] for a in st.session_state.receta_visual]#Son los ingredientes del plato que se muestran en pantalla (no son necesariamente los mismos que BD)
+        
+        ingredientes_total= obtener_campos(conn,campos=["nombre","unidad"],tabla="Ingredientes",formato="dict")#Todos los ingredientes de la bd con sus unidades
+        ingredientes_total_nombres=obtener_campos(conn,campos=["nombre"],tabla="Ingredientes",formato="lista")#Lista de todos los ing de la bd
+
 
         for index, ing in enumerate(st.session_state.receta_visual):
             col1, col2, col3, col4 = st.columns([5, 3, 3, 1], gap='small')
             
             with col1:
-                if ing['ingrediente']:
-                    st.markdown(f"**{ing['ingrediente']}**")
+                nombre_ingrediente = list(ing.keys())[0] 
+                if nombre_ingrediente:
+                    st.markdown(f"**{nombre_ingrediente}**")
                 else:
                      # Selectbox SIN valor inicial
                     nuevo_ingrediente = st.selectbox(
@@ -286,11 +262,11 @@ with tab5:
                         index=None,
                         key=f"selectbox_ingredientes_mod_{index}"
                     )
-                    st.session_state.nuevo_ingrediente=nuevo_ingrediente#Si no elijo nada, este parámetro de hace None y luego no me permite agregar otro ing
+                    st.session_state.nuevo_ingrediente=nuevo_ingrediente#Si no elijo nada, este parámetro se hace None y luego no me permite agregar otro ing
                     # Solo actualizar si el usuario eligió algo real
                     if nuevo_ingrediente:
-                        st.session_state.receta_visual[index]['ingrediente'] = nuevo_ingrediente
-                        st.session_state.receta_visual[index]['unidad'] = ingredientes_total[nuevo_ingrediente]
+                        st.session_state.receta_visual[index]={nuevo_ingrediente:{"cantidad": 0.01, "unidad": ingredientes_total[nuevo_ingrediente]}}
+
                         if nuevo_ingrediente not in st.session_state.ingredientes_db_actuales:
                             st.session_state.cambios_receta[nuevo_ingrediente]={"cantidad":0.01,"nuevo":True,"unidad":ingredientes_total[nuevo_ingrediente]}
                         else:
@@ -299,41 +275,43 @@ with tab5:
                         st.rerun()
             with col2:
                 # Campo editable para cantidad, muestra por defecto la cantidad actual
+                cantidad=list(ing.values())[0]['cantidad']
+                unidad=list(ing.values())[0]['unidad']
                 nueva_cantidad = st.number_input(
                     "cant",
-                    value=float(ing["cantidad"]),
-                    min_value=0.01,
-                    step=0.1,
-                    key=f"cant_{plato_seleccionado}_{ing['ingrediente']}",
+                    value=float(cantidad),
+                    min_value=0.001,
+                    step=0.01,
+                    key=f"cant_{plato_seleccionado}_{nombre_ingrediente}",
                     label_visibility="collapsed"
                 )
                 # Guardar si cambió
-                if nueva_cantidad != float(ing["cantidad"]):
-                    if ing["ingrediente"] not in st.session_state.cambios_receta:#Si era un ingrediente ya existente, no iba estar nunca en cambios_receta.
-                        st.session_state.cambios_receta[ing["ingrediente"]] = {
+                if nueva_cantidad != float(cantidad):
+                    if nombre_ingrediente not in st.session_state.cambios_receta:#Si era un ingrediente ya existente, no iba estar nunca en cambios_receta.
+                        st.session_state.cambios_receta[nombre_ingrediente] = {
                             "cantidad": float(nueva_cantidad),
                             "nuevo": False,
-                            "unidad": ing["unidad"]
+                            "unidad": unidad
                         }
-                    st.session_state.cambios_receta[ing["ingrediente"]]["cantidad"] = nueva_cantidad
+                    st.session_state.cambios_receta[nombre_ingrediente]["cantidad"] = nueva_cantidad
             
             with col3:
-                st.markdown(f"_{ing['unidad']}_")
+                st.markdown(f"_{unidad}_")
 
             with col4:
-                if st.button("❌", key=f"delete_{plato_seleccionado}_{ing['ingrediente']}"):
+                if st.button("❌", key=f"delete_{plato_seleccionado}_{nombre_ingrediente}"):
                     st.session_state.receta_visual.pop(index)
-                    st.session_state.cambios_receta[ing["ingrediente"]]={"cantidad":0} #Puede dar la orden de borrar un ing que ni esté en la base, pero por como es la función a lo sumo no borra nada, no da eror.
-                    st.success(f"{ing['ingrediente']} eliminado")
+                    st.session_state.cambios_receta[nombre_ingrediente]={"cantidad":0} #Puede dar la orden de borrar un ing que ni esté en la base, pero por como es la función a lo sumo no borra nada, no da eror.
+                    st.success(f"{nombre_ingrediente} eliminado")
                     st.rerun()
         if st.button("Agregar ingrediente"):
             if st.session_state.nuevo_ingrediente==None:
                 st.error("Finalice selección anterior")
             else:
                 st.session_state.receta_visual.append({
-                    "ingrediente": None,
+                    None:{
                     "cantidad": 0.01,
-                    "unidad": None
+                    "unidad": None}
                 })
                 st.rerun()
         # --- 4. Botón para confirmar cambios ---
@@ -345,8 +323,8 @@ with tab5:
                     st.success(msg)
                     st.session_state.cambios_receta={}
                     for ing in st.session_state.receta_visual:
-                        if ing["ingrediente"] not in st.session_state.ingredientes_db_actuales:
-                            st.session_state.ingredientes_db_actuales.append(ing["ingrediente"])
+                        if nombre_ingrediente not in st.session_state.ingredientes_db_actuales:
+                            st.session_state.ingredientes_db_actuales.append(nombre_ingrediente)
                 else:
                     st.error(msg)
             else:
