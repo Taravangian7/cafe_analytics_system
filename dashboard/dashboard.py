@@ -6,7 +6,7 @@ from pathlib import Path
 
 # Agregar carpeta padre al path (para encontrar create_plato)
 sys.path.append(str(Path(__file__).parent.parent))
-from create_plato import agregar_nuevo_ingrediente, agregar_nuevo_plato, borrar_plato, modificar_plato,obtener_campos
+from create_plato import agregar_nuevo_ingrediente, agregar_nuevo_plato, borrar_plato, modificar_plato,modificar_ingrediente,obtener_campos
 
 # Configuración
 SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
@@ -55,6 +55,27 @@ with tab3:
             st.success(message)
         else:
             st.error(message)
+    
+    st.header("Modificar ingrediente")
+    ing_seleccionado = st.selectbox("Seleccione el plato a modificar", df_ingredientes["Nombre"].tolist(),index=None)
+    if ing_seleccionado:
+        nombre_ing=st.text_input("Nombre", value=ing_seleccionado)
+        costo_ing = st.number_input("Costo", min_value=0.0, step=0.01, value=df_ingredientes[df_ingredientes["Nombre"]==ing_seleccionado]["Costo"].values[0])
+        cantidad_ing = st.number_input("Cantidad por Paquete", min_value=0.01, step=0.01, value=df_ingredientes[df_ingredientes["Nombre"]==ing_seleccionado]["Cantidad"].values[0])
+        unidad_actual = df_ingredientes[df_ingredientes["Nombre"]==ing_seleccionado]["Unidad"].values[0]
+        opciones_unidad = ["gr","kg","cm3","litro", "unidades"]
+        # Encontrar el índice de la unidad actual
+        index_unidad = opciones_unidad.index(unidad_actual) if unidad_actual in opciones_unidad else 0
+        unidad_ing = st.selectbox("Unidad", opciones_unidad, index=index_unidad,key=f"selectbox_unidad_mod_{ing_seleccionado}")
+
+        gluten_free_ing = st.checkbox("Gluten Free", value=df_ingredientes[df_ingredientes["Nombre"]==ing_seleccionado]["Gluten_free"].values[0])
+        dairy_free_ing = st.checkbox("Dairy Free", value=df_ingredientes[df_ingredientes["Nombre"]==ing_seleccionado]["Dairy_free"].values[0])
+        if st.button("Modificar ingrediente"):
+            success, message = modificar_ingrediente(conn, ing_seleccionado,nombre_ing, costo_ing, cantidad_ing, unidad_ing, gluten_free_ing, dairy_free_ing)
+            if success:
+                st.success(message)
+            else:
+                st.error(message)
 with tab4:    
     # --- DATOS DEL PLATO ---
     st.header("Agregar nuevo plato")

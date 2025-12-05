@@ -194,50 +194,26 @@ def modificar_plato(conn,Nombre,nuevo_nombre,precio,categoria,cambios_receta):
         return False, f'Error al modificar: {str(e)}'
 
 
-def modificar_ingrediente(cursor):
-    cursor.execute("SELECT Nombre from Ingredientes")
-    ingredientes=[ing[0].lower() for ing in cursor]
-    while True:
-        ingrediente=input('Ingrese ingrediente a modificar: ').lower()
-        if ingrediente in ingredientes:
-            break    
-    cursor.execute(f"select Nombre,Costo,Unidad,Cantidad,Dairy_free,Gluten_free from Ingredientes where Nombre='{ingrediente}'")
-    receta = [(Nombre,float(Costo),Unidad,float(Cantidad),Dairy_free,Gluten_free) for Nombre,Costo,Unidad,Cantidad,Dairy_free,Gluten_free in cursor]
-    nombre=input(f'Ingrese nombre (actual:{receta[0][0]}): ')
-    while True:
-        costo=input(f'Ingrese costo (actual:{receta[0][1]}): ')
-        try:
-            costo=float(costo)
-            break
-        except:
-            print('ingrese número válido')
-    unidad=input(f'Ingrese unidad (actual:{receta[0][2]}): ')
-    while True:
-        cantidad=input(f'Ingrese cantidad (actual:{receta[0][3]}): ')
-        try:
-            cantidad=float(cantidad)
-            break
-        except:
-            print('Ingrese número válido')
-    while True:
-        dairy_free=input('Dairy free (SI/NO)?: ').lower()
-        if dairy_free=='si':
-            dairy_free=1
-            break
-        elif dairy_free=='no':
-            dairy_free=0
-            break
-    while True:
-        gluten_free=input('Gluten free (SI/NO)?: ').lower()
-        if gluten_free=='si':
-            gluten_free=1
-            break
-        elif gluten_free=='no':
-            gluten_free=0
-            break
-    cursor.execute(f"""UPDATE Ingredientes set Nombre=?,Costo=?,Unidad=?,Cantidad=?,Dairy_free=?,Gluten_free=? WHERE Nombre=?
-        """,(nombre,costo,unidad,cantidad,dairy_free,gluten_free,ingrediente))
-    conn.commit()
+def modificar_ingrediente(conn, ing_seleccionado,nombre_ing, costo_ing, cantidad_ing, unidad_ing, gluten_free_ing, dairy_free_ing):
+    try:
+        cursor=conn.cursor()
+        cursor.execute("SELECT Nombre from Ingredientes")
+        ingredientes=[ing[0].lower() for ing in cursor]
+        nombre_ing=validar_valor(nombre_ing,str,'nombre').capitalize()
+        costo_ing=validar_valor(costo_ing,float,'costo')
+        cantidad_ing=validar_valor(cantidad_ing,float,'cantidad')
+        unidad_ing=validar_valor(unidad_ing,str,'unidad')
+        gluten_free_ing=validar_valor(gluten_free_ing,int,'gluten_free')
+        dairy_free_ing=validar_valor(dairy_free_ing,int,'dairy_free')
+        if ing_seleccionado!=nombre_ing and nombre_ing.lower() in ingredientes:
+            return False,'El nombre del ingrediente ya existe'
+        else:
+            cursor.execute(f"""UPDATE Ingredientes set Nombre=?,Costo=?,Unidad=?,Cantidad=?,Dairy_free=?,Gluten_free=? WHERE Nombre=?
+                """,(nombre_ing,costo_ing,unidad_ing,cantidad_ing,dairy_free_ing,gluten_free_ing,ing_seleccionado))
+            conn.commit()
+            return True,'Ingrediente modificado correctamente'
+    except Exception as e:
+        return False, f'Error al modificar: {str(e)}'
 
 def obtener_campos(conn,campos:list,tabla,where=None,where_valor=0,formato="lista"):
     try:
