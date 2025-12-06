@@ -1,9 +1,36 @@
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta,time
 
 # ============================================
 # 1. REVENUE TOTAL POR DÍA/SEMANA/MES
 # ============================================
+def rango_fechas(conn,anio=None,mes=None,fecha_inicial=None):
+    
+    if not fecha_inicial:
+        cursor=conn.cursor()
+        cursor.execute("SELECT MIN(Order_date) AS fecha_inicio From Orders")
+        min_date=cursor.fetchone()[0] #fecha_inicio es un string
+        cursor.close()
+        # Convertir string a datetime.date
+        if isinstance(min_date, str):
+            min_date = datetime.strptime(min_date, "%Y-%m-%d").date()
+    else:
+        min_date=fecha_inicial
+    max_date= datetime.now().date()
+    dias = (max_date - min_date).days + 1   # para incluir ambos extremos
+
+    lista_fechas = [min_date + timedelta(days=i) for i in range(dias)]
+    year= list(dict.fromkeys([fecha.year for fecha in lista_fechas]))
+    if anio and not mes:
+        meses= sorted(list(dict.fromkeys([f.month for f in lista_fechas if f.year == anio])))
+        return meses
+    if anio and mes:
+        dias= sorted(list(dict.fromkeys([f.day for f in lista_fechas if f.month == mes and f.year == anio])))
+        return dias
+    #months = [fecha.month for fecha in lista_fechas]
+    #days = [fecha.day for fecha in lista_fechas]
+    return lista_fechas, year
+
 
 def get_revenue_por_periodo(conn, periodo='dia', fecha_inicio=None, fecha_fin=None):
     """
@@ -31,7 +58,8 @@ def get_revenue_por_periodo(conn, periodo='dia', fecha_inicio=None, fecha_fin=No
         group_by = "MONTH(Order_date), YEAR(Order_date)"
     else:
         raise ValueError("Periodo debe ser 'dia', 'semana' o 'mes'")
-    
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)  # pq sino sql tira error
+    fecha_fin_dt    = datetime.combine(fecha_fin, time.min)  
     query = f"""
         SELECT 
             {group_by} AS periodo,
@@ -42,7 +70,7 @@ def get_revenue_por_periodo(conn, periodo='dia', fecha_inicio=None, fecha_fin=No
         ORDER BY periodo
     """
     
-    df = pd.read_sql(query, conn, params=(fecha_inicio, fecha_fin))
+    df = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
     return df
 
 
@@ -61,15 +89,16 @@ def get_ticket_promedio(conn, fecha_inicio=None, fecha_fin=None):
         fecha_fin = datetime.now().date()
     if not fecha_inicio:
         fecha_inicio = fecha_fin - timedelta(days=30)
-    
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)  # pq sino sql tira error
+    fecha_fin_dt    = datetime.combine(fecha_fin, time.min)  
     query = """
         SELECT AVG(Total_cost) AS ticket_promedio
         FROM Orders
         WHERE Order_date BETWEEN ? AND ?
     """
     
-    result = pd.read_sql(query, conn, params=(fecha_inicio, fecha_fin))
-    return float(result['ticket_promedio'].iloc[0]) if not result.empty else 0.0 #iloc[0] es para obtener el primer valor de la columna (primer registro)
+    result = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
+    return float(result['ticket_promedio'].fillna(0).iloc[0]) #iloc[0] es para obtener el primer valor de la columna (primer registro)
 
 
 # ============================================

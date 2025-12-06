@@ -3,11 +3,12 @@ import pyodbc
 import pandas as pd
 import sys
 from pathlib import Path
+from datetime import date,datetime,timedelta
 
 # Agregar carpeta padre al path (para encontrar create_plato)
 sys.path.append(str(Path(__file__).parent.parent))
 from create_plato import agregar_nuevo_ingrediente, agregar_nuevo_plato, borrar_plato, modificar_plato,modificar_ingrediente,obtener_campos
-
+from data_analyst import rango_fechas,get_metodos_pago, get_ventas_por_hora, get_ventas_por_franja_horaria,  get_ventas_por_dia_semana, get_ticket_promedio,get_revenue_por_periodo
 # Configuración
 SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
 DATABASE = 'Cafe_Bar'
@@ -28,7 +29,58 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Ventas", "🍽️ Productos", "�
 
 with tab1:
     st.header("Análisis de Ventas")
-    st.write("Aquí irán las métricas de ventas")
+    st.header("Seleccionar Rango de Fechas")
+    fechas= st.selectbox("Rango de fechas",["Última semana","Último mes","Ingrese manualmente"])
+    if fechas=="Última semana":
+        fecha_fin=datetime.now().date()
+        fecha_inicio=fecha_fin-timedelta(weeks=1)
+    elif fechas=="Último mes":
+        fecha_fin=datetime.now().date()
+        fecha_inicio=fecha_fin-timedelta(weeks=4)
+    else:
+        fechas,anios_in=rango_fechas(conn)
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            anio_inicio = st.selectbox("Año Inicio", anios_in)
+        if anio_inicio:
+            meses_in = rango_fechas(conn, anio=anio_inicio)
+            with col2:
+                mes_inicio = st.selectbox("Mes Inicio", meses_in)
+        else:
+            mes_inicio = None
+        if anio_inicio and mes_inicio:
+            dias_in = rango_fechas(conn, anio=anio_inicio, mes=mes_inicio)
+            with col3:
+                dia_inicio = st.selectbox("Día Inicio", dias_in)
+        fecha_inicio=date(anio_inicio,mes_inicio,dia_inicio)
+
+        if fecha_inicio:
+            fechas_fin,anios_fin=rango_fechas(conn,fecha_inicial=fecha_inicio)
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                anio_fin = st.selectbox("Año Fin", anios_fin)
+            if anio_fin:
+                meses_fin = rango_fechas(conn, anio=anio_fin,fecha_inicial=fecha_inicio)
+                with col2:
+                    mes_fin = st.selectbox("Mes Fin", meses_fin)
+            else:
+                mes_fin = None
+            if anio_fin and mes_fin:
+                dias_fin = rango_fechas(conn, anio=anio_fin, mes=mes_fin,fecha_inicial=fecha_inicio)
+                with col3:
+                    dia_fin = st.selectbox("Día Fin", dias_fin)
+            fecha_fin=date(anio_fin,mes_fin,dia_fin)
+    st.header("Análisis de datos")
+    # Revenue por día
+    st.header("Ganancias por día")
+    df_revenue = get_revenue_por_periodo(conn, periodo='dia',fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+    if not df_revenue.empty:
+        st.line_chart(df_revenue.set_index('periodo'),y_label="Ganancias")
+    
+    # Ticket promedio
+    ticket = get_ticket_promedio(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+    if ticket !=0:
+        st.metric("Consumo promedio por orden", f"${ticket:.2f}")
 
 with tab2:
     st.header("Gestión de Productos")
