@@ -31,6 +31,16 @@ def rango_fechas(conn,anio=None,mes=None,fecha_inicial=None):
     #days = [fecha.day for fecha in lista_fechas]
     return lista_fechas, year
 
+def true_if_data(conn, fecha_inicial, fecha_final):
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT 1 FROM Orders WHERE Order_date BETWEEN ? AND ?",
+        (fecha_inicial, fecha_final)
+    )
+    data = cursor.fetchone()
+    cursor.close()
+    return data is not None
+
 
 def get_revenue_por_periodo(conn, periodo='dia', fecha_inicio=None, fecha_fin=None):
     """
