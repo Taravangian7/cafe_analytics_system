@@ -27,15 +27,14 @@ def rango_fechas(conn,anio=None,mes=None,fecha_inicial=None):
     if anio and mes:
         dias= sorted(list(dict.fromkeys([f.day for f in lista_fechas if f.month == mes and f.year == anio])))
         return dias
-    #months = [fecha.month for fecha in lista_fechas]
-    #days = [fecha.day for fecha in lista_fechas]
+
     return lista_fechas, year
 
 def true_if_data(conn, fecha_inicial, fecha_final):
     cursor = conn.cursor()
     cursor.execute(
         "SELECT 1 FROM Orders WHERE Order_date BETWEEN ? AND ?",
-        (fecha_inicial, fecha_final)
+        (str(fecha_inicial), str(fecha_final))
     )
     data = cursor.fetchone()
     cursor.close()
@@ -120,7 +119,7 @@ def get_ventas_por_dia_semana(conn, fecha_inicio=None, fecha_fin=None):
     Devuelve revenue por día de la semana.
     
     Returns:
-        DataFrame: [dia_semana, revenue, num_ordenes]
+        DataFrame: [dia_semana, revenue_promedio, num_ordenes_promedio]
     """
     if not fecha_fin:
         fecha_fin = datetime.now().date()
@@ -131,7 +130,7 @@ def get_ventas_por_dia_semana(conn, fecha_inicio=None, fecha_fin=None):
         SELECT 
             Day_of_week AS dia_semana,
             SUM(Total_cost) AS revenue,
-            COUNT(*) AS num_ordenes,
+            COUNT(*) AS num_ordenes
         FROM Orders
         WHERE Order_date BETWEEN ? AND ?
         GROUP BY Day_of_week
@@ -146,7 +145,9 @@ def get_ventas_por_dia_semana(conn, fecha_inicio=None, fecha_fin=None):
                 WHEN 'Sunday' THEN 7
             END
     """
-    df = pd.read_sql(query, conn, params=(fecha_inicio, fecha_fin))
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)  # pq sino sql tira error
+    fecha_fin_dt    = datetime.combine(fecha_fin, time.min)  
+    df = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
     # Genero lista real de días del rango
     fechas = pd.date_range(start=fecha_inicio, end=fecha_fin)
     dias = fechas.day_name()
@@ -156,7 +157,13 @@ def get_ventas_por_dia_semana(conn, fecha_inicio=None, fecha_fin=None):
     df['repeticiones'] = df['dia_semana'].map(repeticiones)
     # Revenue ajustado por repeticiones
     df['revenue_promedio'] = df['revenue'] / df['repeticiones']
-    return df
+    # Num_orders ajustado por repeticiones
+    df['num_ordenes_promedio'] = df['num_ordenes'] / df['repeticiones']
+    #Ordeno por días
+    orden_dias = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+    df['dia_semana'] = pd.Categorical(df['dia_semana'], categories=orden_dias, ordered=True) #Categorical es para definir un nuevo orden explicito
+    df = df.sort_values('dia_semana')
+    return df[['dia_semana', 'revenue_promedio','num_ordenes_promedio']]
 
 
 # ============================================
@@ -194,8 +201,9 @@ def get_ventas_por_franja_horaria(conn, fecha_inicio=None, fecha_fin=None):
             END
         ORDER BY franja_horaria
     """
-    
-    df = pd.read_sql(query, conn, params=(fecha_inicio, fecha_fin))
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)  # pq sino sql tira error
+    fecha_fin_dt    = datetime.combine(fecha_fin, time.min) 
+    df = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
     return df
 
 def get_ventas_por_hora(conn, fecha_inicio=None, fecha_fin=None):
@@ -212,7 +220,7 @@ def get_ventas_por_hora(conn, fecha_inicio=None, fecha_fin=None):
     
     query = """
         SELECT 
-            DATEPART(HOUR, Order_time) AS hora
+            DATEPART(HOUR, Order_time) AS hora,
             SUM(Total_cost) AS revenue,
             COUNT(*) AS num_ordenes
         FROM Orders
@@ -220,8 +228,9 @@ def get_ventas_por_hora(conn, fecha_inicio=None, fecha_fin=None):
         GROUP BY DATEPART(HOUR, Order_time)
         ORDER BY hora
     """
-    
-    df = pd.read_sql(query, conn, params=(fecha_inicio, fecha_fin))
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)  # pq sino sql tira error
+    fecha_fin_dt    = datetime.combine(fecha_fin, time.min)   
+    df = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
     # Cantidad de días reales del rango
     dias_rango = (fecha_fin - fecha_inicio).days + 1 #El +1 incluye el primer y el último día
     # Promedio por hora

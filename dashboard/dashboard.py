@@ -8,7 +8,7 @@ from datetime import date,datetime,timedelta
 # Agregar carpeta padre al path (para encontrar create_plato)
 sys.path.append(str(Path(__file__).parent.parent))
 from create_plato import agregar_nuevo_ingrediente, agregar_nuevo_plato, borrar_plato, modificar_plato,modificar_ingrediente,obtener_campos
-from data_analyst import rango_fechas,get_metodos_pago, get_ventas_por_hora, get_ventas_por_franja_horaria,  get_ventas_por_dia_semana, get_ticket_promedio,get_revenue_por_periodo
+from data_analyst import true_if_data,rango_fechas,get_metodos_pago, get_ventas_por_hora, get_ventas_por_franja_horaria,  get_ventas_por_dia_semana, get_ticket_promedio,get_revenue_por_periodo
 # Configuración
 SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
 DATABASE = 'Cafe_Bar'
@@ -70,17 +70,34 @@ with tab1:
                 with col3:
                     dia_fin = st.selectbox("Día Fin", dias_fin)
             fecha_fin=date(anio_fin,mes_fin,dia_fin)
-    st.header("Análisis de datos")
-    # Revenue por día
-    st.header("Ganancias por día")
-    df_revenue = get_revenue_por_periodo(conn, periodo='dia',fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
-    if not df_revenue.empty:
-        st.line_chart(df_revenue.set_index('periodo'),y_label="Ganancias")
     
-    # Ticket promedio
-    ticket = get_ticket_promedio(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
-    if ticket !=0:
-        st.metric("Consumo promedio por orden", f"${ticket:.2f}")
+    
+    fecha_con_datos=true_if_data(conn,fecha_inicio,fecha_fin)
+    if fecha_con_datos:
+        st.header("Análisis de datos")
+        # Revenue por día
+        st.header("Ganancias por día")
+        df_revenue = get_revenue_por_periodo(conn, periodo='dia',fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+        if not df_revenue.empty:
+            st.line_chart(df_revenue.set_index('periodo'),y_label="Ganancias")
+        
+        # Ticket promedio
+        ticket = get_ticket_promedio(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+        if ticket !=0:
+            st.metric("Consumo promedio por orden", f"${ticket:.2f}")
+        #Ventas promedio por día de semana
+        df_ventas_por_dia=get_ventas_por_dia_semana(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+        if not df_ventas_por_dia.empty:
+            st.bar_chart(df_ventas_por_dia.set_index('dia_semana')[['revenue_promedio','num_ordenes_promedio']])
+        #Ventas por franja horaria
+        df_ventas_franja_horaria=get_ventas_por_franja_horaria(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+        if not df_ventas_franja_horaria.empty:
+            st.bar_chart(df_ventas_franja_horaria.set_index('franja_horaria')[['revenue','num_ordenes']])
+        #Ventas por hora
+        df_ventas_por_hora=get_ventas_por_hora(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+        if not df_ventas_por_hora.empty:
+            st.line_chart(df_ventas_por_hora.set_index('hora')[['revenue_promedio','num_ordenes_promedio']])
+
 
 with tab2:
     st.header("Gestión de Productos")
