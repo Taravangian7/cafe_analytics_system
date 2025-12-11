@@ -266,6 +266,195 @@ def get_metodos_pago(conn, fecha_inicio=None, fecha_fin=None):
         GROUP BY Payment_method
         ORDER BY num_ordenes DESC
     """
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)  # pq sino sql tira error
+    fecha_fin_dt    = datetime.combine(fecha_fin, time.min)  
+    df = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
+    return df
+
+    # ============================================
+# 6. TOP 10 PRODUCTOS MÁS VENDIDOS
+# ============================================
+
+def get_top_productos_vendidos(conn, top_n=10, criterio='cantidad', fecha_inicio=None, fecha_fin=None):
+    """
+    Devuelve los productos más vendidos.
     
-    df = pd.read_sql(query, conn, params=(fecha_inicio, fecha_fin))
+    Args:
+        criterio: 'cantidad' o 'revenue'
+        top_n: número de productos a mostrar
+    
+    Returns:
+        DataFrame: [producto, cantidad_vendida, revenue]
+    """
+    if not fecha_fin:
+        fecha_fin = datetime.now().date()
+    if not fecha_inicio:
+        fecha_inicio = fecha_fin - timedelta(days=30)
+    
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)
+    fecha_fin_dt = datetime.combine(fecha_fin, time.min)
+    
+    order_by = "cantidad" if criterio == 'cantidad' else "revenue"
+    
+    query = f"""
+        SELECT TOP {top_n}
+            oi.Product_name AS producto,
+            SUM(oi.Quantity) AS cantidad,
+            SUM(oi.Total_price) AS revenue
+        FROM Order_items oi
+        JOIN Orders o ON o.Order_id = oi.Order_id
+        WHERE o.Order_date BETWEEN ? AND ?
+        GROUP BY oi.Product_name
+        ORDER BY {order_by} DESC
+    """
+    
+    df = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
+    return df
+
+
+# ============================================
+# 7. TOP 10 PRODUCTOS MENOS VENDIDOS
+# ============================================
+
+def get_productos_menos_vendidos(conn, top_n=10, fecha_inicio=None, fecha_fin=None):
+    """
+    Devuelve los productos menos vendidos (candidatos a sacar del menú).
+    
+    Returns:
+        DataFrame: [producto, cantidad_vendida, revenue, ultima_venta]
+    """
+    if not fecha_fin:
+        fecha_fin = datetime.now().date()
+    if not fecha_inicio:
+        fecha_inicio = fecha_fin - timedelta(days=30)
+    
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)
+    fecha_fin_dt = datetime.combine(fecha_fin, time.min)
+    
+    query = f"""
+        SELECT TOP {top_n}
+            oi.Product_name AS producto,
+            SUM(oi.Quantity) AS cantidad,
+            SUM(oi.Total_price) AS revenue,
+            MAX(o.Order_date) AS ultima_venta
+        FROM Order_items oi
+        JOIN Orders o ON o.Order_id = oi.Order_id
+        WHERE o.Order_date BETWEEN ? AND ?
+        GROUP BY oi.Product_name
+        ORDER BY cantidad ASC
+    """
+    
+    df = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
+    return df
+
+
+# ============================================
+# 8. PRODUCTOS POR CATEGORÍA
+# ============================================
+
+def get_ventas_por_categoria(conn, fecha_inicio=None, fecha_fin=None):
+    """
+    Devuelve ventas agrupadas por categoría de producto.
+    
+    Returns:
+        DataFrame: [categoria, cantidad_vendida, revenue, num_productos]
+    """
+    if not fecha_fin:
+        fecha_fin = datetime.now().date()
+    if not fecha_inicio:
+        fecha_inicio = fecha_fin - timedelta(days=30)
+    
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)
+    fecha_fin_dt = datetime.combine(fecha_fin, time.min)
+    
+    query = """
+        SELECT 
+            p.Categoria AS categoria,
+            SUM(oi.Quantity) AS cantidad_vendida,
+            SUM(oi.Total_price) AS revenue,
+            COUNT(DISTINCT oi.Product_name) AS num_productos
+        FROM Order_items oi
+        JOIN Orders o ON o.Order_id = oi.Order_id
+        JOIN Platos p ON p.Nombre = oi.Product_name
+        WHERE o.Order_date BETWEEN ? AND ?
+        GROUP BY p.Categoria
+        ORDER BY revenue DESC
+    """
+    
+    df = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
+    return df
+
+
+# ============================================
+# 9. ANÁLISIS DE RENTABILIDAD POR PRODUCTO
+# ============================================
+
+def get_rentabilidad_por_producto(conn, fecha_inicio=None, fecha_fin=None):
+    """
+    Devuelve análisis de rentabilidad: (precio - costo) × cantidad vendida.
+    
+    Returns:
+        DataFrame: [producto, cantidad_vendida, revenue, costo_total, ganancia_bruta, margen_%]
+    """
+    if not fecha_fin:
+        fecha_fin = datetime.now().date()
+    if not fecha_inicio:
+        fecha_inicio = fecha_fin - timedelta(days=30)
+    
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)
+    fecha_fin_dt = datetime.combine(fecha_fin, time.min)
+    
+    query = """
+        SELECT 
+            oi.Product_name AS producto,
+            SUM(oi.Quantity) AS cantidad_vendida,
+            SUM(oi.Total_price) AS revenue,
+            SUM(oi.Quantity * p.Costo) AS costo_total,
+            SUM(oi.Total_price - (oi.Quantity * p.Costo)) AS ganancia_bruta,
+            CASE 
+                WHEN SUM(oi.Total_price) > 0 
+                THEN CAST((SUM(oi.Total_price - (oi.Quantity * p.Costo)) / SUM(oi.Total_price)) * 100 AS DECIMAL(5,2))
+                ELSE 0 
+            END AS margen_porcentaje
+        FROM Order_items oi
+        JOIN Orders o ON o.Order_id = oi.Order_id
+        JOIN Platos p ON p.Nombre = oi.Product_name
+        WHERE o.Order_date BETWEEN ? AND ?
+        GROUP BY oi.Product_name
+        ORDER BY ganancia_bruta DESC
+    """
+    
+    df = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
+    return df
+
+
+# ============================================
+# 10. MARGEN DE GANANCIA POR PRODUCTO
+# ============================================
+
+def get_margen_por_producto(conn):
+    """
+    Devuelve el margen teórico de cada producto del menú (sin filtro de ventas).
+    Útil para revisar pricing.
+    
+    Returns:
+        DataFrame: [producto, precio, costo, margen_absoluto, margen_%]
+    """
+    query = """
+        SELECT 
+            Nombre AS producto,
+            Precio AS precio,
+            Costo AS costo,
+            (Precio - Costo) AS margen_absoluto,
+            CASE 
+                WHEN Precio > 0 
+                THEN CAST(((Precio - Costo) / Precio) * 100 AS DECIMAL(5,2))
+                ELSE 0 
+            END AS margen_porcentaje
+        FROM Platos
+        WHERE Precio IS NOT NULL AND Precio > 0
+        ORDER BY margen_porcentaje ASC
+    """
+    
+    df = pd.read_sql(query, conn)
     return df

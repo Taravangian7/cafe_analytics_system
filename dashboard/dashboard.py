@@ -1,14 +1,17 @@
 import streamlit as st
+import altair as alt
 import pyodbc
 import pandas as pd
 import sys
 from pathlib import Path
 from datetime import date,datetime,timedelta
+import matplotlib.pyplot as plt
 
 # Agregar carpeta padre al path (para encontrar create_plato)
 sys.path.append(str(Path(__file__).parent.parent))
 from create_plato import agregar_nuevo_ingrediente, agregar_nuevo_plato, borrar_plato, modificar_plato,modificar_ingrediente,obtener_campos
 from data_analyst import true_if_data,rango_fechas,get_metodos_pago, get_ventas_por_hora, get_ventas_por_franja_horaria,  get_ventas_por_dia_semana, get_ticket_promedio,get_revenue_por_periodo
+from data_analyst import get_top_productos_vendidos,get_productos_menos_vendidos
 # Configuración
 SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
 DATABASE = 'Cafe_Bar'
@@ -73,30 +76,87 @@ with tab1:
     
     
     fecha_con_datos=true_if_data(conn,fecha_inicio,fecha_fin)
+    
     if fecha_con_datos:
         st.header("Análisis de datos")
-        # Revenue por día
-        st.header("Ganancias por día")
-        df_revenue = get_revenue_por_periodo(conn, periodo='dia',fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
-        if not df_revenue.empty:
-            st.line_chart(df_revenue.set_index('periodo'),y_label="Ganancias")
-        
-        # Ticket promedio
-        ticket = get_ticket_promedio(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
-        if ticket !=0:
-            st.metric("Consumo promedio por orden", f"${ticket:.2f}")
-        #Ventas promedio por día de semana
-        df_ventas_por_dia=get_ventas_por_dia_semana(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
-        if not df_ventas_por_dia.empty:
-            st.bar_chart(df_ventas_por_dia.set_index('dia_semana')[['revenue_promedio','num_ordenes_promedio']])
-        #Ventas por franja horaria
-        df_ventas_franja_horaria=get_ventas_por_franja_horaria(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
-        if not df_ventas_franja_horaria.empty:
-            st.bar_chart(df_ventas_franja_horaria.set_index('franja_horaria')[['revenue','num_ordenes']])
-        #Ventas por hora
-        df_ventas_por_hora=get_ventas_por_hora(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
-        if not df_ventas_por_hora.empty:
-            st.line_chart(df_ventas_por_hora.set_index('hora')[['revenue_promedio','num_ordenes_promedio']])
+        ventas_data=st.checkbox(label="Datos de ventas")
+        if ventas_data:
+            
+            # Revenue por día
+            st.header("Ganancias por día")
+            df_revenue = get_revenue_por_periodo(conn, periodo='dia',fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            if not df_revenue.empty:
+                st.line_chart(df_revenue.set_index('periodo'),y_label="Ganancias")
+            
+            # Ticket promedio
+            ticket = get_ticket_promedio(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            if ticket !=0:
+                st.metric("Consumo promedio por orden", f"${ticket:.2f}")
+            #Ventas promedio por día de semana
+            df_ventas_por_dia=get_ventas_por_dia_semana(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            if not df_ventas_por_dia.empty:
+                st.bar_chart(df_ventas_por_dia.set_index('dia_semana')[['revenue_promedio','num_ordenes_promedio']])
+            #Ventas por franja horaria
+            df_ventas_franja_horaria=get_ventas_por_franja_horaria(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            if not df_ventas_franja_horaria.empty:
+                st.bar_chart(df_ventas_franja_horaria.set_index('franja_horaria')[['revenue','num_ordenes']])
+            #Ventas por hora
+            df_ventas_por_hora=get_ventas_por_hora(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            if not df_ventas_por_hora.empty:
+                st.line_chart(df_ventas_por_hora.set_index('hora')[['revenue_promedio','num_ordenes_promedio']])
+            #Método de pago
+            df_metodo_pago = get_metodos_pago(conn, fecha_inicio, fecha_fin)
+            st.subheader("Distribución de Operaciones por Método de Pago")
+            fig1, ax1 = plt.subplots()
+            ax1.pie(df_metodo_pago["num_ordenes"], labels=df_metodo_pago["metodo_pago"], autopct='%1.1f%%')
+            ax1.axis('equal')
+            st.pyplot(fig1)
+            st.subheader("Distribución de Ingresos por Método de Pago")
+            fig2, ax2 = plt.subplots()
+            ax2.pie(df_metodo_pago["revenue"], labels=df_metodo_pago["metodo_pago"], autopct='%1.1f%%')
+            ax2.axis('equal')
+            st.pyplot(fig2)
+        productos_data=st.checkbox(label="Datos de productos")
+        if productos_data:
+            # Productos más vendidos
+            st.header("Productos más vendidos")
+            productos_vendidos_criterio=st.selectbox(label="Seleccione un criterio",options=["cantidad","revenue"])
+            df_productos_vendidos=get_top_productos_vendidos(conn,10,productos_vendidos_criterio,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            chart = (
+                alt.Chart(df_productos_vendidos)
+                .mark_bar()
+                .encode(
+                    x=alt.X(productos_vendidos_criterio, title=productos_vendidos_criterio),
+                    y=alt.Y('producto:N', sort=None, title='Producto')  # respeta el orden original del DataFrame
+                )
+                .properties(height=400)
+            )
+
+            st.altair_chart(chart, use_container_width=True)
+            # Productos menos vendidos
+            st.header("Productos menos vendidos")
+            df_productos_menos_vendidos=get_productos_menos_vendidos(conn,10,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            chart = (
+            alt.Chart(df_productos_menos_vendidos)
+            .mark_bar()
+            .encode(
+                # cantidad va en X (valor numérico) -> :Q
+                x=alt.X('cantidad:Q', title='Cantidad'),
+                # producto en Y (categoría) -> :N ; sort=None preserva el orden del DataFrame
+                y=alt.Y('producto:N', sort=None, title='Producto'),
+                # tooltip VA DENTRO de encode
+                tooltip=[
+                    alt.Tooltip('producto:N', title='Producto'),
+                    alt.Tooltip('revenue:Q', title='Ingresos', format="$.2f"),
+                    alt.Tooltip('cantidad:Q', title='Cantidad'),
+                    alt.Tooltip('ultima_venta:T', title='Última venta')
+                ]
+            )
+            .properties(height=400)
+            )
+
+            st.altair_chart(chart, use_container_width=True)
+
 
 
 with tab2:
