@@ -448,7 +448,7 @@ def get_margen_por_producto(conn):
             (Precio - Costo) AS margen_absoluto,
             CASE 
                 WHEN Precio > 0 
-                THEN CAST(((Precio - Costo) / Precio) * 100 AS DECIMAL(5,2))
+                THEN CAST((((Precio - Costo) / Precio) * 100) AS DECIMAL(5,2))
                 ELSE 0 
             END AS margen_porcentaje
         FROM Platos
@@ -458,3 +458,79 @@ def get_margen_por_producto(conn):
     
     df = pd.read_sql(query, conn)
     return df
+
+    #RENTABILIDAD
+    # 11. GANANCIA BRUTA TOTAL
+# ============================================
+
+def get_ganancia_bruta_total(conn, fecha_inicio=None, fecha_fin=None):
+    """
+    Devuelve ganancia bruta total: Revenue - Costos
+    
+    Returns:
+        dict: {revenue, costo_total, ganancia_bruta}
+    """
+    if not fecha_fin:
+        fecha_fin = datetime.now().date()
+    if not fecha_inicio:
+        fecha_inicio = fecha_fin - timedelta(days=30)
+    
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)
+    fecha_fin_dt = datetime.combine(fecha_fin, time.min)
+    
+    query = """
+        SELECT 
+            SUM(oi.Total_price) AS revenue,
+            SUM(oi.Quantity * p.Costo) AS costo_total,
+            SUM(oi.Total_price - (oi.Quantity * p.Costo)) AS ganancia_bruta
+        FROM Order_items oi
+        JOIN Orders o ON o.Order_id = oi.Order_id
+        JOIN Platos p ON p.Nombre = oi.Product_name
+        WHERE o.Order_date BETWEEN ? AND ?
+    """
+    
+    result = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
+    return {
+        'revenue': float(result['revenue'].iloc[0]) if result['revenue'].iloc[0] else 0.0,
+        'costo_total': float(result['costo_total'].iloc[0]) if result['costo_total'].iloc[0] else 0.0,
+        'ganancia_bruta': float(result['ganancia_bruta'].iloc[0]) if result['ganancia_bruta'].iloc[0] else 0.0
+    }
+
+
+# ============================================
+# 12. MARGEN PROMEDIO DEL NEGOCIO
+# ============================================
+
+def get_margen_promedio_negocio(conn, fecha_inicio=None, fecha_fin=None):
+    """
+    Devuelve el margen promedio del negocio: % ganancia sobre ventas
+    
+    Returns:
+        float: margen en porcentaje
+    """
+    datos = get_ganancia_bruta_total(conn, fecha_inicio, fecha_fin)
+    
+    if datos['revenue'] > 0:
+        margen = (datos['ganancia_bruta'] / datos['revenue']) * 100
+        return round(margen, 2)
+    return 0.0
+
+
+# ============================================
+# 13. FOOD COST %
+# ============================================
+
+def get_food_cost_percentage(conn, fecha_inicio=None, fecha_fin=None):
+    """
+    Devuelve el food cost %: Costo ingredientes / Revenue
+    Ideal: 25-35%
+    
+    Returns:
+        float: food cost en porcentaje
+    """
+    datos = get_ganancia_bruta_total(conn, fecha_inicio, fecha_fin)
+    
+    if datos['revenue'] > 0:
+        food_cost = (datos['costo_total'] / datos['revenue']) * 100
+        return round(food_cost, 2)
+    return 0.0

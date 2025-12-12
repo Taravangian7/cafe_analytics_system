@@ -11,7 +11,8 @@ import matplotlib.pyplot as plt
 sys.path.append(str(Path(__file__).parent.parent))
 from create_plato import agregar_nuevo_ingrediente, agregar_nuevo_plato, borrar_plato, modificar_plato,modificar_ingrediente,obtener_campos
 from data_analyst import true_if_data,rango_fechas,get_metodos_pago, get_ventas_por_hora, get_ventas_por_franja_horaria,  get_ventas_por_dia_semana, get_ticket_promedio,get_revenue_por_periodo
-from data_analyst import get_top_productos_vendidos,get_productos_menos_vendidos
+from data_analyst import get_top_productos_vendidos,get_productos_menos_vendidos,get_ventas_por_categoria,get_rentabilidad_por_producto,get_margen_por_producto
+from data_analyst import get_ganancia_bruta_total,get_margen_promedio_negocio,get_food_cost_percentage
 # Configuración
 SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
 DATABASE = 'Cafe_Bar'
@@ -154,8 +155,78 @@ with tab1:
             )
             .properties(height=400)
             )
-
             st.altair_chart(chart, use_container_width=True)
+            # Ventas por categoría
+            st.header("Ventas por categorías")
+            df_ventas_categoria=get_ventas_por_categoria(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            chart = (
+                alt.Chart(df_ventas_categoria)
+                .mark_bar()
+                .encode(
+                    x=alt.X('revenue:Q', title='Ingresos'),
+                    y=alt.Y('categoria:N', sort='-x', title='Categoría'),
+                    tooltip=[
+                        alt.Tooltip('categoria:N', title='Categoría'),
+                        alt.Tooltip('revenue:Q', title='Ingresos', format="$.2f"),
+                        alt.Tooltip('cantidad_vendida:Q', title='Cantidad vendida'),
+                        alt.Tooltip('num_productos:Q', title='Productos en categoría')
+                    ]
+                )
+            .properties(height=400)
+            )
+            st.altair_chart(chart, use_container_width=True)
+            # Rentabilidad por producto
+            st.header("Rentabilidad por producto")
+            df_rentabilidad=get_rentabilidad_por_producto(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            chart = (
+                alt.Chart(df_rentabilidad)
+                .mark_bar()
+                .encode(
+                    x=alt.X('ganancia_bruta:Q', title='Ganancia Bruta'),
+                    y=alt.Y('producto:N', sort='-x', title='Producto'),
+                    tooltip=[
+                        alt.Tooltip('revenue:Q', title='Ingresos', format="$.2f"),
+                        alt.Tooltip('cantidad_vendida:Q', title='Cantidad vendida'),
+                        alt.Tooltip('margen_porcentaje:Q', title='Margen de ganancia (%)') #Del precio total, este porcentaje es ganancia
+                    ]
+                )
+            .properties(height=400)
+            )
+            st.altair_chart(chart, use_container_width=True)
+            # Margen que deja cada producto
+            st.header("Margen por producto (unitario)")
+            df_margen_producto=get_margen_por_producto(conn)
+            chart = (
+                alt.Chart(df_margen_producto)
+                .mark_bar()
+                .encode(
+                    x=alt.X('margen_porcentaje:Q', title='Margen de ganancia (%)'),
+                    y=alt.Y('producto:N', sort='-x', title='Producto'),
+                    tooltip=[
+                        alt.Tooltip('precio:Q', title='Precio', format="$.2f"),
+                        alt.Tooltip('costo:Q', title='Costo', format="$.2f"),
+                        alt.Tooltip('margen_porcentaje:Q', title='Margen (%)') #Del precio total, este porcentaje es ganancia
+                    ]
+                )
+            .properties(height=400)
+            )
+            st.altair_chart(chart, use_container_width=True)
+        #RENTABILIDAD GLOBAL
+        rentabilidad_data=st.checkbox(label="Datos de rentabilidad global")
+        if rentabilidad_data:
+            # Ganancia bruta total
+            st.header("Rentabilidad Global")
+            dict_ganancia_bruta= get_ganancia_bruta_total(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            margen_promedio_negocio= get_margen_promedio_negocio(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            costos_ingredientes_sobre_total=get_food_cost_percentage(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            col1, col2, col3, col4 = st.columns(4)
+            col1.metric("Ingresos Totales", f"${dict_ganancia_bruta['revenue']:,.0f}")
+            col2.metric("Costo Total", f"${dict_ganancia_bruta['costo_total']:,.0f}")
+            col3.metric("Ganancia Bruta", f"${dict_ganancia_bruta['ganancia_bruta']:,.0f}")
+            col4.metric("Margen de Ganancias", f"{margen_promedio_negocio:.1f}%")
+        #TENDENCIAS
+        #INSIGHTS ACCIONABLES
+
 
 
 
