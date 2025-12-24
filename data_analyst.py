@@ -1,9 +1,6 @@
 import pandas as pd
-from datetime import datetime, timedelta,time
+from datetime import datetime, timedelta,time,date
 
-# ============================================
-# 1. REVENUE TOTAL POR DÍA/SEMANA/MES
-# ============================================
 def rango_fechas(conn,anio=None,mes=None,fecha_inicial=None):
     
     if not fecha_inicial:
@@ -30,8 +27,11 @@ def rango_fechas(conn,anio=None,mes=None,fecha_inicial=None):
 
     return lista_fechas, year
 
-def true_if_data(conn, fecha_inicial, fecha_final):
+def true_if_data(conn, fecha_inicial=None, fecha_final=None):
     cursor = conn.cursor()
+    if fecha_inicial==None:
+        fecha_final=datetime.now().date() - timedelta(days=1)
+        fecha_inicial= fecha_final-timedelta(days=83) #12 semanas
     cursor.execute(
         "SELECT 1 FROM Orders WHERE Order_date BETWEEN ? AND ?",
         (str(fecha_inicial), str(fecha_final))
@@ -41,6 +41,9 @@ def true_if_data(conn, fecha_inicial, fecha_final):
     return data is not None
 
 
+# ============================================
+# 1. REVENUE TOTAL POR DÍA/SEMANA/MES
+# ============================================
 def get_revenue_por_periodo(conn, periodo='dia', fecha_inicio=None, fecha_fin=None):
     """
     Devuelve revenue agrupado por periodo.
@@ -681,3 +684,123 @@ def get_ventas_por_mes(conn, fecha_inicio=None, fecha_fin=None):
     # Crear columna legible "Mes-Año"
     df['periodo'] = df['año'].astype(str) + '-' + df['mes'].astype(str).str.zfill(2)
     return df
+# ============================================
+# 18. INGRESOS ULTIMAS SEMANAS (TENDENCIA)
+# ============================================
+def get_ingresos_ultimas_semanas(conn, num_semanas=12):
+    """
+    Devuelve ingresos semanales de las últimas N semanas completas.
+    La semana 1 es la más reciente.
+    
+    Returns:
+        DataFrame:
+        [semana, fecha_inicio, fecha_fin, revenue, num_ordenes]
+    """
+
+    # --------------------------------------------------
+    # 1) Definir rango de fechas
+    # --------------------------------------------------
+    fecha_fin = datetime.now().date() - timedelta(days=1)   # ayer
+    fecha_inicio = fecha_fin - timedelta(days=num_semanas * 7 - 1)
+
+    #PRUEBA
+    # PRUEBA: simulo que "hoy" es 2024-10-27
+    fecha_referencia = date(2024, 10, 27)
+
+    fecha_fin = fecha_referencia - timedelta(days=1)  # "ayer"
+    fecha_inicio = fecha_fin - timedelta(days=num_semanas * 7 - 1)
+    #Preparo para SQL
+    fecha_fin_dt = datetime.combine(fecha_fin, time.min)
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)
+
+    # --------------------------------------------------
+    # 2) Traer ventas agrupadas por día
+    # --------------------------------------------------
+    query = """
+        SELECT
+            Order_date AS fecha,
+            SUM(Total_cost) AS revenue,
+            COUNT(*) AS num_ordenes
+        FROM Orders
+        WHERE Order_date BETWEEN ? AND ?
+        GROUP BY Order_date
+        ORDER BY Order_date
+    """
+
+    df = pd.read_sql(
+        query,
+        conn,
+        params=(fecha_inicio_dt, fecha_fin_dt),
+        parse_dates=['fecha']
+    )
+
+    # --------------------------------------------------
+    # 3) Completar días sin ventas
+    # --------------------------------------------------
+    rango_fechas = pd.date_range(start=fecha_inicio, end=fecha_fin)
+
+    df = (
+        df.set_index('fecha')
+          .reindex(rango_fechas, fill_value=0)
+          .rename_axis('fecha')
+          .reset_index()
+    )
+
+    # --------------------------------------------------
+    # 4) Crear índice diario y semanas por bloques de 7
+    # --------------------------------------------------
+    df['dia_index'] = (df['fecha'] - df['fecha'].min()).dt.days
+    df['semana'] = (df['dia_index'] // 7) + 1
+
+    # Invertir numeración (semana 1 = más reciente)
+    df['semana'] = df['semana'].max() - df['semana'] + 1
+
+    # --------------------------------------------------
+    # 5) Agregar a nivel semanal
+    # --------------------------------------------------
+    df_semanal = (
+        df.groupby('semana')
+          .agg(
+              fecha_inicio=('fecha', 'min'),
+              fecha_fin=('fecha', 'max'),
+              revenue=('revenue', 'sum'),
+              num_ordenes=('num_ordenes', 'sum')
+          )
+          .reset_index()
+          .sort_values('semana')
+    )
+
+    return df_semanal
+
+def variacion_semanal_mensual(df):
+    # --- SEMANAL ---
+    ingreso_semana_actual = df.loc[df['semana'] == 1, 'revenue'].sum()
+    ingreso_semana_anterior = df.loc[df['semana'] == 2, 'revenue'].sum()
+
+    # Variación semanal (%)
+    if ingreso_semana_anterior > 0:
+        variacion_semanal = (
+            (ingreso_semana_actual - ingreso_semana_anterior)
+            / ingreso_semana_anterior
+        ) * 100
+        delta_semanal = f"{variacion_semanal:.1f}% vs semana anterior"
+    else:
+        variacion_semanal = 0
+        delta_semanal="Sin datos previos"
+
+
+    # --- MENSUAL (4 semanas) ---
+    ingreso_mes_actual = df.loc[df['semana'].between(1, 4), 'revenue'].sum()
+    ingreso_mes_anterior = df.loc[df['semana'].between(5, 8), 'revenue'].sum()
+
+    # Variación mensual (%)
+    if ingreso_mes_anterior > 0:
+        variacion_mensual = (
+            (ingreso_mes_actual - ingreso_mes_anterior)
+            / ingreso_mes_anterior
+        ) * 100
+        delta_mensual = f"{variacion_mensual:.1f}% vs mes anterior"
+    else:
+        variacion_mensual = 0
+        delta_mensual="Sin datos previos"
+    return ingreso_semana_actual,delta_semanal,ingreso_mes_actual,delta_mensual

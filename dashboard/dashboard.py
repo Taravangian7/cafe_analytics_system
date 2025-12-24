@@ -12,7 +12,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 from create_plato import agregar_nuevo_ingrediente, agregar_nuevo_plato, borrar_plato, modificar_plato,modificar_ingrediente,obtener_campos
 from data_analyst import true_if_data,rango_fechas,get_metodos_pago, get_ventas_por_hora, get_ventas_por_franja_horaria,  get_ventas_por_dia_semana, get_ticket_promedio,get_revenue_por_periodo
 from data_analyst import get_top_productos_vendidos,get_productos_menos_vendidos,get_ventas_por_categoria,get_rentabilidad_por_producto,get_margen_por_producto
-from data_analyst import get_ganancia_bruta_total,get_margen_promedio_negocio,get_food_cost_percentage,get_productos_especiales_vendidos,get_dine_in_vs_takeaway,get_combos_frecuentes,get_ventas_por_mes
+from data_analyst import get_ganancia_bruta_total,get_margen_promedio_negocio,get_food_cost_percentage,get_productos_especiales_vendidos,get_dine_in_vs_takeaway,get_combos_frecuentes,get_ventas_por_mes,get_ingresos_ultimas_semanas,variacion_semanal_mensual
 # Configuración
 SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
 DATABASE = 'Cafe_Bar'
@@ -32,7 +32,52 @@ st.title("☕ Café Analytics Dashboard")
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Ventas", "🍽️ Productos", "📦 Ingredientes","Platos","Modificaciones"])
 
 with tab1:
-    st.header("Análisis de Ventas")
+    st.header("Análisis de Datos")
+    #if true_if_data(conn):
+
+    ultimas_12_semanas= get_ingresos_ultimas_semanas(conn)
+    ingreso_semana_actual,variacion_semanal,ingreso_mes_actual,variacion_mensual=variacion_semanal_mensual(ultimas_12_semanas)
+    
+    col1, col2 = st.columns(2)
+    col1.metric(
+        label="Ingreso última semana",
+        value=f"${ingreso_semana_actual:,.0f}",
+        delta=variacion_semanal
+    )
+
+    col2.metric(
+        label="Ingreso últimas 4 semanas",
+        value=f"${ingreso_mes_actual:,.0f}",
+        delta=variacion_mensual
+    )
+
+    st.subheader("Ingresos últimos 3 meses")
+    
+    chart = (
+        alt.Chart(ultimas_12_semanas)
+        .mark_bar()
+        .encode(
+            x=alt.X(
+                'semana:O',
+                title='Semana (1 = más reciente)',
+                sort='descending'
+            ),
+            y=alt.Y(
+                'revenue:Q',
+                title='Ingresos'
+            ),
+            tooltip=[
+                alt.Tooltip('semana:O', title='Semana'),
+                alt.Tooltip('fecha_inicio:T', title='Fecha inicio'),
+                alt.Tooltip('fecha_fin:T', title='Fecha fin'),
+                alt.Tooltip('revenue:Q', title='Ingresos', format='$,.2f'),
+                alt.Tooltip('num_ordenes:Q', title='Cantidad de órdenes'),
+            ]
+        )
+        .properties(height=400)
+    )
+    st.altair_chart(chart, use_container_width=True)
+
     st.header("Seleccionar Rango de Fechas")
     fechas= st.selectbox("Rango de fechas",["Última semana","Último mes","Ingrese manualmente"])
     if fechas=="Última semana":
@@ -84,43 +129,57 @@ with tab1:
         if ventas_data:
             
             # Revenue por día
-            st.header("Ganancias por día")
+            st.subheader("Ganancias por día")
             df_revenue = get_revenue_por_periodo(conn, periodo='dia',fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             if not df_revenue.empty:
                 st.line_chart(df_revenue.set_index('periodo'),y_label="Ganancias")
             
             # Ticket promedio
+            st.subheader("Tickets promedio vendidos")
             ticket = get_ticket_promedio(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             if ticket !=0:
                 st.metric("Consumo promedio por orden", f"${ticket:.2f}")
             #Ventas promedio por día de semana
+            st.subheader("Ventas promedio por día de semana")
             df_ventas_por_dia=get_ventas_por_dia_semana(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             if not df_ventas_por_dia.empty:
                 st.bar_chart(df_ventas_por_dia.set_index('dia_semana')[['revenue_promedio','num_ordenes_promedio']])
             #Ventas por franja horaria
+            st.subheader("Ventas por franja horaria")
             df_ventas_franja_horaria=get_ventas_por_franja_horaria(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             if not df_ventas_franja_horaria.empty:
                 st.bar_chart(df_ventas_franja_horaria.set_index('franja_horaria')[['revenue','num_ordenes']])
             #Ventas por hora
+            st.subheader("Ventas promedio por horario")
             df_ventas_por_hora=get_ventas_por_hora(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             if not df_ventas_por_hora.empty:
                 st.line_chart(df_ventas_por_hora.set_index('hora')[['revenue_promedio','num_ordenes_promedio']])
             #Método de pago
-            df_metodo_pago = get_metodos_pago(conn, fecha_inicio, fecha_fin)
             st.subheader("Distribución de Operaciones por Método de Pago")
-            fig1, ax1 = plt.subplots()
-            ax1.pie(df_metodo_pago["num_ordenes"], labels=df_metodo_pago["metodo_pago"], autopct='%1.1f%%')
-            ax1.axis('equal')
-            st.pyplot(fig1)
-            st.subheader("Distribución de Ingresos por Método de Pago")
-            fig2, ax2 = plt.subplots()
-            ax2.pie(df_metodo_pago["revenue"], labels=df_metodo_pago["metodo_pago"], autopct='%1.1f%%')
-            ax2.axis('equal')
-            st.pyplot(fig2)
+            df_metodo_pago = get_metodos_pago(conn, fecha_inicio, fecha_fin)
+            chart = (
+                alt.Chart(df_metodo_pago)
+                .mark_arc(innerRadius=50)  # donut, más fachero
+                .encode(
+                    theta=alt.Theta('revenue:Q', title='Ingresos'),
+                    color=alt.Color('metodo_pago:N', title='Método de pago'),
+                    tooltip=[
+                        alt.Tooltip('metodo_pago:N', title='Tipo'),
+                        alt.Tooltip('revenue:Q', title='Ingresos', format="$.2f"),
+                        alt.Tooltip('num_ordenes:Q', title='Cantidad de órdenes'),
+                        alt.Tooltip('porcentaje:Q', title='Porcentaje', format=".1f")
+                    ]
+                )
+                .properties(height=400)
+            )
+
+            st.altair_chart(chart, use_container_width=True)
+
+
         productos_data=st.checkbox(label="Datos de productos")
         if productos_data:
             # Productos más vendidos
-            st.header("Productos más vendidos")
+            st.subheader("Productos más vendidos")
             productos_vendidos_criterio=st.selectbox(label="Seleccione un criterio",options=["cantidad","revenue"])
             df_productos_vendidos=get_top_productos_vendidos(conn,10,productos_vendidos_criterio,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             chart = (
@@ -135,7 +194,7 @@ with tab1:
 
             st.altair_chart(chart, use_container_width=True)
             # Productos menos vendidos
-            st.header("Productos menos vendidos")
+            st.subheader("Productos menos vendidos")
             df_productos_menos_vendidos=get_productos_menos_vendidos(conn,10,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             chart = (
             alt.Chart(df_productos_menos_vendidos)
@@ -157,7 +216,7 @@ with tab1:
             )
             st.altair_chart(chart, use_container_width=True)
             # Ventas por categoría
-            st.header("Ventas por categorías")
+            st.subheader("Ventas por categorías")
             df_ventas_categoria=get_ventas_por_categoria(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             chart = (
                 alt.Chart(df_ventas_categoria)
@@ -176,7 +235,7 @@ with tab1:
             )
             st.altair_chart(chart, use_container_width=True)
             # Rentabilidad por producto
-            st.header("Rentabilidad por producto")
+            st.subheader("Rentabilidad por producto")
             df_rentabilidad=get_rentabilidad_por_producto(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             chart = (
                 alt.Chart(df_rentabilidad)
@@ -194,7 +253,7 @@ with tab1:
             )
             st.altair_chart(chart, use_container_width=True)
             # Margen que deja cada producto
-            st.header("Margen por producto (unitario)")
+            st.subheader("Margen por producto (unitario)")
             df_margen_producto=get_margen_por_producto(conn)
             chart = (
                 alt.Chart(df_margen_producto)
@@ -215,7 +274,7 @@ with tab1:
         rentabilidad_data=st.checkbox(label="Datos de rentabilidad global")
         if rentabilidad_data:
             # Ganancia bruta total
-            st.header("Rentabilidad Global")
+            st.subheader("Rentabilidad Global")
             dict_ganancia_bruta= get_ganancia_bruta_total(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             margen_promedio_negocio= get_margen_promedio_negocio(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             col1, col2, col3, col4 = st.columns(4)
@@ -227,13 +286,11 @@ with tab1:
         tendencias_data=st.checkbox(label="Tendencias")
         if tendencias_data:
             # Ventas por mes
+            st.subheader("Ventas mensuales")
             ventas_por_mes= get_ventas_por_mes(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
-            metrica_tendencia_mes = st.radio(
-                "Métrica",
-                ["revenue", "num_ordenes"],
-                horizontal=True
-            )
-
+            metrica_tendencia_mes = st.selectbox(label="Métrica",options=["revenue", "cantidad de órdenes"])
+            if metrica_tendencia_mes=="cantidad de órdenes":
+                metrica_tendencia_mes="num_ordenes"
             titulo_tendencia_mes = "Ingresos" if metrica_tendencia_mes == "revenue" else "Cantidad de órdenes"
 
             chart = (
@@ -256,7 +313,7 @@ with tab1:
         otros_data=st.checkbox(label="Otros")
         if otros_data:
             # Productos especiales vendidos
-            st.header("Productos especiales vendidos")
+            st.subheader("Productos especiales vendidos")
             tipo_especial=st.selectbox(label="Especial",options=["Gluten Free","Dairy Free"])
             df_especiales_vendidos=get_productos_especiales_vendidos(conn, tipo=tipo_especial, top_n=5,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             chart = (
@@ -274,7 +331,7 @@ with tab1:
             )
             st.altair_chart(chart, use_container_width=True)
             # Dine in vs Take away
-            st.header("Dine in vs Take away")
+            st.subheader("Dine in vs Take away")
             df_dine_in_take_away=get_dine_in_vs_takeaway(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             chart = (
                 alt.Chart(df_dine_in_take_away)
@@ -294,7 +351,7 @@ with tab1:
 
             st.altair_chart(chart, use_container_width=True)
             # Combos de productos
-            st.header("Combinaciones de productos")
+            st.subheader("Combinaciones de productos")
             df_combinaciones=get_combos_frecuentes(conn, top_n=10, fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             df_combinaciones = (
                 df_combinaciones.rename(columns={
