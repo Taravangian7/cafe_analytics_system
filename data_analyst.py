@@ -534,3 +534,150 @@ def get_food_cost_percentage(conn, fecha_inicio=None, fecha_fin=None):
         food_cost = (datos['costo_total'] / datos['revenue']) * 100
         return round(food_cost, 2)
     return 0.0
+
+# 14. PRODUCTOS GLUTEN-FREE/DAIRY-FREE MÁS VENDIDOS
+# ============================================
+
+def get_productos_especiales_vendidos(conn, tipo='Gluten Free', top_n=3, fecha_inicio=None, fecha_fin=None):
+    """
+    Devuelve productos gluten-free o dairy-free más vendidos.
+    
+    Args:
+        tipo: 'gluten_free' o 'dairy_free'
+    
+    Returns:
+        DataFrame: [producto, cantidad_vendida, revenue]
+    """
+    if not fecha_fin:
+        fecha_fin = datetime.now().date()
+    if not fecha_inicio:
+        fecha_inicio = fecha_fin - timedelta(days=30)
+    
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)
+    fecha_fin_dt = datetime.combine(fecha_fin, time.min)
+    
+    columna = 'Gluten_free' if tipo == 'Gluten Free' else 'Dairy_free'
+    
+    query = f"""
+        SELECT TOP {top_n}
+            oi.Product_name AS producto,
+            SUM(oi.Quantity) AS cantidad_vendida,
+            SUM(oi.Total_price) AS revenue
+        FROM Order_items oi
+        JOIN Orders o ON o.Order_id = oi.Order_id
+        JOIN Platos p ON p.Nombre = oi.Product_name
+        WHERE o.Order_date BETWEEN ? AND ?
+          AND p.{columna} = 1
+        GROUP BY oi.Product_name
+        ORDER BY cantidad_vendida DESC
+    """
+    
+    df = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
+    return df
+
+
+# ============================================
+# 15. DINE-IN VS TAKEAWAY
+# ============================================
+
+def get_dine_in_vs_takeaway(conn, fecha_inicio=None, fecha_fin=None):
+    """
+    Devuelve comparación entre Dine-in y Takeaway.
+    
+    Returns:
+        DataFrame: [tipo_orden, num_ordenes, revenue, porcentaje]
+    """
+    if not fecha_fin:
+        fecha_fin = datetime.now().date()
+    if not fecha_inicio:
+        fecha_inicio = fecha_fin - timedelta(days=30)
+    
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)
+    fecha_fin_dt = datetime.combine(fecha_fin, time.min)
+    
+    query = """
+        SELECT 
+            Order_type AS tipo_orden,
+            COUNT(*) AS num_ordenes,
+            SUM(Total_cost) AS revenue,
+            CAST(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS DECIMAL(5,2)) AS porcentaje
+        FROM Orders
+        WHERE Order_date BETWEEN ? AND ?
+        GROUP BY Order_type
+        ORDER BY num_ordenes DESC
+    """
+    
+    df = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
+    return df
+
+
+# ============================================
+# 16. COMBOS FRECUENTES
+# ============================================
+
+def get_combos_frecuentes(conn, top_n=10, fecha_inicio=None, fecha_fin=None):
+    """
+    Devuelve los combos de productos más frecuentes (productos comprados juntos).
+    
+    Returns:
+        DataFrame: [producto_1, producto_2, veces_juntos]
+    """
+    if not fecha_fin:
+        fecha_fin = datetime.now().date()
+    if not fecha_inicio:
+        fecha_inicio = fecha_fin - timedelta(days=30)
+    
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)
+    fecha_fin_dt = datetime.combine(fecha_fin, time.min)
+    
+    query = f"""
+        SELECT TOP {top_n}
+            oi1.Product_name AS producto_1,
+            oi2.Product_name AS producto_2,
+            COUNT(*) AS veces_juntos
+        FROM Order_items oi1
+        JOIN Order_items oi2 ON oi1.Order_id = oi2.Order_id AND oi1.Product_name < oi2.Product_name
+        JOIN Orders o ON o.Order_id = oi1.Order_id
+        WHERE o.Order_date BETWEEN ? AND ?
+        GROUP BY oi1.Product_name, oi2.Product_name
+        ORDER BY veces_juntos DESC
+    """
+    
+    df = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
+    return df
+
+
+# ============================================
+# 17. VENTAS POR MES (TENDENCIA)
+# ============================================
+
+def get_ventas_por_mes(conn, fecha_inicio=None, fecha_fin=None):
+    """
+    Devuelve ventas por mes (todos los datos históricos).
+    
+    Returns:
+        DataFrame: [año, mes, revenue, num_ordenes]
+    """
+    if not fecha_fin:
+        fecha_fin = datetime.now().date()
+    if not fecha_inicio:
+        fecha_inicio = fecha_fin - timedelta(days=30)
+    
+    fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)
+    fecha_fin_dt = datetime.combine(fecha_fin, time.min)
+    query = """
+        SELECT 
+            YEAR(Order_date) AS año,
+            MONTH(Order_date) AS mes,
+            SUM(Total_cost) AS revenue,
+            COUNT(*) AS num_ordenes
+        FROM Orders
+        WHERE Order_date BETWEEN ? AND ?
+        GROUP BY YEAR(Order_date), MONTH(Order_date)
+        ORDER BY año, mes
+    """
+    
+    df = pd.read_sql(query, conn, params=(fecha_inicio_dt, fecha_fin_dt))
+    # Crear columna legible "Mes-Año"
+    df['periodo'] = df['año'].astype(str) + '-' + df['mes'].astype(str).str.zfill(2)
+    return df

@@ -12,7 +12,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 from create_plato import agregar_nuevo_ingrediente, agregar_nuevo_plato, borrar_plato, modificar_plato,modificar_ingrediente,obtener_campos
 from data_analyst import true_if_data,rango_fechas,get_metodos_pago, get_ventas_por_hora, get_ventas_por_franja_horaria,  get_ventas_por_dia_semana, get_ticket_promedio,get_revenue_por_periodo
 from data_analyst import get_top_productos_vendidos,get_productos_menos_vendidos,get_ventas_por_categoria,get_rentabilidad_por_producto,get_margen_por_producto
-from data_analyst import get_ganancia_bruta_total,get_margen_promedio_negocio,get_food_cost_percentage
+from data_analyst import get_ganancia_bruta_total,get_margen_promedio_negocio,get_food_cost_percentage,get_productos_especiales_vendidos,get_dine_in_vs_takeaway,get_combos_frecuentes,get_ventas_por_mes
 # Configuración
 SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
 DATABASE = 'Cafe_Bar'
@@ -218,14 +218,97 @@ with tab1:
             st.header("Rentabilidad Global")
             dict_ganancia_bruta= get_ganancia_bruta_total(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             margen_promedio_negocio= get_margen_promedio_negocio(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
-            costos_ingredientes_sobre_total=get_food_cost_percentage(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
             col1, col2, col3, col4 = st.columns(4)
             col1.metric("Ingresos Totales", f"${dict_ganancia_bruta['revenue']:,.0f}")
             col2.metric("Costo Total", f"${dict_ganancia_bruta['costo_total']:,.0f}")
             col3.metric("Ganancia Bruta", f"${dict_ganancia_bruta['ganancia_bruta']:,.0f}")
             col4.metric("Margen de Ganancias", f"{margen_promedio_negocio:.1f}%")
         #TENDENCIAS
-        #INSIGHTS ACCIONABLES
+        tendencias_data=st.checkbox(label="Tendencias")
+        if tendencias_data:
+            # Ventas por mes
+            ventas_por_mes= get_ventas_por_mes(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            metrica_tendencia_mes = st.radio(
+                "Métrica",
+                ["revenue", "num_ordenes"],
+                horizontal=True
+            )
+
+            titulo_tendencia_mes = "Ingresos" if metrica_tendencia_mes == "revenue" else "Cantidad de órdenes"
+
+            chart = (
+                alt.Chart(ventas_por_mes)
+                .mark_line(point=True)
+                .encode(
+                    x=alt.X('periodo:N', title='Período'),
+                    y=alt.Y(f'{metrica_tendencia_mes}:Q', title=titulo_tendencia_mes),
+                    tooltip=[
+                        alt.Tooltip('periodo:N', title='Período'),
+                        alt.Tooltip(f'{metrica_tendencia_mes}:Q', title=titulo_tendencia_mes)
+                    ]
+                )
+                .properties(height=400)
+            )
+            st.altair_chart(chart, use_container_width=True)
+
+        #OTROS ANÁLISIS
+        costos_ingredientes_sobre_total=get_food_cost_percentage(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+        otros_data=st.checkbox(label="Otros")
+        if otros_data:
+            # Productos especiales vendidos
+            st.header("Productos especiales vendidos")
+            tipo_especial=st.selectbox(label="Especial",options=["Gluten Free","Dairy Free"])
+            df_especiales_vendidos=get_productos_especiales_vendidos(conn, tipo=tipo_especial, top_n=5,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            chart = (
+                alt.Chart(df_especiales_vendidos)
+                .mark_bar()
+                .encode(
+                    x=alt.X('revenue:Q', title='Ingresos'),
+                    y=alt.Y('producto:N', sort='-x', title='Producto'),
+                    tooltip=[
+                        alt.Tooltip('revenue:Q', title='Ingreso', format="$.2f"),
+                        alt.Tooltip('cantidad_vendida:Q', title='Cantidad vendida'),
+                    ]
+                )
+            .properties(height=400)
+            )
+            st.altair_chart(chart, use_container_width=True)
+            # Dine in vs Take away
+            st.header("Dine in vs Take away")
+            df_dine_in_take_away=get_dine_in_vs_takeaway(conn,fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            chart = (
+                alt.Chart(df_dine_in_take_away)
+                .mark_arc(innerRadius=50)  # donut, más fachero
+                .encode(
+                    theta=alt.Theta('revenue:Q', title='Ingresos'),
+                    color=alt.Color('tipo_orden:N', title='Tipo de orden'),
+                    tooltip=[
+                        alt.Tooltip('tipo_orden:N', title='Tipo'),
+                        alt.Tooltip('revenue:Q', title='Ingresos', format="$.2f"),
+                        alt.Tooltip('num_ordenes:Q', title='Cantidad de órdenes'),
+                        alt.Tooltip('porcentaje:Q', title='Porcentaje', format=".1f")
+                    ]
+                )
+                .properties(height=400)
+            )
+
+            st.altair_chart(chart, use_container_width=True)
+            # Combos de productos
+            st.header("Combinaciones de productos")
+            df_combinaciones=get_combos_frecuentes(conn, top_n=10, fecha_inicio=fecha_inicio,fecha_fin=fecha_fin)
+            df_combinaciones = (
+                df_combinaciones.rename(columns={
+                    'producto_1': 'Producto A',
+                    'producto_2': 'Producto B',
+                    'veces_juntos': 'Veces comprados juntos'
+                })
+                .sort_values('Veces comprados juntos', ascending=False)
+            )
+
+            st.dataframe(df_combinaciones, use_container_width=True, hide_index=True)
+
+
+
 
 
 
