@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 
 # Agregar carpeta padre al path (para encontrar create_plato)
 sys.path.append(str(Path(__file__).parent.parent))
-from create_plato import agregar_nuevo_ingrediente, agregar_nuevo_plato, borrar_plato, modificar_plato,modificar_ingrediente,obtener_campos
-from data_analyst import true_if_data,rango_fechas,get_metodos_pago, get_ventas_por_hora, get_ventas_por_franja_horaria,  get_ventas_por_dia_semana, get_ticket_promedio,get_revenue_por_periodo
-from data_analyst import get_top_productos_vendidos,get_productos_menos_vendidos,get_ventas_por_categoria,get_rentabilidad_por_producto,get_margen_por_producto
-from data_analyst import get_ganancia_bruta_total,get_margen_promedio_negocio,get_food_cost_percentage,get_productos_especiales_vendidos,get_dine_in_vs_takeaway,get_combos_frecuentes,get_ventas_por_mes,get_ingresos_ultimas_semanas,variacion_semanal_mensual
+from backend.create_plato import agregar_nuevo_ingrediente, agregar_nuevo_plato, borrar_plato, modificar_plato,modificar_ingrediente,obtener_campos
+from backend.data_analyst import true_if_data,rango_fechas,get_metodos_pago, get_ventas_por_hora, get_ventas_por_franja_horaria,  get_ventas_por_dia_semana, get_ticket_promedio,get_revenue_por_periodo
+from backend.data_analyst import get_top_productos_vendidos,get_productos_menos_vendidos,get_ventas_por_categoria,get_rentabilidad_por_producto,get_margen_por_producto
+from backend.data_analyst import get_ganancia_bruta_total,get_margen_promedio_negocio,get_food_cost_percentage,get_productos_especiales_vendidos,get_dine_in_vs_takeaway,get_combos_frecuentes,get_ventas_por_mes,get_ingresos_ultimas_semanas,variacion_semanal_mensual
 # Configuración
 SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
 DATABASE = 'Cafe_Bar'
@@ -33,50 +33,49 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Ventas", "🍽️ Productos", "�
 
 with tab1:
     st.header("Análisis de Datos")
-    #if true_if_data(conn):
-
-    ultimas_12_semanas= get_ingresos_ultimas_semanas(conn)
-    ingreso_semana_actual,variacion_semanal,ingreso_mes_actual,variacion_mensual=variacion_semanal_mensual(ultimas_12_semanas)
-    
-    col1, col2 = st.columns(2)
-    col1.metric(
-        label="Ingreso última semana",
-        value=f"${ingreso_semana_actual:,.0f}",
-        delta=variacion_semanal
-    )
-
-    col2.metric(
-        label="Ingreso últimas 4 semanas",
-        value=f"${ingreso_mes_actual:,.0f}",
-        delta=variacion_mensual
-    )
-
-    st.subheader("Ingresos últimos 3 meses")
-    
-    chart = (
-        alt.Chart(ultimas_12_semanas)
-        .mark_bar()
-        .encode(
-            x=alt.X(
-                'semana:O',
-                title='Semana (1 = más reciente)',
-                sort='descending'
-            ),
-            y=alt.Y(
-                'revenue:Q',
-                title='Ingresos'
-            ),
-            tooltip=[
-                alt.Tooltip('semana:O', title='Semana'),
-                alt.Tooltip('fecha_inicio:T', title='Fecha inicio'),
-                alt.Tooltip('fecha_fin:T', title='Fecha fin'),
-                alt.Tooltip('revenue:Q', title='Ingresos', format='$,.2f'),
-                alt.Tooltip('num_ordenes:Q', title='Cantidad de órdenes'),
-            ]
+    if true_if_data(conn):
+        ultimas_12_semanas= get_ingresos_ultimas_semanas(conn)
+        ingreso_semana_actual,variacion_semanal,ingreso_mes_actual,variacion_mensual=variacion_semanal_mensual(ultimas_12_semanas)
+        
+        col1, col2 = st.columns(2)
+        col1.metric(
+            label="Ingreso última semana",
+            value=f"${ingreso_semana_actual:,.0f}",
+            delta=variacion_semanal
         )
-        .properties(height=400)
-    )
-    st.altair_chart(chart, use_container_width=True)
+
+        col2.metric(
+            label="Ingreso últimas 4 semanas",
+            value=f"${ingreso_mes_actual:,.0f}",
+            delta=variacion_mensual
+        )
+
+        st.subheader("Ingresos últimos 3 meses")
+        
+        chart = (
+            alt.Chart(ultimas_12_semanas)
+            .mark_bar()
+            .encode(
+                x=alt.X(
+                    'semana:O',
+                    title='Semana (1 = más reciente)',
+                    sort='descending'
+                ),
+                y=alt.Y(
+                    'revenue:Q',
+                    title='Ingresos'
+                ),
+                tooltip=[
+                    alt.Tooltip('semana:O', title='Semana'),
+                    alt.Tooltip('fecha_inicio:T', title='Fecha inicio'),
+                    alt.Tooltip('fecha_fin:T', title='Fecha fin'),
+                    alt.Tooltip('revenue:Q', title='Ingresos', format='$,.2f'),
+                    alt.Tooltip('num_ordenes:Q', title='Cantidad de órdenes'),
+                ]
+            )
+            .properties(height=400)
+        )
+        st.altair_chart(chart, use_container_width=True)
 
     st.header("Seleccionar Rango de Fechas")
     fechas= st.selectbox("Rango de fechas",["Última semana","Último mes","Ingrese manualmente"])
@@ -408,8 +407,8 @@ with tab3:
         index_unidad = opciones_unidad.index(unidad_actual) if unidad_actual in opciones_unidad else 0
         unidad_ing = st.selectbox("Unidad", opciones_unidad, index=index_unidad,key=f"selectbox_unidad_mod_{ing_seleccionado}")
 
-        gluten_free_ing = st.checkbox("Gluten Free", value=df_ingredientes[df_ingredientes["Nombre"]==ing_seleccionado]["Gluten_free"].values[0])
-        dairy_free_ing = st.checkbox("Dairy Free", value=df_ingredientes[df_ingredientes["Nombre"]==ing_seleccionado]["Dairy_free"].values[0])
+        gluten_free_ing = st.checkbox("Gluten Free", value=df_ingredientes[df_ingredientes["Nombre"]==ing_seleccionado]["Gluten_free"].values[0],key=f"gluten_free_{ing_seleccionado}")
+        dairy_free_ing = st.checkbox("Dairy Free", value=df_ingredientes[df_ingredientes["Nombre"]==ing_seleccionado]["Dairy_free"].values[0],key=f"dairy_free_{ing_seleccionado}")
         if st.button("Modificar ingrediente"):
             success, message = modificar_ingrediente(conn, ing_seleccionado,nombre_ing, costo_ing, cantidad_ing, unidad_ing, gluten_free_ing, dairy_free_ing)
             if success:
