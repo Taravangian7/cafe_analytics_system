@@ -1,4 +1,5 @@
 from backend.db import get_master_connection
+from backend.create_database import create_database_tables
 
 def create_tenant_db(username: str) -> str:
     db_name = f"cafe_{username.lower()}"
@@ -12,3 +13,6 @@ def create_tenant_db(username: str) -> str:
     conn.close()
 
     return db_name
+
+def create_tenant_tables(database: str):
+    create_database_tables(database)
