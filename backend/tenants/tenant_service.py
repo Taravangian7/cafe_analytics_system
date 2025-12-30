@@ -1,5 +1,5 @@
-from backend.db import get_master_connection
-from backend.create_database import create_database_tables
+from backend.db import get_master_connection,get_tenant_connection
+from pathlib import Path
 
 def create_tenant_db(username: str) -> str:
     db_name = f"cafe_{username.lower()}"
@@ -15,4 +15,17 @@ def create_tenant_db(username: str) -> str:
     return db_name
 
 def create_tenant_tables(database: str):
-    create_database_tables(database)
+    conn=get_tenant_connection(database)
+    # Rutas
+    BASE_DIR = Path(__file__).parent.parent
+    SCHEMA_SQL = BASE_DIR / 'schema.sql'
+    #Ejecutar schema.sql (dividir por GO)
+    with open(SCHEMA_SQL, 'r', encoding='utf-8') as f:
+            sql = f.read()
+        
+    for batch in sql.split('GO'):
+            batch = batch.strip()
+            if batch:
+                conn.execute(batch)
+        
+    print("✓ Tablas creadas")

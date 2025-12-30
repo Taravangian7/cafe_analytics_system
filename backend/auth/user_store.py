@@ -1,20 +1,6 @@
 import pyodbc
-from backend.db import get_master_connection
+from backend.db import get_auth_connection
 
-AUTH_DATABASE = "Cafe_Bar"
-
-
-def get_auth_connection():
-    """
-    Conexión a la base central de autenticación
-    """
-    return pyodbc.connect(
-        f'DRIVER={{SQL Server}};'
-        f'SERVER=LAPTOP-MTPJVFI5\\SQLEXPRESS;'
-        f'DATABASE={AUTH_DATABASE};'
-        f'Trusted_Connection=yes;',
-        autocommit=True
-    )
 
 
 def get_user_by_username(username: str):

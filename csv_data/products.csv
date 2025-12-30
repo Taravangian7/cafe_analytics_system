@@ -1,26 +1,26 @@
-product_id,sku,product_name,category,price,cost
-1,PROD001,Flat White,Coffee,4.5,0.858
-2,PROD002,Cappuccino,Coffee,4.5,0.706
-3,PROD003,Latte,Coffee,4.5,0.934
-4,PROD004,Long Black,Coffee,4.0,0.25
-5,PROD005,Espresso,Coffee,3.5,0.25
-6,PROD006,Mocha,Coffee,5.0,0.9475
-7,PROD007,Iced Latte,Coffee,5.5,1.085
-8,PROD008,Iced Coffee,Coffee,5.0,0.45
-9,PROD009,Hot Chocolate,Hot Drinks,4.5,1.1875
-10,PROD010,Chai Latte,Hot Drinks,4.5,0.91
-11,PROD011,Croissant,Pastries,4.5,9.9026
-12,PROD012,Almond Croissant,Pastries,5.5,10.3526
-13,PROD013,Pain au Chocolat,Pastries,5.0,10.3826
-14,PROD014,Muffin Blueberry,Pastries,5.0,20.2136
-15,PROD015,Muffin Choc Chip,Pastries,5.0,19.3736
-16,PROD016,Banana Bread,Food,5.5,37.929
-17,PROD017,Avocado Toast,Food,12.0,10.3224
-18,PROD018,Bacon & Egg Roll,Food,10.0,41.7
-19,PROD019,Ham & Cheese Toastie,Food,8.5,11.37
-20,PROD020,Vegetarian Wrap,Food,9.5,5.075
-21,PROD021,Caesar Salad,Food,14.0,1.715
-22,PROD022,Greek Salad,Food,12.5,3.63
-23,PROD023,Chicken Sandwich,Food,11.5,11.285
-24,PROD024,BLT Sandwich,Food,10.5,11.24
-25,PROD025,Orange Juice,Beverages,5.0,1.625
+product_id,Nombre,Categoria,precio
+1,Flat White,Coffee,4.5
+2,Cappuccino,Coffee,4.5
+3,Latte,Coffee,4.5
+4,Long Black,Coffee,4.0
+5,Espresso,Coffee,3.5
+6,Mocha,Coffee,5.0
+7,Iced Latte,Coffee,5.5
+8,Iced Coffee,Coffee,5.0
+9,Hot Chocolate,Hot Drinks,4.5
+10,Chai Latte,Hot Drinks,4.5
+11,Croissant,Pastries,4.5
+12,Almond Croissant,Pastries,5.5
+13,Pain au Chocolat,Pastries,5.0
+14,Muffin Blueberry,Pastries,5.0
+15,Muffin Choc Chip,Pastries,5.0
+16,Banana Bread,Food,5.5
+17,Avocado Toast,Food,12.0
+18,Bacon & Egg Roll,Food,10.0
+19,Ham & Cheese Toastie,Food,8.5
+20,Vegetarian Wrap,Food,9.5
+21,Caesar Salad,Food,14.0
+22,Greek Salad,Food,12.5
+23,Chicken Sandwich,Food,11.5
+24,BLT Sandwich,Food,10.5
+25,Orange Juice,Beverages,5.0

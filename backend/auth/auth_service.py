@@ -14,9 +14,9 @@ def register_user(username, password, email=None):
 
     # 1️⃣ crear DB del negocio
     db_name = create_tenant_db(username)
-
-    #creamos las tablas
+    #creamos las tablas del negocio
     create_tenant_tables(db_name)
+    
     # 2️⃣ crear usuario
     password_hash = hash_password(password)
     create_user(username, password_hash, email, db_name)

@@ -67,7 +67,12 @@ def agregar_nuevo_ingrediente(conn, nombre, costo, cantidad, unidad, gluten_free
         dairy_free = int(bool(dairy_free))
         elaborado= int(bool(elaborado))
         cursor=conn.cursor()
-
+        cursor.execute("SELECT Nombre FROM Ingredientes")
+        nombres_existentes=cursor.fetchall()
+        cursor.close()
+        if nombre in nombres_existentes:
+            return False,"Ingrediente ya existe",'error','error'
+        cursor=conn.cursor()
         cursor.execute("""
             INSERT INTO dbo.Ingredientes (Nombre, Costo, Cantidad, Unidad, Gluten_free, Dairy_free,Elaborado)
             VALUES (?, ?, ?, ?, ?, ?,?)
@@ -216,6 +221,7 @@ def modificar_ingrediente(conn, ing_seleccionado,nombre_ing, costo_ing, cantidad
         return False, f'Error al modificar: {str(e)}'
 
 def obtener_campos(conn,campos:list,tabla,where=None,where_valor=0,formato="lista"):
+    #TE DEVUELVE EN FORMATO LISTA O DICT UN SELECT DE SQL, podes poner condiciones where
     try:
         cursor=conn.cursor()
         campo=", ".join(campos)

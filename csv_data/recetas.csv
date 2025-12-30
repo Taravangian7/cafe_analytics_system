@@ -1,0 +1,99 @@
+Plato,Ingrediente,Cantidad,Unidad
+Espresso,Café en grano,0.020,kg
+Long Black,Café en grano,0.020,kg
+Flat White,Café en grano,0.020,kg
+Cappuccino,Café en grano,0.020,kg
+Latte,Café en grano,0.020,kg
+Iced Latte,Café en grano,0.020,kg
+Iced Coffee,Café en grano,0.030,kg
+Mocha,Café en grano,0.020,kg
+Flat White,Leche entera,0.160,litro
+Cappuccino,Leche entera,0.120,litro
+Latte,Leche entera,0.180,litro
+Iced Latte,Leche entera,0.200,litro
+Mocha,Leche entera,0.150,litro
+Iced Latte,Hielo,0.150,kg
+Iced Coffee,Hielo,0.150,kg
+Mocha,Chocolate en polvo,0.015,kg
+Hot Chocolate,Leche entera,0.250,litro
+Hot Chocolate,Chocolate en polvo,0.025,kg
+Hot Chocolate,Azúcar blanca,0.010,kg
+Chai Latte,Leche entera,0.200,litro
+Chai Latte,Especias Chai,0.005,kg
+Chai Latte,Azúcar blanca,0.010,kg
+Croissant,Harina de trigo,0.100,kg
+Croissant,Mantequilla,0.060,kg
+Croissant,Huevos,0.5,unidad
+Croissant,Azúcar blanca,0.010,kg
+Croissant,Sal,0.003,kg
+Croissant,Levadura,0.008,kg
+Almond Croissant,Harina de trigo,0.100,kg
+Almond Croissant,Mantequilla,0.060,kg
+Almond Croissant,Huevos,0.5,unidad
+Almond Croissant,Azúcar blanca,0.010,kg
+Almond Croissant,Sal,0.003,kg
+Almond Croissant,Levadura,0.008,kg
+Almond Croissant,Almendras,0.030,kg
+Pain au Chocolat,Harina de trigo,0.100,kg
+Pain au Chocolat,Mantequilla,0.060,kg
+Pain au Chocolat,Huevos,0.5,unidad
+Pain au Chocolat,Azúcar blanca,0.010,kg
+Pain au Chocolat,Sal,0.003,kg
+Pain au Chocolat,Levadura,0.008,kg
+Pain au Chocolat,Chocolate amargo,0.040,kg
+Muffin Blueberry,Harina de trigo,0.120,kg
+Muffin Blueberry,Azúcar blanca,0.060,kg
+Muffin Blueberry,Aceite vegetal,0.040,litro
+Muffin Blueberry,Huevos,1.0,unidad
+Muffin Blueberry,Arándanos,0.080,kg
+Muffin Blueberry,Sal,0.003,kg
+Muffin Blueberry,Levadura,0.008,kg
+Muffin Choc Chip,Harina de trigo,0.120,kg
+Muffin Choc Chip,Azúcar blanca,0.060,kg
+Muffin Choc Chip,Aceite vegetal,0.040,litro
+Muffin Choc Chip,Huevos,1.0,unidad
+Muffin Choc Chip,Chocolate amargo,0.050,kg
+Muffin Choc Chip,Sal,0.003,kg
+Muffin Choc Chip,Levadura,0.008,kg
+Banana Bread,Harina de trigo,0.150,kg
+Banana Bread,Plátanos,0.200,kg
+Banana Bread,Azúcar blanca,0.080,kg
+Banana Bread,Aceite vegetal,0.060,litro
+Banana Bread,Huevos,2.0,unidad
+Banana Bread,Sal,0.005,kg
+Banana Bread,Levadura,0.010,kg
+Avocado Toast,Pan de molde,2.0,unidad
+Avocado Toast,Aguacate,0.150,kg
+Avocado Toast,Aceite de oliva,0.010,litro
+Avocado Toast,Sal,0.002,kg
+Bacon & Egg Roll,Pan de molde,1.0,unidad
+Bacon & Egg Roll,Huevos frescos,2.0,unidad
+Bacon & Egg Roll,Tocino,0.080,kg
+Ham & Cheese Toastie,Pan de molde,2.0,unidad
+Ham & Cheese Toastie,Jamón cocido,0.100,kg
+Ham & Cheese Toastie,Queso cheddar,0.080,kg
+Vegetarian Wrap,Tortilla de harina,1.0,unidad
+Vegetarian Wrap,Vegetales mixtos,0.150,kg
+Vegetarian Wrap,Lechuga,0.050,kg
+Vegetarian Wrap,Tomate,0.060,kg
+Vegetarian Wrap,Aceite de oliva,0.010,litro
+Caesar Salad,Lechuga,0.150,kg
+Caesar Salad,Aderezo César,0.030,litro
+Caesar Salad,Queso cheddar,0.040,kg
+Greek Salad,Lechuga,0.100,kg
+Greek Salad,Tomate,0.150,kg
+Greek Salad,Cebolla,0.050,kg
+Greek Salad,Aceitunas,0.040,kg
+Greek Salad,Queso feta,0.080,kg
+Greek Salad,Aceite de oliva,0.020,litro
+Greek Salad,Vinagre balsámico,0.010,litro
+Chicken Sandwich,Pan de molde,2.0,unidad
+Chicken Sandwich,Pechuga de pollo,0.150,kg
+Chicken Sandwich,Lechuga,0.040,kg
+Chicken Sandwich,Tomate,0.050,kg
+Chicken Sandwich,Aceite de oliva,0.010,litro
+BLT Sandwich,Pan de molde,2.0,unidad
+BLT Sandwich,Tocino,0.100,kg
+BLT Sandwich,Lechuga,0.050,kg
+BLT Sandwich,Tomate,0.080,kg
+Orange Juice,Jugo de naranja,0.250,litro
