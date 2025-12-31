@@ -16,13 +16,16 @@ from backend.data_analyst import get_top_productos_vendidos,get_productos_menos_
 from backend.data_analyst import get_ganancia_bruta_total,get_margen_promedio_negocio,get_food_cost_percentage,get_productos_especiales_vendidos,get_dine_in_vs_takeaway,get_combos_frecuentes,get_ventas_por_mes,get_ingresos_ultimas_semanas,variacion_semanal_mensual
 from backend.auth.auth_service import register_user,login_user
 from backend.upload_data.upload import datos_iniciales
-from funciones_carga import carga_ingredientes_ui,carga_plato_y_receta_manual,carga_platos_y_recetas_ui
+from funciones_carga import carga_ingredientes_ui,carga_plato_y_receta_manual,carga_platos_y_recetas_ui,carga_ordenes_ui
 # Funciones del front para streamlit
 def is_logged_in():
     return "user" in st.session_state and st.session_state["user"] is not None
 
 def logout():
-    st.session_state["user"] = None
+    st.session_state.clear()
+    st.cache_data.clear()
+    st.cache_resource.clear()
+    st.rerun()
 
 def login_page():
     st.title("🔐 Cafe Analytics")
@@ -99,20 +102,24 @@ def main():
 
         # Crear tabs
         tab0, tab1, tab2, tab3, tab4, tab5 = st.tabs(["📤 Carga de Datos","📊 Ventas", "🍽️ Productos", "📦 Ingredientes","Platos","Modificaciones"])
+        # Datos iniciales
+        datos_ini,message_datos_iniciales=datos_iniciales(conn)
+        # Carga de datos
         with tab0:
-            if datos_iniciales(conn):
+            if datos_ini:
                 st.warning("⚠️ Ya existen datos cargados")
             st.header("Carga de datos")
             st.subheader("Ingredientes")
             carga_ingredientes_ui(conn)
             st.subheader("Platos y Recetas")
             carga_platos_y_recetas_ui(conn,prefix='cargaplatos1')
+            st.subheader("Datos del PoS(Comandas)")
+            carga_ordenes_ui(conn)
 
-        # Datos iniciales
-        datos_ini,message_datos_iniciales=datos_iniciales(conn)
+        
         with tab1:
             fecha_final_arranque=datetime.now().date() - timedelta(days=1)
-            fecha_inicial_arranque= fecha_final_arranque-timedelta(days=1500) #12 semanas
+            fecha_inicial_arranque= fecha_final_arranque-timedelta(days=1500) #Para ver si hay algun dato en tabla
             if datos_ini and true_if_data(conn,fecha_inicial_arranque,fecha_final_arranque):
                 st.header("Análisis de Datos")
                 if true_if_data(conn):

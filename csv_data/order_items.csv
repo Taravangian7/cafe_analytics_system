@@ -689,3 +689,5 @@ item_id,order_id,product_id,sku,product_name,category,quantity,unit_price,line_t
 688,349,9,PROD009,Hot Chocolate,Hot Drinks,1,4.5,4.5,1.1875,1.19
 689,350,18,PROD018,Bacon & Egg Roll,Food,1,10.0,10.0,41.7,41.7
 690,350,17,PROD017,Avocado Toast,Food,2,12.0,24.0,10.3224,20.64
+
+

@@ -1,4 +1,4 @@
-from backend.upload_data.upload import cargar_ingredientes_desde_csv,cargar_ingredientes_desde_excel,cargar_platos_y_recetas_desde_csv,cargar_platos_desde_excel,cargar_recetas_desde_csv,cargar_recetas_desde_excel,cargar_ordenes_desde_csv
+from backend.upload_data.upload import cargar_ingredientes_desde_csv,cargar_ingredientes_desde_excel,cargar_platos_y_recetas_desde_csv,cargar_platos_y_recetas_desde_excel,cargar_ordenes_desde_csv,cargar_ordenes_desde_excel
 import streamlit as st
 from backend.create_plato import agregar_nuevo_ingrediente,obtener_campos,agregar_nuevo_plato
 
@@ -196,11 +196,38 @@ def carga_platos_y_recetas_ui(conn,prefix):
             st.info(message)
 
     elif tipo == "excel":
-        archivo = st.file_uploader("Seleccioná un archivo Excel",type=["xlsx"],key="excel_plato")
-        if st.button("Cargar platos Excel", key="btn_excel_plato"):
-            estado, message, ingresados = cargar_platos_desde_excel(conn, archivo)
+        archivo_plato = st.file_uploader("Seleccioná Excel de Platos",type=["xlsx"],key="excel_plato")
+        archivo_receta = st.file_uploader("Seleccioná Excel de Recetas",type=["xlsx"],key="excel_receta")
+        if st.button("Cargar platos y recetas Excel", key="btn_excel_plato"):
+            estado, message, ingresados = cargar_platos_y_recetas_desde_excel(conn, archivo_plato,archivo_receta)
             st.info(message)
 
     else:
         carga_plato_y_receta_manual(conn,prefix)
+
+def carga_ordenes_ui(conn):
+    tipo = st.selectbox("Tipo de carga",["csv", "excel"],key="tipo_carga_ordenes")
+
+    if tipo == "csv":
+        archivo_orders = st.file_uploader(
+            "Seleccioná CSV para Órdenes",
+            type=["csv"],
+            key="csv_orders"
+        )
+        archivo_items = st.file_uploader(
+            "Seleccioná CSV para Items",
+            type=["csv"],
+            key="csv_items"
+        )
+
+        if st.button("Cargar ordenes CSV", key="btn_csv_ordenes"):
+            estado, message, ordenes_ingresados,items_ingresados = cargar_ordenes_desde_csv(conn, archivo_orders,archivo_items)
+            st.info(message)
+
+    elif tipo == "excel":
+        archivo_orders = st.file_uploader("Seleccioná Excel de Órdenes",type=["xlsx"],key="excel_orders")
+        archivo_items = st.file_uploader("Seleccioná Excel de Items",type=["xlsx"],key="excel_items")
+        if st.button("Cargar Órdenes desde Excel", key="btn_excel_orders"):
+            estado, message, ordenes_ingresados,items_ingresados = cargar_ordenes_desde_excel(conn, archivo_orders,archivo_items)
+            st.info(message)
 

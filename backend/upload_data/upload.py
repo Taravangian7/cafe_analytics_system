@@ -179,31 +179,21 @@ def cargar_platos_y_recetas_desde_csv(conn, archivo_platos_csv,archivo_receta_cs
         return False, f"Error al procesar CSV: {str(e)}", 0
 
 
-def cargar_platos_desde_excel(conn, archivo_excel, sheet_name=0):
+def cargar_platos_y_recetas_desde_excel(conn, archivo_excel_plato,archivo_excel_receta, sheet_name_plato=0, sheet_name_receta=0):
     """Carga platos desde Excel"""
     try:
-        df = pd.read_excel(archivo_excel, sheet_name=sheet_name)
-        temp_csv = BytesIO()
-        df.to_csv(temp_csv, index=False)
-        temp_csv.seek(0)
-        return cargar_platos_desde_csv(conn, temp_csv)
+        df_plato = pd.read_excel(archivo_excel_plato, sheet_name=sheet_name_plato)
+        df_receta = pd.read_excel(archivo_excel_receta, sheet_name=sheet_name_receta)
+        temp_csv_plato = BytesIO()
+        df_plato.to_csv(temp_csv_plato, index=False)
+        temp_csv_plato.seek(0)
+        temp_csv_receta = BytesIO()
+        df_receta.to_csv(temp_csv_receta, index=False)
+        temp_csv_receta.seek(0)
+        return cargar_platos_y_recetas_desde_csv(conn, temp_csv_plato,temp_csv_receta)
     except Exception as e:
         return False, f"Error al procesar Excel: {str(e)}", 0
 
-
-
-
-
-def cargar_recetas_desde_excel(conn, archivo_excel, sheet_name=0):
-    """Carga recetas desde Excel"""
-    try:
-        df = pd.read_excel(archivo_excel, sheet_name=sheet_name)
-        temp_csv = BytesIO()
-        df.to_csv(temp_csv, index=False)
-        temp_csv.seek(0)
-        return cargar_recetas_desde_csv(conn, temp_csv)
-    except Exception as e:
-        return False, f"Error al procesar Excel: {str(e)}", 0
 
 
 # ============================================
@@ -226,7 +216,58 @@ def cargar_ordenes_desde_csv(conn, archivo_csv_orders, archivo_csv_items):
     try:
         df_orders = pd.read_csv(archivo_csv_orders)
         df_items = pd.read_csv(archivo_csv_items)
+        #El programa se limita a que le entregues el csv con estas columnas. Futuro update es que se puedan llamar de otra manera
+        df_orders = df_orders[[
+            "order_id",
+            "order_date",
+            "order_time",
+            "day_of_week",
+            "payment_method",
+            "order_type",
+            "total_amount"   # lo que pagó el cliente
+        ]]
+
+        df_orders = df_orders.rename(columns={
+            "order_id": "Order_id",
+            "order_date": "Order_date",
+            "order_time": "Order_time",
+            "day_of_week": "Day_of_week",
+            "payment_method": "Payment_method",
+            "order_type": "Order_type",
+            "total_amount": "Total_amount" 
+        })
         
+        df_items = df_items[[
+            "item_id",
+            "order_id",
+            "product_name",
+            "quantity",
+            "unit_price"
+        ]]
+
+        df_items = df_items.rename(columns={
+            "item_id": "Item_id",
+            "order_id": "Order_id",
+            "product_name": "Product_name",
+            "quantity": "Quantity",
+            "unit_price": "Unit_price"
+        })
+        #SE VERIFICA QUE LOS PLATOS EXISTAN EN LA BASE DE DATOS PLATOS
+        cursor = conn.cursor()
+        cursor.execute("SELECT Nombre FROM Platos")
+        platos_existentes = [a[0].strip().lower() for a in cursor.fetchall()]
+        productos = (
+            df_items["Product_name"]
+            .astype(str)        # por si hay NaN
+            .str.strip()        # saca espacios adelante/atrás
+            .str.lower()        # todo minúsculas
+            .unique()           # distinct
+            .tolist()           # a lista Python
+        )
+        for prod in productos:
+            if prod not in platos_existentes:
+                return False,f"el item: {prod} no está en la base de datos. Agréguelo.",0,0
+        cursor.close()
         cursor = conn.cursor()
         ordenes_insertadas = 0
         items_insertados = 0
@@ -236,7 +277,7 @@ def cargar_ordenes_desde_csv(conn, archivo_csv_orders, archivo_csv_items):
         for _, row in df_orders.iterrows():
             try:
                 cursor.execute("""
-                    INSERT INTO Orders (Order_id, Order_date, Order_time, Day_of_week, Payment_method, Order_type, Total_cost)
+                    INSERT INTO Orders (Order_id, Order_date, Order_time, Day_of_week, Payment_method, Order_type, Total_amount)
                     VALUES (?, ?, ?, ?, ?, ?, ?)
                 """, (
                     int(row['Order_id']),
@@ -245,7 +286,7 @@ def cargar_ordenes_desde_csv(conn, archivo_csv_orders, archivo_csv_items):
                     row['Day_of_week'],
                     row['Payment_method'],
                     row['Order_type'],
-                    float(row.get('Total_cost', 0))  # Si no existe, 0 (se calcula con trigger)
+                    float(row['Total_amount'])
                 ))
                 ordenes_insertadas += 1
             except Exception as e:
@@ -279,3 +320,19 @@ def cargar_ordenes_desde_csv(conn, archivo_csv_orders, archivo_csv_items):
         
     except Exception as e:
         return False, f"Error: {str(e)}", 0, 0
+
+
+def cargar_ordenes_desde_excel(conn, archivo_excel_orders,archivo_excel_items, sheet_name_orders=0, sheet_name_items=0):
+    """Carga ordenes desde Excel"""
+    try:
+        df_orders = pd.read_excel(archivo_excel_orders, sheet_name=sheet_name_orders)
+        df_items = pd.read_excel(archivo_excel_items, sheet_name=sheet_name_items)
+        temp_csv_orders = BytesIO()
+        df_orders.to_csv(temp_csv_orders, index=False)
+        temp_csv_orders.seek(0)
+        temp_csv_items = BytesIO()
+        df_items.to_csv(temp_csv_items, index=False)
+        temp_csv_items.seek(0)
+        return cargar_ordenes_desde_csv(conn, temp_csv_orders,temp_csv_items)
+    except Exception as e:
+        return False, f"Error al procesar Excel: {str(e)}", 0

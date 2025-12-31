@@ -98,7 +98,7 @@ Order_time time,
 Day_of_week nvarchar(30),
 Payment_method nvarchar(30),
 Order_type nvarchar(30),
-Total_cost decimal(12,4)
+Total_amount decimal(12,4)
 );
 
 Create table Order_items(
@@ -111,48 +111,6 @@ Total_price as Quantity*Unit_price,
 CONSTRAINT FK_Order_items_Orderid FOREIGN KEY (Order_id) REFERENCES dbo.Orders(Order_id) ON DELETE CASCADE ON UPDATE CASCADE,
 CONSTRAINT FK_Order_items_Product_name FOREIGN KEY (Product_name) REFERENCES dbo.Platos(Nombre) ON DELETE CASCADE ON UPDATE CASCADE
 );	
-GO
-Create trigger trg_UpdateUnitPrice
-ON Order_items
-AFTER INSERT
-AS
-BEGIN
-	SET NOCOUNT ON;
-	UPDATE Order_items
-	SET Order_items.Unit_price=Platos.Precio
-	FROM Order_items
-	INNER JOIN Platos ON Order_items.Product_name = Platos.Nombre
-	WHERE Order_items.Order_id IN (
-        SELECT DISTINCT Order_id FROM inserted
-    );
-END;
-
-GO
--- TRIGGER para mantener actualizado Orders.Total_cost
--- =========================
-
-CREATE TRIGGER trg_UpdateOrderTotal
-ON dbo.Order_items
-AFTER INSERT, UPDATE, DELETE
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    -- recalcula solo las órdenes afectadas
-    UPDATE Orders
-    SET Orders.Total_cost = (
-        SELECT SUM(Order_items.Total_price)
-        FROM dbo.Order_items
-        WHERE Order_items.Order_id = Orders.Order_id
-    )
-    FROM dbo.Orders
-    WHERE Orders.Order_id IN (
-        SELECT DISTINCT Order_id FROM inserted
-        UNION
-        SELECT DISTINCT Order_id FROM deleted
-    );
-END;
-
 GO
 CREATE TRIGGER trg_insert_price
 ON Receta
