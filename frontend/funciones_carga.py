@@ -1,6 +1,6 @@
 from backend.upload_data.upload import cargar_ingredientes_desde_csv,cargar_ingredientes_desde_excel,cargar_platos_y_recetas_desde_csv,cargar_platos_y_recetas_desde_excel,cargar_ordenes_desde_csv,cargar_ordenes_desde_excel
 import streamlit as st
-from backend.create_plato import agregar_nuevo_ingrediente,obtener_campos,agregar_nuevo_plato
+from backend.crud_platos_ingredientes import agregar_nuevo_ingrediente,obtener_campos,agregar_nuevo_plato
 
 
 
