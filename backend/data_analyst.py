@@ -75,7 +75,7 @@ def get_revenue_por_periodo(conn, periodo='dia', fecha_inicio=None, fecha_fin=No
     query = f"""
         SELECT 
             {group_by} AS periodo,
-            SUM(Total_cost) AS revenue
+            SUM(Total_amount) AS revenue
         FROM Orders
         WHERE Order_date BETWEEN ? AND ?
         GROUP BY {group_by}
@@ -104,7 +104,7 @@ def get_ticket_promedio(conn, fecha_inicio=None, fecha_fin=None):
     fecha_inicio_dt = datetime.combine(fecha_inicio, time.min)  # pq sino sql tira error
     fecha_fin_dt    = datetime.combine(fecha_fin, time.min)  
     query = """
-        SELECT AVG(Total_cost) AS ticket_promedio
+        SELECT AVG(Total_amount) AS ticket_promedio
         FROM Orders
         WHERE Order_date BETWEEN ? AND ?
     """
@@ -132,7 +132,7 @@ def get_ventas_por_dia_semana(conn, fecha_inicio=None, fecha_fin=None):
     query = """
         SELECT 
             Day_of_week AS dia_semana,
-            SUM(Total_cost) AS revenue,
+            SUM(Total_amount) AS revenue,
             COUNT(*) AS num_ordenes
         FROM Orders
         WHERE Order_date BETWEEN ? AND ?
@@ -192,7 +192,7 @@ def get_ventas_por_franja_horaria(conn, fecha_inicio=None, fecha_fin=None):
                 WHEN DATEPART(HOUR, Order_time) < 18 THEN 'Afternoon (12-18)'
                 ELSE 'Evening (18-22)'
             END AS franja_horaria,
-            SUM(Total_cost) AS revenue,
+            SUM(Total_amount) AS revenue,
             COUNT(*) AS num_ordenes
         FROM Orders
         WHERE Order_date BETWEEN ? AND ?
@@ -224,7 +224,7 @@ def get_ventas_por_hora(conn, fecha_inicio=None, fecha_fin=None):
     query = """
         SELECT 
             DATEPART(HOUR, Order_time) AS hora,
-            SUM(Total_cost) AS revenue,
+            SUM(Total_amount) AS revenue,
             COUNT(*) AS num_ordenes
         FROM Orders
         WHERE Order_date BETWEEN ? AND ?
@@ -262,7 +262,7 @@ def get_metodos_pago(conn, fecha_inicio=None, fecha_fin=None):
         SELECT 
             Payment_method AS metodo_pago,
             COUNT(*) AS num_ordenes,
-            SUM(Total_cost) AS revenue,
+            SUM(Total_amount) AS revenue,
             CAST(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS DECIMAL(5,2)) AS porcentaje
         FROM Orders
         WHERE Order_date BETWEEN ? AND ?
@@ -602,7 +602,7 @@ def get_dine_in_vs_takeaway(conn, fecha_inicio=None, fecha_fin=None):
         SELECT 
             Order_type AS tipo_orden,
             COUNT(*) AS num_ordenes,
-            SUM(Total_cost) AS revenue,
+            SUM(Total_amount) AS revenue,
             CAST(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS DECIMAL(5,2)) AS porcentaje
         FROM Orders
         WHERE Order_date BETWEEN ? AND ?
@@ -672,7 +672,7 @@ def get_ventas_por_mes(conn, fecha_inicio=None, fecha_fin=None):
         SELECT 
             YEAR(Order_date) AS año,
             MONTH(Order_date) AS mes,
-            SUM(Total_cost) AS revenue,
+            SUM(Total_amount) AS revenue,
             COUNT(*) AS num_ordenes
         FROM Orders
         WHERE Order_date BETWEEN ? AND ?
@@ -719,7 +719,7 @@ def get_ingresos_ultimas_semanas(conn, num_semanas=12):
     query = """
         SELECT
             Order_date AS fecha,
-            SUM(Total_cost) AS revenue,
+            SUM(Total_amount) AS revenue,
             COUNT(*) AS num_ordenes
         FROM Orders
         WHERE Order_date BETWEEN ? AND ?

@@ -1,7 +1,7 @@
 import pandas as pd
 import pyodbc
 from io import BytesIO
-from backend.create_plato import agregar_nuevo_plato
+from backend.crud_platos_ingredientes import agregar_nuevo_plato
 # FUNCIONES PARA CORROBORAR SI YA SE CARGARON LOS ARCHIVOS
 
 def datos_iniciales(conn) -> bool:

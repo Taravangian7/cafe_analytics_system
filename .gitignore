@@ -1,0 +1,22 @@
+# env
+.env
+
+# virtual env
+venv/
+.env/
+
+# python
+__pycache__/
+*.pyc
+
+# streamlit
+.streamlit/
+
+# system
+.DS_Store
+
+# vscode
+.vscode/
+
+# data (si usás csv locales)
+csv_data/

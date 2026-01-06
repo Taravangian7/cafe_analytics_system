@@ -1,13 +1,13 @@
 import pyodbc
-
-SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
+from config import DB_DRIVER, DB_SERVER, DB_TRUSTED_CONNECTION
+SERVER = DB_SERVER
 
 def create_auth_database():
     conn = pyodbc.connect(
-        f'DRIVER={{SQL Server}};'
+        f'DRIVER={{{DB_DRIVER}}};'
         f'SERVER={SERVER};'
         f'DATABASE=master;'
-        f'Trusted_Connection=yes;',
+        f'Trusted_Connection={DB_TRUSTED_CONNECTION};',
         autocommit=True
     )
 

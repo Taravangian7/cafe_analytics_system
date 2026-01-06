@@ -1,14 +1,15 @@
 import pyodbc
+from config import DB_DRIVER, DB_SERVER, DB_TRUSTED_CONNECTION
 
-SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
+SERVER = DB_SERVER
 DATABASE = 'Cafe_Bar'
 
 def create_users_table():
     conn = pyodbc.connect(
-        f'DRIVER={{SQL Server}};'
+        f'DRIVER={{{DB_DRIVER}}};'
         f'SERVER={SERVER};'
         f'DATABASE={DATABASE};'
-        f'Trusted_Connection=yes;',
+        f'Trusted_Connection={DB_TRUSTED_CONNECTION};',
         autocommit=True
     )
 

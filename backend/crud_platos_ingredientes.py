@@ -1,21 +1,9 @@
-#from numba import List
 import pyodbc
 from pathlib import Path
-'''
-# Config
-SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
-DATABASE = 'Cafe_Bar'
 
-# Conexión
-conn = pyodbc.connect(
-    f'DRIVER={{SQL Server}};SERVER={SERVER};DATABASE={DATABASE};Trusted_Connection=yes;',
-    autocommit=True
-)
-cursor = conn.cursor()
-'''
+
 #  NUEVA FUNCIÓN: validación general para Streamlit y para funciones
 # -------------------------------------------------------------------
-
 def validar_valor(valor, tipo=float, nombre="valor"):
     """
     Valida que el valor no sea None, no sea string vacío y pueda convertirse

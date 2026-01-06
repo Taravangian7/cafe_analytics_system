@@ -10,13 +10,14 @@ import matplotlib.pyplot as plt
 
 # Agregar carpeta padre al path (para encontrar create_plato)
 sys.path.append(str(Path(__file__).parent.parent))
-from backend.create_plato import agregar_nuevo_ingrediente, agregar_nuevo_plato, borrar_plato, modificar_plato,modificar_ingrediente,obtener_campos
+from backend.crud_platos_ingredientes import agregar_nuevo_ingrediente, borrar_plato, modificar_plato,modificar_ingrediente,obtener_campos
 from backend.data_analyst import true_if_data,rango_fechas,get_metodos_pago, get_ventas_por_hora, get_ventas_por_franja_horaria,  get_ventas_por_dia_semana, get_ticket_promedio,get_revenue_por_periodo
 from backend.data_analyst import get_top_productos_vendidos,get_productos_menos_vendidos,get_ventas_por_categoria,get_rentabilidad_por_producto,get_margen_por_producto
 from backend.data_analyst import get_ganancia_bruta_total,get_margen_promedio_negocio,get_food_cost_percentage,get_productos_especiales_vendidos,get_dine_in_vs_takeaway,get_combos_frecuentes,get_ventas_por_mes,get_ingresos_ultimas_semanas,variacion_semanal_mensual
 from backend.auth.auth_service import register_user,login_user
 from backend.upload_data.upload import datos_iniciales
 from funciones_carga import carga_ingredientes_ui,carga_plato_y_receta_manual,carga_platos_y_recetas_ui,carga_ordenes_ui
+from config import DB_DRIVER, DB_SERVER, DB_TRUSTED_CONNECTION
 # Funciones del front para streamlit
 def is_logged_in():
     return "user" in st.session_state and st.session_state["user"] is not None
@@ -86,13 +87,13 @@ def main():
     else:
         dashboard_page()
         # Configuración
-        SERVER = 'LAPTOP-MTPJVFI5\\SQLEXPRESS'
+        SERVER = DB_SERVER
         DATABASE = f'{st.session_state["user"]["db_name"]}'
 
         @st.cache_resource #Decorador que va asociado a una función (la que va debajo), lo que hace es guardar el return de la función para no volverle a ejecutar cada vez que refresca
         def get_connection():
             return pyodbc.connect(
-                f'DRIVER={{SQL Server}};SERVER={SERVER};DATABASE={DATABASE};Trusted_Connection=yes;'
+                f'DRIVER={{{DB_DRIVER}}};SERVER={SERVER};DATABASE={DATABASE};Trusted_Connection={DB_TRUSTED_CONNECTION};'
             )
         conn = get_connection() #Con en el cache que puse arriba, si vuelvo a definir otra conn voy a usar la misma conexión, no ejecuta una nueva.
 
